@@ -4,6 +4,8 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
+#include "../scene/Scene.h"
+
 
 namespace Hound {
 	class Application {
@@ -34,7 +36,7 @@ namespace Hound {
         Application() = default;
         virtual ~Application() = default;
 
-        virtual void run(Hound::Application* the_app) {
+        virtual void run(Hound::Application* the_app, Hound::Scene* the_scene) {
             bool running = true;
             mApp = the_app;
         }
@@ -69,6 +71,7 @@ namespace Hound {
     protected:
         APPINFO     mInfo;
         static      Application* mApp;
+        static      Scene* mCurrentScene;
         GLFWwindow* mWindow;
 
         static void glfw_onResize(GLFWwindow* window, int w, int h)
