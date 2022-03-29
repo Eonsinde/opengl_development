@@ -1,6 +1,18 @@
 #ifndef __hAPPLICATION_H__
 #define __hAPPLICATION_H__
 
+#ifdef _WIN32
+    #pragma once
+    #define _CRT_SECURE_NO_WARNINGS 1
+
+    #define WIN32_LEAN_AND_MEAN 1
+    #include <Windows.h>
+#else
+    #include <unistd.h>
+    #define Sleep(t) sleep(t)
+#endif
+
+
 #include <glad/glad.h>
 #include <KHR/khrplatform.h>
 
@@ -49,7 +61,7 @@ namespace Hound {
             // init glfw and create gl context
             if (!glfwInit())
             {
-                fprintf(stderr, "ERR::Failed to initialize GLFW\n");
+                std::cerr << "ERR::Failed to initialize GLFW\n";
                 return;
             }
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -216,4 +228,44 @@ namespace Hound {
 	};
 }
 
+
+
+// the Tapp and Tscene stands for type of app/ type of scene
+// defined App's static attributes                       
+#if defined _WIN32
+#define DECLARE_MAIN(Tapp, Tscene)                       \
+                                                         \
+Hound::Application* Hound::Application::mApp = 0;        \
+Hound::Scene* Hound::Application::mCurrentScene = 0;     \
+                                                         \
+int CALLBACK main(HINSTANCE hInstance,                   \
+                     HINSTANCE hPrevInstance,            \
+                     LPSTR lpCmdLine,                    \
+                     int nCmdShow)                       \
+{                                                        \
+    Tapp* app = new Tapp;                                \
+    Tscene* scene = new Tscene;                          \
+    app->run(app, scene);                                \
+    delete app;                                          \
+    delete scene;                                        \
+    return 0;                                            \
+}                                                        
+#elif defined _LINUX || defined __APPLE__
+#define DECLARE_MAIN(Tapp, Tscene)                       \
+Hound::Application* Hound::Application::mApp = 0;        \
+Hound::Scene* Hound::Application::mCurrentScene = 0;     \
+int main(int argc, const char ** argv)                   \
+{                                                        \
+    Tapp* app = new Tapp;                                \
+    Tscene* scene = new Tscene;                          \
+    app->run(app, scene);                                \
+    delete app;                                          \
+    delete scene;                                        \
+    return 0;                                            \
+}
+#else
+#error Undefined platform!
 #endif
+
+
+#endif /* __hAPPLICATION_H__ */
