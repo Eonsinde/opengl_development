@@ -34,5 +34,8 @@ protected:
 };
 
 
+DECLARE_MAIN(CubeLevelApp, CubeLevel)
+
+
 
 
