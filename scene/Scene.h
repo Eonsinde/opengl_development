@@ -7,6 +7,14 @@ namespace Hound {
 	class Scene {
 	protected:
 		friend class Application;
+
+	public:
+		struct Scene_Info {
+			char title[255];
+			int width;
+			int height;
+		} mSceneInfo;
+
 	public:
 		Scene() = default;
 		virtual ~Scene() = default;
