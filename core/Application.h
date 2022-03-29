@@ -1,8 +1,13 @@
 #ifndef __hAPPLICATION_H__
 #define __hAPPLICATION_H__
 
-#include <iostream>
+#include <glad/glad.h>
+#include <KHR/khrplatform.h>
+
 #include <GLFW/glfw3.h>
+
+
+#include <iostream>
 
 #include "../scene/Scene.h"
 
@@ -39,8 +44,116 @@ namespace Hound {
         virtual void run(Hound::Application* the_app, Hound::Scene* the_scene) {
             bool running = true;
             mApp = the_app;
+            mCurrentScene = the_scene;
+
+            // init glfw and create gl context
+            if (!glfwInit())
+            {
+                fprintf(stderr, "ERR::Failed to initialize GLFW\n");
+                return;
+            }
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+            glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+            // initialize App Info, create window, set context and init glad
+            init(mCurrentScene->mSceneInfo.title, mCurrentScene->mSceneInfo.width, mCurrentScene->mSceneInfo.height);
+
+            mWindow = glfwCreateWindow(800, 600, "Testing", NULL, NULL);
+            if (mWindow == NULL)
+            {
+                std::cout << "ERR::Failed to create GLFW window" << std::endl;
+                glfwTerminate();
+                return;
+            }
+
+            glfwMakeContextCurrent(mWindow);
+
+            if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+            {
+                std::cout << "ERR::Failed to initialize GLAD" << std::endl;
+                return;
+            }
+
+            // register event callbacks
+            glfwSetWindowSizeCallback(mWindow, glfw_onResize);
+            glfwSetKeyCallback(mWindow, glfw_onKey);
+            glfwSetMouseButtonCallback(mWindow, glfw_onMouseButton);
+            glfwSetCursorPosCallback(mWindow, glfw_onMouseMove);
+            glfwSetScrollCallback(mWindow, glfw_onMouseWheel);
+            if (!mInfo.flags.cursor)
+            {
+                glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+            }
+
+            // init and load scene's resources
+            mCurrentScene->Init();
+            mCurrentScene->LoadScene();
+
+            float currentTime=0, prevTime=0;
+            
+            // game loop 
+            do
+            {
+                glfwPollEvents();
+                
+                // draw
+                mCurrentScene->Draw();
+
+                // calculate delta time
+                currentTime = glfwGetTime();
+                mDeltaTime = currentTime - prevTime;
+                prevTime = currentTime;
+                // update 
+                mCurrentScene->Update(mDeltaTime);
+
+                glfwSwapBuffers(mWindow);
+
+                running &= (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_RELEASE);
+                running &= (glfwWindowShouldClose(mWindow) != GL_TRUE);
+            } while (running);
+            
+            shutdown();
         }
 
+        virtual void init(const char* windowTitle, int width, int height)
+        {
+            strcpy(mInfo.title, windowTitle);
+            mInfo.windowWidth = width;
+            mInfo.windowHeight = height;
+#ifdef __APPLE__
+            mInfo.majorVersion = 3;
+            mInfo.minorVersion = 2;
+#else
+            mInfo.majorVersion = 4;
+            mInfo.minorVersion = 3;
+#endif
+            mInfo.samples = 0;
+            mInfo.flags.all = 0;
+            mInfo.flags.cursor = 1;
+#ifdef _DEBUG
+            mInfo.flags.debug = 1;
+#endif
+        }
+
+        virtual void shutdown()
+        {
+            if (mCurrentScene)
+                mCurrentScene->UnloadScene();
+            glfwDestroyWindow(mWindow);
+            glfwTerminate();
+        }
+
+    protected:
+        APPINFO     mInfo;
+        static      Application* mApp;
+        static      Scene* mCurrentScene;
+        GLFWwindow* mWindow;
+
+        float mDeltaTime;
+
+
+    public:
         void setWindowTitle(const char* title)
         {
             glfwSetWindowTitle(mWindow, title);
@@ -68,11 +181,7 @@ namespace Hound {
         {
         }
 
-    protected:
-        APPINFO     mInfo;
-        static      Application* mApp;
-        static      Scene* mCurrentScene;
-        GLFWwindow* mWindow;
+    
 
         static void glfw_onResize(GLFWwindow* window, int w, int h)
         {
