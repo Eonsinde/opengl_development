@@ -8,6 +8,7 @@ class CubeLevelApp : public Hound::Application
 	
 };
 
+
 class CubeLevel : public Hound::Scene
 {
 public:
@@ -34,7 +35,7 @@ protected:
 };
 
 
-DECLARE_MAIN(CubeLevelApp, CubeLevel)
+//DECLARE_MAIN(CubeLevelApp, CubeLevel)
 
 
 
