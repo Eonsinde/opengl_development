@@ -2,6 +2,7 @@
 
 #include "../../core/Application.h"
 #include "../Scene.h"
+#include "../Camera.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -9,9 +10,31 @@
 
 class Shader;
 
+Hound::Camera mainCamera;
+
 class CubeLevelApp : public Hound::Application 
 {
-	
+	virtual void onKey(int key, int action)
+	{
+		if (key == GLFW_KEY_W)
+			mainCamera.ProcessKeyboard(FORWARD, Application::GetDeltaTime());
+		if (key == GLFW_KEY_S)
+			mainCamera.ProcessKeyboard(BACKWARD, Application::GetDeltaTime());
+		if (key == GLFW_KEY_A)
+			mainCamera.ProcessKeyboard(LEFT, Application::GetDeltaTime());
+		if (key == GLFW_KEY_D)
+			mainCamera.ProcessKeyboard(RIGHT, Application::GetDeltaTime());
+
+		if (key == GLFW_KEY_KP_ADD)
+			mainCamera.MovementSpeed += 0.1f;
+		if (key == GLFW_KEY_KP_SUBTRACT)
+			mainCamera.MovementSpeed -= 0.1f;
+	}
+
+	virtual void onMouseMove(int x, int y)
+	{
+
+	}
 };
 
 

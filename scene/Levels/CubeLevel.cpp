@@ -94,15 +94,17 @@ void CubeLevel::Draw()
     glClearColor(0.0784f, 0.0784f, 0.0784f, 1.0);
     glEnable(GL_DEPTH_TEST);
 
-
+    // use shader and set uniforms where needed
     mShader->use();
     
     mShader->setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(1.0f, 0.5f, 0.31f)));
 
-    model = glm::scale(idMat, glm::vec3(.5f, 0.5f, 0.5));
+    model = glm::scale(idMat, glm::vec3(1.0f, 1.0f, 1.0f));
     // x + Rsin@, y + Rcos@ - formula to get points of a circle
-    view = glm::translate(idMat, glm::vec3(5.0f * glm::sin(glfwGetTime()), 0.0f, 5.0f * glm::cos(glfwGetTime())));
-	projection = glm::perspective(glm::radians(45.0f), (float)mSceneInfo.width / (float)mSceneInfo.height, 0.1f, 100.0f);
+    //view = glm::translate(idMat, glm::vec3(5.0f * glm::sin(glfwGetTime()), 0.0f, 5.0f * glm::cos(glfwGetTime())));
+    view = mainCamera.GetViewMatrix();
+    //projection = glm::perspective(glm::radians(45.0f), (float)mSceneInfo.width / (float)mSceneInfo.height, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(mainCamera.Zoom), (float)mSceneInfo.width / (float)mSceneInfo.height, 0.1f, 100.0f);
 
     mShader->setMat4fv("uModel", glm::value_ptr(model));
     mShader->setMat4fv("uView", glm::value_ptr(view));
