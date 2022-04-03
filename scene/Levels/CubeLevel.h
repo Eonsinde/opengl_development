@@ -10,7 +10,7 @@
 
 class Shader;
 
-Hound::Camera mainCamera;
+static Hound::Camera mainCamera;
 
 class CubeLevelApp : public Hound::Application 
 {
@@ -26,15 +26,37 @@ class CubeLevelApp : public Hound::Application
 			mainCamera.ProcessKeyboard(RIGHT, Application::GetDeltaTime());
 
 		if (key == GLFW_KEY_KP_ADD)
-			mainCamera.MovementSpeed += 0.1f;
+			mainCamera.MovementSpeed += 0.2f;
 		if (key == GLFW_KEY_KP_SUBTRACT)
-			mainCamera.MovementSpeed -= 0.1f;
+			mainCamera.MovementSpeed -= 0.2f;
 	}
 
 	virtual void onMouseMove(int x, int y)
 	{
+		float xpos = static_cast<float>(x);
+		float ypos = static_cast<float>(y);
 
+		if (firstMouse)
+		{
+			// update with current mouse position
+			lastX = xpos;
+			lastY = ypos;
+			firstMouse = false;
+		}
+
+		float xoffset = xpos - lastX;
+		float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+		lastX = xpos;
+		lastY = ypos;
+
+		mainCamera.ProcessMouseMovement(xoffset, yoffset);
 	}
+
+protected:
+	float lastX = (float)mInfo.windowWidth / 2.0f;
+	float lastY = (float)mInfo.windowHeight / 2.0f;
+	bool firstMouse = true;
 };
 
 
@@ -70,7 +92,7 @@ protected:
 };
 
 
-DECLARE_MAIN(CubeLevelApp, CubeLevel)
+//DECLARE_MAIN(CubeLevelApp, CubeLevel)
 
 
 
