@@ -3,6 +3,8 @@
 #include "../../core/Application.h"
 #include "../Scene.h"
 
+class Shader;
+
 class CubeLevelApp : public Hound::Application 
 {
 	
@@ -12,7 +14,8 @@ class CubeLevelApp : public Hound::Application
 class CubeLevel : public Hound::Scene
 {
 public:
-	CubeLevel() {
+	CubeLevel()
+		: VAO{}, VBO{}, mShader{nullptr} {
 		char title[]{ "Cube Level" };
 		strcpy_s(mSceneInfo.title, sizeof(title), "Cube Level");
 		mSceneInfo.width = 800;
@@ -31,11 +34,12 @@ public:
 	virtual void Draw() override;
 
 protected:
-
+	unsigned int VAO, VBO;
+	Shader* mShader;
 };
 
 
-//DECLARE_MAIN(CubeLevelApp, CubeLevel)
+DECLARE_MAIN(CubeLevelApp, CubeLevel)
 
 
 
