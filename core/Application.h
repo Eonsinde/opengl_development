@@ -160,6 +160,10 @@ namespace Hound {
             return mApp->mWindow;
         }
 
+        static float GetDeltaTime() {
+            return mApp->mDeltaTime;
+        }
+
     protected:
         APPINFO     mInfo;
         static      Application* mApp;
@@ -253,8 +257,8 @@ int CALLBACK main(HINSTANCE hInstance,                   \
     Tapp* app = new Tapp;                                \
     Tscene* scene = new Tscene;                          \
     app->run(app, scene);                                \
-    delete app;                                          \
     delete scene;                                        \
+    delete app;                                          \
     return 0;                                            \
 }                                                        
 #elif defined _LINUX || defined __APPLE__
@@ -266,8 +270,8 @@ int main(int argc, const char ** argv)                   \
     Tapp* app = new Tapp;                                \
     Tscene* scene = new Tscene;                          \
     app->run(app, scene);                                \
-    delete app;                                          \
     delete scene;                                        \
+    delete app;                                          \
     return 0;                                            \
 }
 #else
