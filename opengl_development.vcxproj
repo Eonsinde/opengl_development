@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="scene\Levels\BasicLightingLevel.h" />
     <ClInclude Include="core\Application.h" />
     <ClInclude Include="core\KeyCodes.h" />
     <ClInclude Include="core\MouseCodes.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="scene\Levels\TriangleLevel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="scene\Levels\BasicLightingLevel.cpp" />
     <ClCompile Include="dependencies\stb\stb_image.cpp" />
     <ClCompile Include="core\Input.cpp" />
     <ClCompile Include="scene\Levels\CubeLevel.cpp" />

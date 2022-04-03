@@ -57,6 +57,9 @@
     <ClInclude Include="core\MouseCodes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="scene\Levels\BasicLightingLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dependencies\glad\src\glad.c">
@@ -78,6 +81,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="core\Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Levels\BasicLightingLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
