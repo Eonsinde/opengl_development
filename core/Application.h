@@ -130,7 +130,7 @@ namespace Hound {
 
         virtual void init(const char* windowTitle, int width, int height)
         {
-            strcpy(mInfo.title, windowTitle);
+            strcpy_s(mInfo.title, strlen(windowTitle)+1, windowTitle); // use (no of chars * 1) to get size of windowTitle string
             mInfo.windowWidth = width;
             mInfo.windowHeight = height;
 #ifdef __APPLE__
@@ -154,6 +154,10 @@ namespace Hound {
                 mCurrentScene->UnloadScene();
             glfwDestroyWindow(mWindow);
             glfwTerminate();
+        }
+
+        static GLFWwindow* & GetWindow() { // return a reference to the window ptr
+            return mApp->mWindow;
         }
 
     protected:
@@ -198,6 +202,9 @@ namespace Hound {
         static void glfw_onResize(GLFWwindow* window, int w, int h)
         {
             mApp->onResize(w, h);
+            glViewport(0, 0, w, h);
+            mApp->mCurrentScene->mSceneInfo.height = h;
+            mApp->mCurrentScene->mSceneInfo.width = w;
         }
 
         static void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
