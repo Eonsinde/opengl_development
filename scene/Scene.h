@@ -7,10 +7,9 @@ namespace Hound {
 	class Scene {
 	protected:
 		friend class Application;
-
 	public:
 		struct Scene_Info {
-			char title[255];
+			char title[128];
 			int width;
 			int height;
 		} mSceneInfo;
