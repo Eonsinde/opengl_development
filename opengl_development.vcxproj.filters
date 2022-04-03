@@ -45,6 +45,18 @@
     <ClInclude Include="scene\Levels\TriangleLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="scene\Camera3D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\KeyCodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\MouseCodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dependencies\glad\src\glad.c">
@@ -63,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scene\Levels\TriangleLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\Input.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -164,7 +179,9 @@
   <ItemGroup>
     <None Include="dependencies\glfw\src\glfw3.pdb" />
     <None Include=".gitignore" />
-    <None Include="shaders\codes\triangle.vert" />
-    <None Include="shaders\codes\triangle.frag" />
+    <None Include="shaders\codes\basic.vert" />
+    <None Include="shaders\codes\basic.frag" />
+    <None Include="shaders\codes\ASD.vert" />
+    <None Include="shaders\codes\ASD.frag" />
   </ItemGroup>
 </Project>
