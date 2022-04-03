@@ -156,7 +156,7 @@
     <ClInclude Include="core\MouseCodes.h" />
     <ClInclude Include="dependencies\stb\stb_image.h" />
     <ClInclude Include="core\Input.h" />
-    <ClInclude Include="scene\Camera3D.h" />
+    <ClInclude Include="scene\Camera.h" />
     <ClInclude Include="scene\Levels\CubeLevel.h" />
     <ClInclude Include="dependencies\glad\include\glad\glad.h" />
     <ClInclude Include="dependencies\glad\include\KHR\khrplatform.h" />

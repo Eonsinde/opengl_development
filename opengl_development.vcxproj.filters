@@ -45,7 +45,7 @@
     <ClInclude Include="scene\Levels\TriangleLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scene\Camera3D.h">
+    <ClInclude Include="scene\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="core\Input.h">
