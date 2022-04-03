@@ -113,52 +113,52 @@ int Shader::getUniformLocation(U_INT pProgram, const char* pName)
 	return loc;
 }
 
-void Shader::setInt(const char* name, int value)
+void Shader::setInt(const char* name, const int value)
 {
 	glUniform1i(getUniformLocation(m_Program, name), value);
 }
 
-void Shader::setFloat(const char* name, float value)
+void Shader::setFloat(const char* name, const float value)
 {
 	glUniform1f(getUniformLocation(m_Program, name), value);
 }
 
-void Shader::setVec2f(const char* name, float v0, float v1)
+void Shader::setVec2f(const char* name, const float v0, const float v1)
 {
 	glUniform2f(getUniformLocation(m_Program, name), v0, v1);
 }
 
-void Shader::setVec2fv(const char* name, float* data)
+void Shader::setVec2fv(const char* name, const float* data)
 {
 	glUniform2fv(getUniformLocation(m_Program, name), 1, data);
 }
 
-void Shader::setVec3f(const char* name, float v0, float v1, float v2)
+void Shader::setVec3f(const char* name, const float v0, const float v1, const float v2)
 {
 	glUniform3f(getUniformLocation(m_Program, name), v0, v1, v2);
 }
 
-void Shader::setVec3fv(const char* name, float* data)
+void Shader::setVec3fv(const char* name, const float* data)
 {
 	glUniform3fv(getUniformLocation(m_Program, name), 1, data);
 }
 
-void Shader::setVec4f(const char* name, float v0, float v1, float v2, float v3)
+void Shader::setVec4f(const char* name, const float v0, const float v1, const float v2, const float v3)
 {
 	glUniform4f(getUniformLocation(m_Program, name), v0, v1, v2, v3);
 }
 
-void Shader::setVecf4v(const char* name, float* data)
+void Shader::setVecf4v(const char* name, const float* data)
 {
 	glUniform4fv(getUniformLocation(m_Program, name), 1, data);
 }
 
-void Shader::setMat3fv(const char* name, float* data)
+void Shader::setMat3fv(const char* name, const float* data)
 {
 	glUniformMatrix3fv(getUniformLocation(m_Program, name), 1, false, data);
 }
 
-void Shader::setMat4fv(const char* name, float* data)
+void Shader::setMat4fv(const char* name, const float* data)
 {
 	glUniformMatrix4fv(getUniformLocation(m_Program, name), 1, false, data);
 }

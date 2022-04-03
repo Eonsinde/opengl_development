@@ -30,17 +30,17 @@ public:
 
 	void use() const { glUseProgram(m_Program); }
 
-	void setInt(const char*, int value);
-	void setFloat(const char*, float);
+	void setInt(const char*, const int value);
+	void setFloat(const char*, const float);
 
-	void setVec2f(const char*, float, float);
-	void setVec2fv(const char*, float*);
-	void setVec3f(const char*, float, float, float);
-	void setVec3fv(const char*, float*);
-	void setVec4f(const char*, float, float, float, float);
-	void setVecf4v(const char*, float*);
+	void setVec2f(const char*, const float, const float);
+	void setVec2fv(const char*, const float*);
+	void setVec3f(const char*, const float, const float, const float);
+	void setVec3fv(const char*, const float*);
+	void setVec4f(const char*, const float, const float, const float, const float);
+	void setVecf4v(const char*, const float*);
 
-	void setMat3fv(const char*, float*);
-	void setMat4fv(const char*, float*);
+	void setMat3fv(const char*, const float*);
+	void setMat4fv(const char*, const float*);
 };
 
