@@ -15,8 +15,8 @@ class TriangleLevel : public Hound::Scene
 public:
 	TriangleLevel()
 		: VAO{}, VBO{}, mShader{ nullptr } {
-		char title[]{ "Cube Level" };
-		strcpy_s(mSceneInfo.title, sizeof(title), "Cube Level");
+		char title[]{ "Triangle Level" };
+		strcpy_s(mSceneInfo.title, sizeof(title), "Triangle Level");
 		mSceneInfo.width = 800;
 		mSceneInfo.height = 600;
 	}
@@ -38,4 +38,4 @@ protected:
 };
 
 
-DECLARE_MAIN(TriangleLevelApp, TriangleLevel)
+//DECLARE_MAIN(TriangleLevelApp, TriangleLevel)
