@@ -3,6 +3,10 @@
 #include "../../core/Application.h"
 #include "../Scene.h"
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 class Shader;
 
 class CubeLevelApp : public Hound::Application 
@@ -36,6 +40,10 @@ public:
 protected:
 	unsigned int VAO, VBO;
 	Shader* mShader;
+
+	// matrices
+	glm::mat4 idMat{ 1.0f }; // identity matrix
+	glm::mat4 model, view, projection;
 };
 
 

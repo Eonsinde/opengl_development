@@ -2,9 +2,7 @@
 #include "../../shaders/Shader.h"
 #include "../../core/Input.h"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+
 
 
 void CubeLevel::Init()
@@ -92,13 +90,23 @@ void CubeLevel::Update(float deltaTime)
 
 void CubeLevel::Draw()
 {
-    mShader->use();
-
-    mShader->setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(1.0f, 0.25f, 0.67f)));
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0784f, 0.0784f, 0.0784f, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(0.0784f, 0.0784f, 0.0784f, 1.0);
     glEnable(GL_DEPTH_TEST);
+
+
+    mShader->use();
+    
+    mShader->setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(1.0f, 0.5f, 0.31f)));
+
+    model = glm::scale(idMat, glm::vec3(.5f, 0.5f, 0.5));
+    // x + Rsin@, y + Rcos@ - formula to get points of a circle
+    view = glm::translate(idMat, glm::vec3(5.0f * glm::sin(glfwGetTime()), 0.0f, 5.0f * glm::cos(glfwGetTime())));
+	projection = glm::perspective(glm::radians(45.0f), (float)mSceneInfo.width / (float)mSceneInfo.height, 0.1f, 100.0f);
+
+    mShader->setMat4fv("uModel", glm::value_ptr(model));
+    mShader->setMat4fv("uView", glm::value_ptr(view));
+    mShader->setMat4fv("uProjection", glm::value_ptr(projection));
 
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLES, 0, 36);
