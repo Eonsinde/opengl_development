@@ -64,7 +64,7 @@ class BasicLightingLevel : public Hound::Scene
 {
 public:
 	BasicLightingLevel()
-		: VAO{}, VBO{}, mShader{ nullptr } {
+		: cubeVAO{}, lightVAO{}, VBO{}, lightShader{ nullptr }, cubeShader{ nullptr } {
 		char title[]{ "Cube Level" };
 		strcpy_s(mSceneInfo.title, sizeof(title), "Cube Level");
 		mSceneInfo.width = 800;
@@ -83,8 +83,9 @@ public:
 	virtual void Draw() override;
 
 protected:
-	unsigned int VAO, VBO;
-	Shader* mShader;
+	unsigned int cubeVAO, lightVAO, VBO;
+	Shader* lightShader;
+	Shader* cubeShader;
 
 	// matrices
 	glm::mat4 idMat{ 1.0f }; // identity matrix
