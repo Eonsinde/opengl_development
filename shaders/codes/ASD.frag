@@ -19,7 +19,7 @@ void main(void){
 
 	// diffuse
 	vec3 lightDir = normalize(uLightPos - FragPos);
-	float diffuseImpact = dot(lightDir, Normal); 
+	float diffuseImpact = max(dot(lightDir, Normal), 0.0); 
 	vec3 diffuse = uLightColor * diffuseImpact;
 
 	fragColor = vec4(uPixelColor, 1.0) * (ambient + diffuse);
