@@ -120,7 +120,7 @@ void BasicLightingLevel::Draw()
 
     lightShader->setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(1.0f, 0.5f, 0.31f)));
     // light properties
-    lightShader->setVec3fv("uLightPos", glm::value_ptr(glm::vec3(0.0f, 0.0f, 3.0f)));
+    lightShader->setVec3fv("uLightPos", glm::value_ptr(glm::vec3(0.0f, 1.0f, 10.0f)));
     lightShader->setVec3fv("uLightColor", glm::value_ptr(glm::vec3(1.0f)));
 
     model = glm::scale(idMat, glm::vec3(1.0f, 1.0f, 1.0f));
@@ -144,7 +144,7 @@ void BasicLightingLevel::Draw()
     cubeShader->setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(1.0f)));
 
     model = glm::scale(idMat, glm::vec3(0.5f));
-    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 3.0f));
+    model = glm::translate(model, glm::vec3(0.0f, 1.0f, 10.0f));
 
     cubeShader->setMat4fv("uModel", glm::value_ptr(model));
     cubeShader->setMat4fv("uView", glm::value_ptr(view));
