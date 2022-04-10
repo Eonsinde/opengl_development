@@ -142,7 +142,7 @@ namespace Hound {
 #endif
             mInfo.samples = 0;
             mInfo.flags.all = 0;
-            mInfo.flags.cursor = 1;
+            mInfo.flags.cursor = 0;
 #ifdef _DEBUG
             mInfo.flags.debug = 1;
 #endif
