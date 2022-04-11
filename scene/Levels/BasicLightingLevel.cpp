@@ -4,6 +4,7 @@
 #include "../../core/Input.h"
 
 
+
 void BasicLightingLevel::Init()
 {
     float vertices[] = {
@@ -82,6 +83,8 @@ void BasicLightingLevel::Init()
 
     cubeShader = new Shader("./shaders/codes/basic.vert", "./shaders/codes/basic.frag");
     lightShader = new Shader("./shaders/codes/ASD.vert", "./shaders/codes/ASD.frag");
+
+    mPointLight.position = glm::vec3(0.0f, 1.0f, 10.0f);
 }
 
 void BasicLightingLevel::LoadScene()
@@ -119,24 +122,38 @@ void BasicLightingLevel::Draw()
     lightShader->use();
 
     lightShader->setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(1.0f, 0.5f, 0.31f)));
-    // light properties
-    lightShader->setVec3fv("uLightPos", glm::value_ptr(glm::vec3(0.0f, 1.0f, 10.0f)));
+    // camera and light properties
+    lightShader->setVec3fv("uCameraPos", glm::value_ptr(mainCamera.Position));
+    lightShader->setVec3fv("uLightPos", glm::value_ptr(mPointLight.position));
     lightShader->setVec3fv("uLightColor", glm::value_ptr(glm::vec3(1.0f)));
 
-    model = glm::scale(idMat, glm::vec3(1.0f, 1.0f, 1.0f));
     // x + Rsin@, y + Rcos@ - formula to get points of a circle
     //view = glm::translate(idMat, glm::vec3(5.0f * glm::sin(glfwGetTime()), 0.0f, 5.0f * glm::cos(glfwGetTime())));
+    
+    // make the camera move with the light
+    //mainCamera.Position = mPointLight.position;
+    // push it backwards to prevent overlapping with the light
+   /* mainCamera.Position.x += 10.0f;
+    mainCamera.Position.z += 10.0f;*/
+
     view = mainCamera.GetViewMatrix();
-    //projection = glm::perspective(glm::radians(45.0f), (float)mSceneInfo.width / (float)mSceneInfo.height, 0.1f, 100.0f);
     projection = glm::perspective(glm::radians(mainCamera.Zoom), (float)mSceneInfo.width / (float)mSceneInfo.height, 0.1f, 100.0f);
 
-    lightShader->setMat4fv("uModel", glm::value_ptr(model));
     lightShader->setMat4fv("uView", glm::value_ptr(view));
     lightShader->setMat4fv("uProjection", glm::value_ptr(projection));
 
-    glBindVertexArray(lightVAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
-    glBindVertexArray(0);
+    for (int16_t i{}; i < 10; i++) {
+        //model = glm::scale(idMat, glm::vec3(1.0f, 1.0f, 1.0f));
+        //model = glm::rotate(idMat, i*10, glm::vec3(1.0f, 0.0f, 0.0f));
+        model = glm::translate(idMat, mCubePositions[i]);
+        model = glm::rotate(model, static_cast<float>(i * 10), glm::vec3(1.0f, 0.3f, 0.25f));
+        
+        lightShader->setMat4fv("uModel", glm::value_ptr(model));
+
+        glBindVertexArray(lightVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(0);
+    }
 
     // use cube shader to render light cube
     cubeShader->use();
@@ -144,7 +161,12 @@ void BasicLightingLevel::Draw()
     cubeShader->setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(1.0f)));
 
     model = glm::scale(idMat, glm::vec3(0.5f));
-    model = glm::translate(model, glm::vec3(0.0f, 1.0f, 10.0f));
+    // make the light rotate
+    mPointLight.position.x = lightRotationRad * glm::sin(glfwGetTime());
+    mPointLight.position.y = 0.0f;
+    mPointLight.position.z = lightRotationRad * glm::cos(glfwGetTime());
+    model = glm::translate(model, mPointLight.position);
+    model = glm::translate(model, mPointLight.position); // firstly place it here and then ... 
 
     cubeShader->setMat4fv("uModel", glm::value_ptr(model));
     cubeShader->setMat4fv("uView", glm::value_ptr(view));
