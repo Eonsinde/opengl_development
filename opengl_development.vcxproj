@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="scene\Levels\DirectionalLightLevel.h" />
     <ClInclude Include="scene\Levels\MaterialLightingLevel.h" />
     <ClInclude Include="scene\Levels\BasicLightingLevel.h" />
     <ClInclude Include="core\Application.h" />
@@ -171,9 +172,11 @@
     <ClInclude Include="shaders\Material.h" />
     <ClInclude Include="shaders\Shader.h" />
     <ClInclude Include="scene\Levels\TriangleLevel.h" />
+    <ClInclude Include="scene\Levels\SpotLightLevel.h" />
     <ClInclude Include="textures\Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="scene\Levels\DirectionalLightLevel.cpp" />
     <ClCompile Include="scene\Levels\MaterialLightingLevel.cpp" />
     <ClCompile Include="scene\Levels\BasicLightingLevel.cpp" />
     <ClCompile Include="dependencies\stb\stb_image.cpp" />
@@ -183,6 +186,7 @@
     <ClCompile Include="shaders\Shader.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="scene\Levels\TriangleLevel.cpp" />
+    <ClCompile Include="scene\Levels\SpotLightLevel.cpp" />
     <ClCompile Include="textures\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -227,7 +231,8 @@
     <None Include="shaders\codes\ADS.vert" />
     <None Include="shaders\codes\basic.frag" />
     <None Include="shaders\codes\basic.vert" />
-    <None Include="shaders\codes\material_ADS.frag" />
+    <None Include="shaders\codes\dirlight_ADS.frag" />
+    <None Include="shaders\codes\pointlight_ADS.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
