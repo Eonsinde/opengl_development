@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="scene\Levels\MaterialLightingLevel.h" />
     <ClInclude Include="scene\Levels\BasicLightingLevel.h" />
     <ClInclude Include="core\Application.h" />
     <ClInclude Include="core\KeyCodes.h" />
@@ -164,10 +165,16 @@
     <ClInclude Include="dependencies\glfw\include\GLFW\glfw3.h" />
     <ClInclude Include="dependencies\glfw\include\GLFW\glfw3native.h" />
     <ClInclude Include="scene\Scene.h" />
+    <ClInclude Include="shaders\Lights\DirectionalLight.h" />
+    <ClInclude Include="shaders\Lights\PointLight.h" />
+    <ClInclude Include="shaders\Lights\SpotLight.h" />
+    <ClInclude Include="shaders\Material.h" />
     <ClInclude Include="shaders\Shader.h" />
     <ClInclude Include="scene\Levels\TriangleLevel.h" />
+    <ClInclude Include="textures\Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="scene\Levels\MaterialLightingLevel.cpp" />
     <ClCompile Include="scene\Levels\BasicLightingLevel.cpp" />
     <ClCompile Include="dependencies\stb\stb_image.cpp" />
     <ClCompile Include="core\Input.cpp" />
@@ -176,6 +183,7 @@
     <ClCompile Include="shaders\Shader.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="scene\Levels\TriangleLevel.cpp" />
+    <ClCompile Include="textures\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\textures\awesomeface.png" />
@@ -215,10 +223,11 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="dependencies\glfw\src\glfw3.pdb" />
-    <None Include="shaders\codes\ASD.frag" />
-    <None Include="shaders\codes\ASD.vert" />
+    <None Include="shaders\codes\ADS.frag" />
+    <None Include="shaders\codes\ADS.vert" />
     <None Include="shaders\codes\basic.frag" />
     <None Include="shaders\codes\basic.vert" />
+    <None Include="shaders\codes\material_ADS.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

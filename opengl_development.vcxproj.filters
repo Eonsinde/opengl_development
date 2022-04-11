@@ -60,6 +60,24 @@
     <ClInclude Include="scene\Levels\BasicLightingLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="shaders\Lights\PointLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Lights\DirectionalLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Lights\SpotLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Levels\MaterialLightingLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="textures\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dependencies\glad\src\glad.c">
@@ -84,6 +102,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scene\Levels\BasicLightingLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Levels\MaterialLightingLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="textures\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -187,7 +211,8 @@
     <None Include=".gitignore" />
     <None Include="shaders\codes\basic.vert" />
     <None Include="shaders\codes\basic.frag" />
-    <None Include="shaders\codes\ASD.vert" />
-    <None Include="shaders\codes\ASD.frag" />
+    <None Include="shaders\codes\ADS.vert" />
+    <None Include="shaders\codes\ADS.frag" />
+    <None Include="shaders\codes\material_ADS.frag" />
   </ItemGroup>
 </Project>
