@@ -80,14 +80,17 @@ void MaterialLightingLevel::Init()
     glBindVertexArray(0);
 
     cubeShader = new Shader("./shaders/codes/basic.vert", "./shaders/codes/basic.frag");
-    lightShader = new Shader("./shaders/codes/ADS.vert", "./shaders/codes/material_ADS.frag");
+    lightShader = new Shader("./shaders/codes/ADS.vert", "./shaders/codes/pointlight_ADS.frag");
 
     mCubeTexture = new Hound::Texture("./assets/textures/wooden_metallic_container.png");
+    mSpecularMapTexture = new Hound::Texture("./assets/textures/wooden_metallic_specular_container.png");
 
     mPointLight.position = glm::vec3(0.0f, 1.0f, 10.0f);
     mPointLight.ambient = glm::vec3(0.1f);
     mPointLight.diffuse = glm::vec3(1.0f);
     mPointLight.specular = glm::vec3(0.5f);
+
+    mCubeMaterial.shininess = 32.0f;
 }
 
 void MaterialLightingLevel::LoadScene()
@@ -128,9 +131,10 @@ void MaterialLightingLevel::Draw()
 
     // set Material properties
     mCubeTexture->activeTexture(0);
+    mSpecularMapTexture->activeTexture(1);
     lightShader->setInt("uMaterial.diffuse", 0);
-    lightShader->setVec3fv("uMaterial.specular", glm::value_ptr(glm::vec3(0.5f)));
-    lightShader->setFloat("uMaterial.shininess", 32.0f);
+    lightShader->setInt("uMaterial.specular", 1);
+    lightShader->setFloat("uMaterial.shininess", mCubeMaterial.shininess);
 
     // camera props 
     lightShader->setVec3fv("uCameraPos", glm::value_ptr(mainCamera.Position));

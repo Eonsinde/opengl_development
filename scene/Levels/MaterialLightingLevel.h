@@ -97,6 +97,7 @@ protected:
 	// materials and textures
 	Hound::Material mCubeMaterial;
 	Hound::Texture* mCubeTexture;
+	Hound::Texture* mSpecularMapTexture;
 
 	// matrices
 	glm::mat4 idMat{ 1.0f }; // identity matrix
@@ -118,4 +119,4 @@ protected:
 };
 
 
-DECLARE_MAIN(MaterialLightingApp, MaterialLightingLevel)
+//DECLARE_MAIN(MaterialLightinsgApp, MaterialLightingLevel)
