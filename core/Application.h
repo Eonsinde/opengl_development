@@ -71,7 +71,7 @@ namespace Hound {
             // initialize App Info, create window, set context and init glad
             init(mCurrentScene->mSceneInfo.title, mCurrentScene->mSceneInfo.width, mCurrentScene->mSceneInfo.height);
 
-            mWindow = glfwCreateWindow(800, 600, "Testing", NULL, NULL);
+            mWindow = glfwCreateWindow(800, 600, mInfo.title, NULL, NULL);
             if (mWindow == NULL)
             {
                 std::cout << "ERR::Failed to create GLFW window" << std::endl;
