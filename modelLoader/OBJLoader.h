@@ -94,19 +94,15 @@ namespace Hound {
 			}
 			else if (prefix == "f") { // faces defined by indices
 				// NB: 123/32/34 is returned in format 123, 32, 34 by the tokenize function
-				temp_string = sstream.str();
 				//sstream >> temp_string;
-				TokenVector string_tokens = tokenize(temp_string); // tokenizes "123/32/34 213/324/23 13/343/124" :- "123/32/34", "213/324/23"
 				TokenVector actual_tokens;
 
-				for (TokenVector::iterator iter = string_tokens.begin(); iter != string_tokens.end(); iter++) {
-					actual_tokens = tokenize(*iter, "/"); // tokenizes 123/32/34 :- 123, 32, 34
+				while (sstream >> temp_string) { // loops through "123/32/34 213/324/23 13/343/124" :- "123/32/34", "213/324/23"
+					actual_tokens = tokenize(temp_string, "/"); // tokenizes 123/32/34 :- 123, 32, 34
 					vertex_position_indices.push_back(atoi(actual_tokens[0]));
 					vertex_texcoord_indices.push_back(atoi(actual_tokens[1]));
 					vertex_normal_indices.push_back(atoi(actual_tokens[2]));
 				}
-
-				
 			}
 		}
 
