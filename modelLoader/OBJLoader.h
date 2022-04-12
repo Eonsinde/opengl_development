@@ -10,9 +10,11 @@
 
 
 namespace Hound {
-	std::vector<const char*> tokenize(std::string s, std::string del=" ") // sentence and delimiter
+	typedef std::vector<const char*> TokenVector;
+
+	TokenVector tokenize(std::string s, std::string del=" ") // sentence and delimiter
 	{
-		std::vector<const char*> tokens;
+		TokenVector tokens;
 		int start = 0;
 		int end = s.find(del);
 		while (end != -1) {
@@ -94,10 +96,10 @@ namespace Hound {
 				// NB: 123/32/34 is returned in format 123, 32, 34 by the tokenize function
 				temp_string = sstream.str();
 				//sstream >> temp_string;
-				std::vector<const char*> string_tokens = tokenize(temp_string); // tokenizes "123/32/34 213/324/23 13/343/124" :- "123/32/34", "213/324/23"
-				std::vector<const char*> actual_tokens;
+				TokenVector string_tokens = tokenize(temp_string); // tokenizes "123/32/34 213/324/23 13/343/124" :- "123/32/34", "213/324/23"
+				TokenVector actual_tokens;
 
-				for (std::vector<const char*>::iterator iter = string_tokens.begin(); iter != string_tokens.end(); iter++) {
+				for (TokenVector::iterator iter = string_tokens.begin(); iter != string_tokens.end(); iter++) {
 					actual_tokens = tokenize(*iter, "/"); // tokenizes 123/32/34 :- 123, 32, 34
 					vertex_position_indices.push_back(atoi(actual_tokens[0]));
 					vertex_texcoord_indices.push_back(atoi(actual_tokens[1]));
