@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="modelLoader\OBJLoader.h" />
     <ClInclude Include="scene\Levels\DirectionalLightLevel.h" />
     <ClInclude Include="scene\Levels\MaterialLightingLevel.h" />
     <ClInclude Include="scene\Levels\BasicLightingLevel.h" />
@@ -174,6 +175,7 @@
     <ClInclude Include="scene\Levels\TriangleLevel.h" />
     <ClInclude Include="scene\Levels\SpotLightLevel.h" />
     <ClInclude Include="textures\Texture.h" />
+    <ClInclude Include="modelLoader\Vertex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="scene\Levels\DirectionalLightLevel.cpp" />
@@ -233,6 +235,7 @@
     <None Include="shaders\codes\basic.vert" />
     <None Include="shaders\codes\dirlight_ADS.frag" />
     <None Include="shaders\codes\pointlight_ADS.frag" />
+    <None Include="shaders\codes\spotlight_ADS.frag" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -84,6 +84,12 @@
     <ClInclude Include="scene\Levels\SpotLightLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="modelLoader\Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modelLoader\OBJLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dependencies\glad\src\glad.c">
@@ -227,5 +233,6 @@
     <None Include="shaders\codes\ADS.frag" />
     <None Include="shaders\codes\pointlight_ADS.frag" />
     <None Include="shaders\codes\dirlight_ADS.frag" />
+    <None Include="shaders\codes\spotlight_ADS.frag" />
   </ItemGroup>
 </Project>
