@@ -38,7 +38,7 @@ void main(void){
 	vec3 ambient = uDirectionalLight.ambient * vec3(texture(uMaterial.diffuse, TexCoord));
 
 	// diffuse
-	vec3 lightDir = normalize(normalize(-uDirectionalLight.direction) - FragPos);
+	vec3 lightDir = normalize(-uDirectionalLight.direction);
 	float diffuseImpact = max(dot(lightDir, Normal), 0.0); 
 	vec3 diffuse = uDirectionalLight.diffuse * diffuseImpact * vec3(texture(uMaterial.diffuse, TexCoord));
 
