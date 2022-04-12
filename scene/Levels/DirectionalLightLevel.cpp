@@ -150,6 +150,7 @@ void DirectionalLightLevel::Draw()
     lightShader->setMat4fv("uView", glm::value_ptr(view));
     lightShader->setMat4fv("uProjection", glm::value_ptr(projection));
 
+    // draw cubes
     for (int16_t i{}; i < 10; i++) {
         model = glm::translate(idMat, mCubePositions[i]);
         model = glm::rotate(model, static_cast<float>(i * 10), glm::vec3(1.0f, 0.3f, 0.25f));
