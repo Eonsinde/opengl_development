@@ -16,10 +16,19 @@ namespace Hound {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         // load image, create texture and generate mipmaps
+        stbi_set_flip_vertically_on_load(true);
         unsigned char* data = stbi_load(filePath, &mTextureInfo.width, &mTextureInfo.height, &mTextureInfo.nrChannels, 0);
         if (data)
         {
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mTextureInfo.width, mTextureInfo.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+            GLenum format;
+            if (mTextureInfo.nrChannels == 1)
+                format = GL_RED;
+            else if (mTextureInfo.nrChannels == 3)
+                format = GL_RGB;
+            else if (mTextureInfo.nrChannels == 4)
+                format = GL_RGBA;
+
+            glTexImage2D(GL_TEXTURE_2D, 0, format, mTextureInfo.width, mTextureInfo.height, 0, format, GL_UNSIGNED_BYTE, data);
             glGenerateMipmap(GL_TEXTURE_2D);
         }
         else

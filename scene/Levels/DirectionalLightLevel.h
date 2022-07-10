@@ -121,4 +121,4 @@ protected:
 };
 
 
-DECLARE_MAIN(DirectionalLightApp, DirectionalLightLevel)
+//DECLARE_MAIN(DirectionalLightApp, DirectionalLightLevel)

@@ -6,46 +6,26 @@
 #include <cstdlib>
 
 #include <glm/glm.hpp>
-#include "./Vertex.h"
+#include "Mesh.h"
+#include "utils.h"
 
 
 namespace Hound {
-	typedef std::vector<const char*> TokenVector;
-
-	TokenVector tokenize(std::string s, std::string del=" ") // sentence and delimiter
-	{
-		TokenVector tokens;
-		int start = 0;
-		int end = s.find(del);
-		while (end != -1) {
-			std::cout << s.substr(start, end - start) << std::endl;
-			tokens.push_back(s.substr(start, end - start).c_str());
-			// update the start position since lower values have been served
-			start = end + del.size();
-			end = s.find(del, start); // find delimiter again by setting start position
-		}
-		std::cout << s.substr(start, end - start);
-		tokens.push_back(s.substr(start, end - start).c_str());
-
-		return tokens;
-	}
-
-	std::vector<Vertex> loadMesh(const char* filePath) {
+	std::vector<Vertex> loadObjMesh(const char* filePath) {
 		// vertex data
 		std::vector<glm::vec3> vertex_positions;
 		std::vector<glm::vec3> vertex_normals;
 		std::vector<glm::vec2> vertex_texCoords;
-	
 		// face indices
 		std::vector<int> vertex_position_indices;
 		std::vector<int> vertex_normal_indices;
 		std::vector<int> vertex_texcoord_indices;
-
 		// vertices
 		std::vector<Vertex> vertices;
 
-		std::stringstream sstream;
+		//utils
 		std::ifstream in_file{ filePath };
+		std::stringstream sstream;
 		std::string line{ "" };
 		std::string prefix{ "" };
 		std::string mtl_file_path;
@@ -76,8 +56,11 @@ namespace Hound {
 
 			}
 			else if (prefix == "mtllib") {
-				// get what is left in stream 
-				mtl_file_path = sstream.str();
+				// get the MTLlib file path  
+				while (sstream >> temp_string) {
+					mtl_file_path += temp_string;
+				}
+
 				// read MTL data
 			}
 			else if (prefix == "v") {
@@ -98,10 +81,11 @@ namespace Hound {
 				TokenVector actual_tokens;
 
 				while (sstream >> temp_string) { // loops through "123/32/34 213/324/23 13/343/124" :- "123/32/34", "213/324/23"
-					actual_tokens = tokenize(temp_string, "/"); // tokenizes 123/32/34 :- 123, 32, 34
-					vertex_position_indices.push_back(atoi(actual_tokens[0]));
-					vertex_texcoord_indices.push_back(atoi(actual_tokens[1]));
-					vertex_normal_indices.push_back(atoi(actual_tokens[2]));
+					tokenize(temp_string, actual_tokens, "/"); // tokenizes 123/32/34 :- 123, 32, 34
+					// we subtract one from each index here becos the indices start count from 1 and arrays use 0 not 1
+					vertex_position_indices.push_back(atoi(actual_tokens[0])-1);
+					vertex_texcoord_indices.push_back(atoi(actual_tokens[1])-1);
+					vertex_normal_indices.push_back(atoi(actual_tokens[2])-1);
 				}
 			}
 		}

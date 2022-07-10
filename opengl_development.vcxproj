@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -105,7 +105,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -122,7 +122,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,7 +139,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,7 +151,50 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="dependencies\assimp\include\assimp\ai_assert.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\anim.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\camera.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\cexport.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\cfileio.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\cimport.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\color4.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\Compiler\poppack1.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\Compiler\pstdint.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\Compiler\pushpack1.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\config.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\DefaultLogger.hpp" />
+    <ClInclude Include="dependencies\assimp\include\assimp\defs.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\Exporter.hpp" />
+    <ClInclude Include="dependencies\assimp\include\assimp\Importer.hpp" />
+    <ClInclude Include="dependencies\assimp\include\assimp\importerdesc.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\IOStream.hpp" />
+    <ClInclude Include="dependencies\assimp\include\assimp\IOSystem.hpp" />
+    <ClInclude Include="dependencies\assimp\include\assimp\light.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\Logger.hpp" />
+    <ClInclude Include="dependencies\assimp\include\assimp\LogStream.hpp" />
+    <ClInclude Include="dependencies\assimp\include\assimp\material.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\matrix3x3.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\matrix4x4.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\mesh.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\metadata.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\NullLogger.hpp" />
+    <ClInclude Include="dependencies\assimp\include\assimp\port\AndroidJNI\AndroidJNIIOSystem.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\postprocess.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\ProgressHandler.hpp" />
+    <ClInclude Include="dependencies\assimp\include\assimp\quaternion.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\scene.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\texture.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\types.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\vector2.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\vector3.h" />
+    <ClInclude Include="dependencies\assimp\include\assimp\version.h" />
+    <ClInclude Include="modelLoader\Model.h" />
+    <ClInclude Include="scene\scene_management\bounding_volumes\AABB.h" />
+    <ClInclude Include="scene\scene_management\bounding_volumes\SphereBV.h" />
+    <ClInclude Include="scene\scene_management\Plane.h" />
+    <ClInclude Include="scene\Levels\MeshLoadingLevel.h" />
     <ClInclude Include="modelLoader\OBJLoader.h" />
+    <ClInclude Include="modelLoader\utils.h" />
     <ClInclude Include="scene\Levels\DirectionalLightLevel.h" />
     <ClInclude Include="scene\Levels\MaterialLightingLevel.h" />
     <ClInclude Include="scene\Levels\BasicLightingLevel.h" />
@@ -175,9 +218,13 @@
     <ClInclude Include="scene\Levels\TriangleLevel.h" />
     <ClInclude Include="scene\Levels\SpotLightLevel.h" />
     <ClInclude Include="textures\Texture.h" />
-    <ClInclude Include="modelLoader\Vertex.h" />
+    <ClInclude Include="modelLoader\Mesh.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="modelLoader\Model.cpp" />
+    <ClCompile Include="scene\Levels\MeshLoadingLevel.cpp" />
+    <ClCompile Include="modelLoader\Mesh.cpp" />
     <ClCompile Include="scene\Levels\DirectionalLightLevel.cpp" />
     <ClCompile Include="scene\Levels\MaterialLightingLevel.cpp" />
     <ClCompile Include="scene\Levels\BasicLightingLevel.cpp" />
@@ -190,6 +237,7 @@
     <ClCompile Include="scene\Levels\TriangleLevel.cpp" />
     <ClCompile Include="scene\Levels\SpotLightLevel.cpp" />
     <ClCompile Include="textures\Texture.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\textures\awesomeface.png" />
@@ -224,10 +272,21 @@
     <Image Include="assets\textures\wood.png" />
   </ItemGroup>
   <ItemGroup>
+    <Library Include="dependencies\assimp\lib\assimp-vc140-mt.lib" />
     <Library Include="dependencies\glfw\src\glfw3.lib" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="dependencies\assimp\include\assimp\color4.inl" />
+    <None Include="dependencies\assimp\include\assimp\material.inl" />
+    <None Include="dependencies\assimp\include\assimp\matrix3x3.inl" />
+    <None Include="dependencies\assimp\include\assimp\matrix4x4.inl" />
+    <None Include="dependencies\assimp\include\assimp\quaternion.inl" />
+    <None Include="dependencies\assimp\include\assimp\vector2.inl" />
+    <None Include="dependencies\assimp\include\assimp\vector3.inl" />
+    <None Include="dependencies\assimp\lib\assimp-vc140-mt.dll" />
+    <None Include="dependencies\assimp\lib\assimp-vc140-mt.exp" />
+    <None Include="dependencies\assimp\lib\assimp-vc140-mt.pdb" />
     <None Include="dependencies\glfw\src\glfw3.pdb" />
     <None Include="shaders\codes\ADS.frag" />
     <None Include="shaders\codes\ADS.vert" />
@@ -236,6 +295,9 @@
     <None Include="shaders\codes\dirlight_ADS.frag" />
     <None Include="shaders\codes\pointlight_ADS.frag" />
     <None Include="shaders\codes\spotlight_ADS.frag" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="extras.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

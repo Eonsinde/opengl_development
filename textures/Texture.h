@@ -20,6 +20,7 @@ namespace Hound {
 		void activeTexture(int loc) const { glActiveTexture(GL_TEXTURE0 + loc); bind(); }
 		void bind() const { glBindTexture(GL_TEXTURE_2D, m_ID); };
 		void unbind() const { glBindTexture(GL_TEXTURE_2D, 0); };
+
 	private:
 		unsigned int m_ID;
 	};

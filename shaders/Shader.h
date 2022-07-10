@@ -30,6 +30,7 @@ public:
 
 	void use() const { glUseProgram(m_Program); }
 
+	// to send data down the GP
 	void setInt(const char*, const int value);
 	void setFloat(const char*, const float);
 
