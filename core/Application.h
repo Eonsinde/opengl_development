@@ -68,7 +68,7 @@ namespace Hound {
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-            // initialize App Info, create window, set context and init glad
+            // initialize App Info with scene data, create window, set context and init glad
             init(mCurrentScene->mSceneInfo.title, mCurrentScene->mSceneInfo.width, mCurrentScene->mSceneInfo.height);
 
             mWindow = glfwCreateWindow(800, 600, mInfo.title, NULL, NULL);
@@ -165,10 +165,12 @@ namespace Hound {
         }
 
     protected:
-        APPINFO     mInfo;
         static      Application* mApp;
         static      Scene* mCurrentScene;
+
         GLFWwindow* mWindow;
+
+        APPINFO     mInfo;
 
         float mDeltaTime;
 
@@ -179,6 +181,7 @@ namespace Hound {
             glfwSetWindowTitle(mWindow, title);
         }
 
+        // this methods are called inside glfw_callback functions 
         virtual void onResize(int w, int h)
         {
             mInfo.windowWidth = w;
@@ -197,12 +200,12 @@ namespace Hound {
         {
         }
 
-        virtual void onMouseWheel(int pos)
+        virtual void onMouseWheel(int yOffset)
         {
+            // usually +1 for zoom in and -1 for zoom out
         }
 
-    
-
+        // this are the glfw_callback functions that are registered with our mWindow instance calls the methods aboev
         static void glfw_onResize(GLFWwindow* window, int w, int h)
         {
             mApp->onResize(w, h);
