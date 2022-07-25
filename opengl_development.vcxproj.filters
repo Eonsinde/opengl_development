@@ -81,7 +81,7 @@
     <ClInclude Include="scene\Levels\DirectionalLightLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scene\Levels\SpotLightLevel.h">
+    <ClInclude Include="scene\Levels\LightRotationLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="modelLoader\Mesh.h">
@@ -222,6 +222,15 @@
     <ClInclude Include="Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="scene\Levels\lighting_levels\SpotLightLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Levels\lighting_levels\SoftSpotLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Levels\lighting_levels\MultipleLightsLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dependencies\glad\src\glad.c">
@@ -257,7 +266,7 @@
     <ClCompile Include="scene\Levels\DirectionalLightLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scene\Levels\SpotLightLevel.cpp">
+    <ClCompile Include="scene\Levels\LightRotationLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="modelLoader\Mesh.cpp">
@@ -270,6 +279,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Levels\lighting_levels\SpotLightLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Levels\lighting_levels\SoftSpotLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Levels\lighting_levels\MultipleLightsLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -403,6 +421,8 @@
     <None Include="dependencies\assimp\lib\assimp-vc140-mt.dll" />
     <None Include="dependencies\assimp\lib\assimp-vc140-mt.exp" />
     <None Include="dependencies\assimp\lib\assimp-vc140-mt.pdb" />
+    <None Include="shaders\codes\spotlight_soft_ADS.frag" />
+    <None Include="shaders\codes\multiple_lights_ADS.frag" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="extras.txt" />

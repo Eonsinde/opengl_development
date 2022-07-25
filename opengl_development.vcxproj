@@ -189,6 +189,7 @@
     <ClInclude Include="dependencies\assimp\include\assimp\vector3.h" />
     <ClInclude Include="dependencies\assimp\include\assimp\version.h" />
     <ClInclude Include="modelLoader\Model.h" />
+    <ClInclude Include="scene\Levels\lighting_levels\MultipleLightsLevel.h" />
     <ClInclude Include="scene\scene_management\bounding_volumes\AABB.h" />
     <ClInclude Include="scene\scene_management\bounding_volumes\SphereBV.h" />
     <ClInclude Include="scene\scene_management\Plane.h" />
@@ -216,13 +217,16 @@
     <ClInclude Include="shaders\Material.h" />
     <ClInclude Include="shaders\Shader.h" />
     <ClInclude Include="scene\Levels\TriangleLevel.h" />
-    <ClInclude Include="scene\Levels\SpotLightLevel.h" />
+    <ClInclude Include="scene\Levels\LightRotationLevel.h" />
+    <ClInclude Include="scene\Levels\lighting_levels\SpotLightLevel.h" />
+    <ClInclude Include="scene\Levels\lighting_levels\SoftSpotLight.h" />
     <ClInclude Include="textures\Texture.h" />
     <ClInclude Include="modelLoader\Mesh.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="modelLoader\Model.cpp" />
+    <ClCompile Include="scene\Levels\lighting_levels\MultipleLightsLevel.cpp" />
     <ClCompile Include="scene\Levels\MeshLoadingLevel.cpp" />
     <ClCompile Include="modelLoader\Mesh.cpp" />
     <ClCompile Include="scene\Levels\DirectionalLightLevel.cpp" />
@@ -233,9 +237,11 @@
     <ClCompile Include="scene\Levels\CubeLevel.cpp" />
     <ClCompile Include="dependencies\glad\src\glad.c" />
     <ClCompile Include="shaders\Shader.cpp" />
+    <ClCompile Include="scene\Levels\lighting_levels\SoftSpotLight.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="scene\Levels\TriangleLevel.cpp" />
-    <ClCompile Include="scene\Levels\SpotLightLevel.cpp" />
+    <ClCompile Include="scene\Levels\LightRotationLevel.cpp" />
+    <ClCompile Include="scene\Levels\lighting_levels\SpotLightLevel.cpp" />
     <ClCompile Include="textures\Texture.cpp" />
     <ClCompile Include="Transform.cpp" />
   </ItemGroup>
@@ -293,8 +299,10 @@
     <None Include="shaders\codes\basic.frag" />
     <None Include="shaders\codes\basic.vert" />
     <None Include="shaders\codes\dirlight_ADS.frag" />
+    <None Include="shaders\codes\multiple_lights_ADS.frag" />
     <None Include="shaders\codes\pointlight_ADS.frag" />
     <None Include="shaders\codes\spotlight_ADS.frag" />
+    <None Include="shaders\codes\spotlight_soft_ADS.frag" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="extras.txt" />
