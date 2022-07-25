@@ -94,7 +94,7 @@ protected:
 
 	// Lights
 	Hound::DirectionalLight mDirectionalLight;
-	float lightRotationRad = 10.0f; // ligth rotation radius
+	float lightRotationRad = 10.0f; // light rotation radius
 
 	// materials and textures
 	Hound::Material mCubeMaterial;
@@ -121,4 +121,4 @@ protected:
 };
 
 
-DECLARE_MAIN(MeshLoadingApp, MeshLoadingLevel)
+//DECLARE_MAIN(MeshLoadingApp, MeshLoadingLevel)

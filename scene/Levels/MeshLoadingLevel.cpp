@@ -97,7 +97,7 @@ void MeshLoadingLevel::Init()
     typedef std::vector<const char*> TokenVector;
 
     // sentence and delimiter
-    TokenVector(*tokenize)(std::string, std::string) = [](std::string s, std::string del = " ") -> TokenVector
+    TokenVector(*tokenize)(std::string, std::string) = [](std::string s, std::string del=" ") -> TokenVector
     {
         TokenVector tokens;
         int start = 0;
@@ -110,12 +110,29 @@ void MeshLoadingLevel::Init()
             end = s.find(del, start); // find delimiter again by setting start position
         }
         std::cout << s.substr(start, end - start);
+        std::cout << "Negative value as expected: " << end - start << '\n';
         tokens.push_back(s.substr(start, end - start).c_str());
 
         return tokens;
     };
 
     tokenize("Hello world", " ");
+
+    struct Tester {
+        Tester() : x{}, y{} { std::cout << "Tester constructor called" << '\n'; }
+        Tester(int _x, int _y) : x{_x}, y{_y} { std::cout << "Tester constructor with arguments called" << '\n'; }
+
+        int x, y;
+    };
+
+    Tester tester1{};
+    tester1 = { 12, 43 };
+
+    std::cout << "Tester one: " << tester1.x << " " << tester1.y << '\n';
+
+    // testing the SimplePlane class
+    SimplePlane spTest;
+    std::cout << spTest << '\n';
 
     // testing the Plane struct
     Plane testPlane;
