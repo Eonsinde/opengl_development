@@ -14,6 +14,7 @@ out vec3 Normal;
 
 
 void main(void){
+	// move normal and vertexpos to world space
 	FragPos = vec3(uModel * vec4(aPosition, 1.0));
 	Normal = vec3(transpose(inverse(uModel)) * vec4(aNormal, 1.0));
 	Normal = normalize(Normal);
