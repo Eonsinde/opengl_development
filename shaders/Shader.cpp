@@ -67,7 +67,7 @@ U_INT Shader::loadAndCompileShader(const char*, const char*)
 	return U_INT();
 }
 
-void Shader::checkShaderCompilation(U_INT pShader, Shader_Type pShaderType)
+void Shader::checkShaderCompilation(const U_INT& pShader, Shader_Type pShaderType)
 {
     GLint success;
     GLchar infoLog[1024];
@@ -92,7 +92,7 @@ void Shader::checkShaderCompilation(U_INT pShader, Shader_Type pShaderType)
     }
 }
 
-void Shader::checkProgramCompilation(U_INT pProgram)
+void Shader::checkProgramCompilation(const U_INT& pProgram)
 {
     GLint success;
     GLchar infoLog[1024];
@@ -105,7 +105,7 @@ void Shader::checkProgramCompilation(U_INT pProgram)
     }
 }
 
-int Shader::getUniformLocation(U_INT pProgram, const char* pName)
+int Shader::getUniformLocation(const U_INT& pProgram, const char* pName)
 {
 	int loc = glGetUniformLocation(pProgram, pName);
 	if (loc == -1)

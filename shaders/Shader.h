@@ -24,13 +24,14 @@ public:
 
 	// made this methods static so they can be used outside the class 
 	static U_INT loadAndCompileShader(const char*, const char*); // returns a glProgram with vertex and frag shader attached
-	static void checkShaderCompilation(U_INT, Shader_Type); // glShader, type
-	static void checkProgramCompilation(U_INT); // glProgram
-	static int getUniformLocation(U_INT, const char*); // glProgram, uniform_name
+	static void checkShaderCompilation(const U_INT&, Shader_Type); // glShader, type
+	static void checkProgramCompilation(const U_INT&); // glProgram
+	static int getUniformLocation(const U_INT&, const char*); // glProgram, uniform_name
 
 	void use() const { glUseProgram(m_Program); }
 
 	// to send data down the GP
+	// usual pattern used here is: uniform name/id, data_to_be_stored_in_uniform
 	void setInt(const char*, const int value);
 	void setFloat(const char*, const float);
 
