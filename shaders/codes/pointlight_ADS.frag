@@ -22,8 +22,6 @@ uniform Material uMaterial;
 uniform PointLight uPointLight;
 
 // light properties
-uniform vec3 uLightPos;
-uniform vec3 uLightColor;
 uniform vec3 uCameraPos;
 
 in vec3 FragPos;
