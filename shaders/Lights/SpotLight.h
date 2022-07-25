@@ -5,6 +5,7 @@
 namespace Hound {
 	struct SpotLight {
 		glm::vec3 position;
+		glm::vec3 direction; // spotlight direction
 
 		// phong's value
 		glm::vec3 ambient;
@@ -13,6 +14,7 @@ namespace Hound {
 
 		// spot light props
 		float cuterOff;
+		float outerCutOff;
 		float theta;
 
 		// attenuation coefficient
