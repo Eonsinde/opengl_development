@@ -3,6 +3,8 @@
 #include "../../shaders/Shader.h"
 #include "../../core/Input.h"
 
+#include "../../modelLoader/OBJLoader.h"
+
 
 void MultipleLightsLevel::Init()
 {
@@ -102,6 +104,9 @@ void MultipleLightsLevel::Init()
 
     // material for cube
     mCubeMaterial.shininess = 32.0f;
+
+    // testing 
+    Hound::loadObjMesh("./input_test_file.txt");
 }
 
 void MultipleLightsLevel::LoadScene()
@@ -133,8 +138,7 @@ void MultipleLightsLevel::Update(float deltaTime)
 
 void MultipleLightsLevel::Draw()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glClearColor(0.0784f, 0.0784f, 0.0784f, 1.0);
+    glClear(GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
 
     // use light shader to render cubes and set uniforms where needed
