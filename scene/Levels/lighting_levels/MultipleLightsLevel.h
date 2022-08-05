@@ -27,6 +27,14 @@ static Hound::Camera mainCamera;
 
 class MultipleLightsApp : public Hound::Application
 {
+public:
+	MultipleLightsApp() {
+		// enable v-sync with app info component
+		mInfo.flags.vsync = 1;
+		mInfo.flags.cursor = 1;
+	}
+
+protected:
 	void onKey(int key, int action) override
 	{
 		// camera controls with keyboard
@@ -72,10 +80,29 @@ class MultipleLightsApp : public Hound::Application
 		mainCamera.ProcessMouseScroll(yOffset);
 	}
 
+	void renderUI() override {
+		ImGui::ShowDemoWindow((bool*)1);
+
+		// create UI to clear color buffer
+		ImGui::Begin("Edit Clear Color"); // Create a window called "Hello, world!" and append into it.
+		ImGui::ColorEdit3("Clear Color", (float*)&mClearColor); // Edit 3 floats representing a color
+		ImGui::End();
+
+		ImGui::Begin("ImGui Stats");
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::End();
+
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(mClearColor.x, mClearColor.y, mClearColor.z, 1.0);
+	}
+
 protected:
 	float lastX = (float)mInfo.windowWidth / 2.0f;
 	float lastY = (float)mInfo.windowHeight / 2.0f;
 	bool firstMouse = true;
+
+	// to adjust color buffer
+	ImVec4 mClearColor = ImVec4(0.0784f, 0.0784f, 0.0784f, 1.0);
 };
 
 
