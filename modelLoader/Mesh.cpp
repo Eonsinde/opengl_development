@@ -20,7 +20,7 @@ namespace Hound {
 
 		for (unsigned int i = 0; i < textures.size(); i++)
 		{
-			glActiveTexture(GL_TEXTURE0 + i); // activate texture unit first
+			glActiveTexture(GL_TEXTURE0 + i); // activate texture unit first for a given texture
 			// retrieve texture number in the format:- (diffuse_texture(N), where N is the number)
 			std::string number;
 			std::string name = textures[i].type;
@@ -30,8 +30,8 @@ namespace Hound {
 			else if (name == "texture_specular")
 				number = std::to_string(specularNr++);
 
-			// set where your sampler should sample from
-			shader.setFloat(("material." + name + number).c_str(), i); // material. + texture_diff/spec + 1/2/3/4 :- material.texture_diffuse1
+			// set where your texture sampler should sample from
+			shader.setFloat(("uMaterial." + name + number).c_str(), i); // material. + texture_diff/spec + 1/2/3/4 :- material.texture_diffuse1
 			glBindTexture(GL_TEXTURE_2D, textures[i].id);
 		}
 		glActiveTexture(GL_TEXTURE0);

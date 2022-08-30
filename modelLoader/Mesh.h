@@ -12,17 +12,20 @@ namespace Hound {
 		glm::vec3 position;
 		glm::vec3 normal;
 		glm::vec2 texCoord;
-		glm::vec3 tangent;
-		glm::vec3 bitangent;
+		/*glm::vec3 tangent;
+		glm::vec3 bitangent;*/
 	};
 
 	struct MeshTexture {
 		uint32_t id;
 		std::string type;
+		std::string path;
 	};
 
 	class Mesh {
 	public:
+		// mesh name
+		std::string name;
 		// mesh data
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;
