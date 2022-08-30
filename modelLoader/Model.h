@@ -23,7 +23,8 @@ class Shader;
 namespace Hound {
 	class Model
 	{
-		Model(char* path)
+	public:
+		Model(const char* path)
 		{
 			loadModel(path);
 		}
@@ -33,6 +34,7 @@ namespace Hound {
 		// model data
 		std::vector<Mesh> m_Meshes;
 		std::string m_Directory;
+		std::vector<Hound::MeshTexture> textures_loaded;	// stores all the textures loaded so far, optimization to make sure textures aren't loaded more than once.
 
 		void loadModel(std::string path);
 		void processNode(aiNode* node, const aiScene* scene);
