@@ -20,12 +20,16 @@
 
 #include <iostream>
 
+
 // ImGUI
+#ifdef use_imgui
+
 #include "../ImGUI/imgui.h"
 #include "../ImGUI/imgui_impl_glfw.h"
 #include "../ImGUI/imgui_impl_opengl3.h"
+
 #if defined(IMGUI_IMPL_OPENGL_ES2)
-#include <GLES2/gl2.h>
+    #include <GLES2/gl2.h>
 #endif
 
 // [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
@@ -33,6 +37,8 @@
 // Your own project should not be affected, as you are likely to link with a newer binary of GLFW that is adequate for your version of Visual Studio.
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
+#endif
+
 #endif
 
 
@@ -82,19 +88,19 @@ namespace Hound {
 
 #pragma region CreateGLContext
             // Decide GL+GLSL versions
-#if defined(IMGUI_IMPL_OPENGL_ES2)
-            // GL ES 2.0 + GLSL 100
-            const char* glsl_version = "#version 100";
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-            glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-#elif defined(__APPLE__)
+#if defined(__APPLE__)
             // GL 3.2 + GLSL 150
             const char* glsl_version = "#version 150";
             glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
             glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
             glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+ only
             glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);            // Required on Mac
+#elif defined(IMGUI_IMPL_OPENGL_ES2)
+            // GL ES 2.0 + GLSL 100
+            const char* glsl_version = "#version 100";
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+            glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+            glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
 #else
             // GL 3.0 + GLSL 130
             const char* glsl_version = "#version 130";
@@ -105,7 +111,7 @@ namespace Hound {
 #endif
 #pragma endregion
 
-            // initialize App Info with scene data, create window, set context and init glad
+            // initialize App Info(mInfo) with scene data, create window, set context and init glad
             init(mCurrentScene->mSceneInfo.title, mCurrentScene->mSceneInfo.width, mCurrentScene->mSceneInfo.height);
 
             mWindow = glfwCreateWindow(800, 600, mInfo.title, NULL, NULL);
@@ -130,6 +136,7 @@ namespace Hound {
             }
 
 #pragma region SETUP_IMGUI
+ #ifdef use_imgui
             // Setup Dear ImGui context
             IMGUI_CHECKVERSION();
             ImGui::CreateContext();
@@ -145,6 +152,7 @@ namespace Hound {
             ImGui::StyleColorsDark();
             //ImGui::StyleColorsLight();
             io.Fonts->AddFontFromFileTTF("./assets/fonts/bitter_static/Bitter-Medium.ttf", 18.0f);
+#endif
 #pragma endregion
 
             // register event callbacks
@@ -157,12 +165,13 @@ namespace Hound {
             if (!mInfo.flags.cursor)
             {
                 glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+                std::cout << "Cursor disabled\n";
             }
 
             if (mInfo.flags.vsync) {
                 // enable v-sync
-                std::cout << "V-sync enabled\n";
                 setVsync(1);
+                std::cout << "V-sync enabled\n";
             }
 
             // init and load scene's resources
@@ -175,16 +184,22 @@ namespace Hound {
             do
             {
                 glfwPollEvents();
+
 #pragma region StartImGUI
+#ifdef use_imgui
                 // Start the Dear ImGui frame
                 ImGui_ImplOpenGL3_NewFrame();
                 ImGui_ImplGlfw_NewFrame();
                 ImGui::NewFrame();
+#endif
 #pragma endregion
+
+#ifdef use_imgui
                 mApp->renderUI();
                 ImGui::Begin("ImGui Stats");
                 ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
                 ImGui::End();
+#endif
 
                 // draw
                 mCurrentScene->Draw();
@@ -198,8 +213,10 @@ namespace Hound {
                 mCurrentScene->Update(mDeltaTime);
 
 #pragma region TriggerImGUIRenderer
+#ifdef use_imgui
                 ImGui::Render();
                 ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+#endif
 #pragma endregion
 
                 glfwSwapBuffers(mWindow);
@@ -208,10 +225,11 @@ namespace Hound {
                 running &= (glfwWindowShouldClose(mWindow) != GL_TRUE);
             } while (running);
             
+            // clean up
             shutdown();
         }
 
-        virtual void init(const char* windowTitle, int width, int height)
+        virtual void init(const char* windowTitle, int width, int height, uint32_t showCursor=0)
         {
             strcpy_s(mInfo.title, strlen(windowTitle)+1, windowTitle); // use (no of chars * 1) to get size of windowTitle string
             mInfo.windowWidth = width;
@@ -225,7 +243,7 @@ namespace Hound {
 #endif
             mInfo.samples = 0;
             //mInfo.flags.all = 0;
-            //mInfo.flags.cursor = 0;
+            mInfo.flags.cursor = showCursor;
 #ifdef _DEBUG
             mInfo.flags.debug = 1;
 #endif
@@ -241,9 +259,11 @@ namespace Hound {
                 mCurrentScene->UnloadScene();
 
 #pragma region ImGUICleanup
+#ifdef use_imgui
             ImGui_ImplOpenGL3_Shutdown();
             ImGui_ImplGlfw_Shutdown();
             ImGui::DestroyContext();
+#endif
 #pragma endregion
             
             glfwDestroyWindow(mWindow);
@@ -304,6 +324,8 @@ namespace Hound {
         {
             mApp->onResize(w, h);
             glViewport(0, 0, w, h);
+
+            // update the current scene's height and width data
             mApp->mCurrentScene->mSceneInfo.height = h;
             mApp->mCurrentScene->mSceneInfo.width = w;
         }
