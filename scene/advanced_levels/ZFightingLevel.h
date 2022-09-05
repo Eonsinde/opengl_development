@@ -1,5 +1,6 @@
 #pragma once
 
+
 //#define use_imgui
 #include "../../core/Application.h"
 #include "../Scene.h"
@@ -20,10 +21,10 @@ class Shader;
 
 static Hound::Camera mainCamera;
 
-class DepthTestingApp : public Hound::Application
+class ZFightingApp : public Hound::Application
 {
 public:
-	DepthTestingApp() {
+	ZFightingApp() {
 		// enable v-sync with app info component
 		mInfo.flags.vsync = 1;
 		mInfo.flags.cursor = 0;
@@ -87,7 +88,7 @@ protected:
 		/*ImGui::Begin("ImGui Stats");
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();*/
-		
+
 		glClearColor(mClearColor.x, mClearColor.y, mClearColor.z, 1.0);
 #endif
 	}
@@ -104,18 +105,18 @@ protected:
 };
 
 
-class DepthTestingLevel : public Hound::Scene
+class ZFightingLevel : public Hound::Scene
 {
 public:
-	DepthTestingLevel()
+	ZFightingLevel()
 		: cubeVAO{}, cubeVBO{}, planeVAO{}, planeVBO{}, mainShader{ nullptr }, mCubeTexture{ nullptr }, mPlaneTexture{ nullptr } {
-		char title[]{ "Depth Testing Scene" };
+		char title[]{ "Z Fighting Scene" };
 		strcpy_s(mSceneInfo.title, sizeof(title), title);
 		mSceneInfo.width = 800;
 		mSceneInfo.height = 600;
 	}
 
-	virtual ~DepthTestingLevel() {
+	virtual ~ZFightingLevel() {
 
 	}
 
@@ -149,7 +150,7 @@ protected:
 };
 
 
-//DECLARE_MAIN(DepthTestingApp, DepthTestingLevel)
+//DECLARE_MAIN(ZFightingApp, ZFightingLevel)
 
 
 
