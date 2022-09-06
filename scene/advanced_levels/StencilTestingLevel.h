@@ -151,7 +151,7 @@ protected:
 };
 
 
-DECLARE_MAIN(StencilTestingApp, StencilTestingLevel)
+//DECLARE_MAIN(StencilTestingApp, StencilTestingLevel)
 
 
 
