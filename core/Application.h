@@ -172,6 +172,7 @@ namespace Hound {
                 // enable v-sync
                 setVsync(1);
                 std::cout << "V-sync enabled\n";
+                std::cout << "============================\n\n";
             }
 
             // init and load scene's resources
