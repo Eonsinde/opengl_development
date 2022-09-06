@@ -72,6 +72,17 @@ namespace Hound {
 		return vec3(l.x * value, l.y * value, l.z * value);
 	}
 
+	bool operator==(const vec3& l, const vec3& r)
+	{
+		vec3 diff(l - r); 
+		return lenSq(diff) < VEC3_EPSILON;
+	}
+
+	bool operator!=(const vec3& l, const vec3& r)
+	{
+		return !(l == r);
+	}
+
 	// special vector functions
 	float dot(const vec3& l, const vec3& r)
 	{
@@ -80,7 +91,9 @@ namespace Hound {
 
 	vec3 cross(const vec3& l, const vec3& r)
 	{
-		return vec3(l.y * r.z - l.z * r.y, l.z * r.x - l.x * r.z, l.x * r.y - l.y * r.x);
+		return vec3(l.y * r.z - l.z * r.y, 
+					l.z * r.x - l.x * r.z, 
+					l.x * r.y - l.y * r.x);
 	}
 
 	float lenSq(const vec3& v)
@@ -139,7 +152,6 @@ namespace Hound {
 	float angle(const vec3& l, const vec3& r)
 	{ 
 		// formula: (l . r) / (|l| * |r|)
-
 		float sqMagL = l.x * l.x + l.y * l.y + l.z * l.z; 
 		float sqMagR = r.x * r.x + r.y * r.y + r.z * r.z;
 
@@ -186,6 +198,39 @@ namespace Hound {
 		vec3 proj2 = b * (scale * 2); 
 		
 		return a - proj2;
+	}
+
+	vec3 lerp(const vec3& s, const vec3& e, float t)
+	{
+		return vec3(s.x + (e.x - s.x) * t, 
+					s.y + (e.y - s.y) * t, 
+					s.z + (e.z - s.z) * t);
+	}
+
+	vec3 slerp(const vec3& s, const vec3& e, float t)
+	{
+		if (t < 0.01f) 
+		{ 
+			return lerp(s, e, t); 
+		}
+
+		vec3 from = normalized(s); 
+		vec3 to = normalized(e);
+
+		float theta = angle(from, to); 
+		float sin_theta = sinf(theta);
+
+		float a = sinf((1.0f - t) * theta) / sin_theta;
+		float b = sinf(t * theta) / sin_theta;
+
+		return ((from * a) + (to * b));
+	}
+	vec3 nlerp(const vec3& s, const vec3& e, float t)
+	{
+		vec3 linear(s.x + (e.x - s.x) * t, 
+					s.y + (e.y - s.y) * t, 
+					s.z + (e.z - s.z) * t); 
+		return normalized(linear);
 	}
 };
 

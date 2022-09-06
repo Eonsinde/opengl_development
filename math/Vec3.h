@@ -25,7 +25,7 @@ namespace Hound {
 		}
 
 		inline vec3(float _value)
-			: x{ 0.0f }, y{ 0.0f }, z{ 0.f } {
+			: x{ _value }, y{ _value }, z{ _value } {
 
 		}
 
@@ -49,7 +49,6 @@ namespace Hound {
 		vec3& operator-=(const vec3& r);
 		vec3& operator*=(const vec3& r);
 		vec3& operator*=(const float value);
-
 	};
 
 	// unary operations
@@ -60,6 +59,10 @@ namespace Hound {
 	vec3 operator-(const vec3& l, const vec3& r);
 	vec3 operator*(const vec3& l, const vec3& r);
 	vec3 operator*(const vec3& l, const float value);
+
+	// comparison operators
+	bool operator==(const vec3& l, const vec3& r);
+	bool operator!=(const vec3& l, const vec3& r);
 
 	// dot product
 	float dot(const vec3& l, const vec3& r);
@@ -88,6 +91,14 @@ namespace Hound {
 
 	// reflection
 	vec3 reflect(const vec3& a, const vec3& b);
+
+	// lerping
+	// linear interpolation
+	vec3 lerp(const vec3& s, const vec3& e, float t);
+	// spherical interpolation
+	vec3 slerp(const vec3& s, const vec3& e, float t);
+	// nlerp
+	vec3 nlerp(const vec3& s, const vec3& e, float t);
 };
 
 #endif
