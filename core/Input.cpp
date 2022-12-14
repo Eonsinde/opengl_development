@@ -3,7 +3,6 @@
 
 
 namespace Hound {
-
 	bool Input::IsKeyPressed(const KeyCode key)
 	{
 		auto& window = Application::GetWindow();
