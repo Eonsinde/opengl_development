@@ -20,7 +20,7 @@ class Shader;
 
 static Hound::Camera mainCamera;
 
-class DepthTestingApp : public Hound::Application
+class DepthTestingApp final : public Hound::Application
 {
 public:
 	DepthTestingApp() {
@@ -104,7 +104,7 @@ protected:
 };
 
 
-class DepthTestingLevel : public Hound::Scene
+class DepthTestingLevel final : public Hound::Scene
 {
 public:
 	DepthTestingLevel()

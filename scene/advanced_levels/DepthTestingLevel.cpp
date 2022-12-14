@@ -100,7 +100,7 @@ void DepthTestingLevel::Init()
 
     glBindVertexArray(0);
 
-    mainShader = new Shader("./shaders/codes/texture_.vert", "./shaders/codes/texture_.frag");
+    mainShader = new Shader("./shaders/codes/texture_.vert", "./shaders/codes/linearizedDepthValues_.frag");
 
     mCubeTexture = new Hound::Texture("./assets/textures/marble.jpg");
     mPlaneTexture = new Hound::Texture("./assets/textures/metal.png");
