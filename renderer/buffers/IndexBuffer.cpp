@@ -4,7 +4,7 @@
 
 
 IndexBuffer::IndexBuffer() 
-	: m_Count{}, m_IsSet{ 0 } {
+	: m_Handle{}, m_Count{}, m_IsSet{ 0 } {
 	glGenBuffers(1, &m_Handle);
 }
 
