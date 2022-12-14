@@ -166,6 +166,7 @@ namespace Hound {
 		return acosf(dot / len);
 	}
 
+	/* the parallel projection of a unto b: (a.b)b if b be a unit vector */
 	vec3 project(const vec3& a, const vec3& b)
 	{
 		float magBSq = len(b);
@@ -179,6 +180,7 @@ namespace Hound {
 		return b * scale;
 	}
 
+	/* the perpendicular/rejection projection of a unto b: a|_ = a - a|| */
 	vec3 reject(const vec3& a, const vec3& b)
 	{
 		vec3 projection = project(a, b);
