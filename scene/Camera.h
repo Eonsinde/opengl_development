@@ -18,7 +18,7 @@ enum Camera_Movement {
 // Default camera values
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
-const float SPEED = 80.0f;
+const float SPEED = 40.0f;
 const float SENSITIVITY = 0.1f;
 const float ZOOM = 45.0f;
 
@@ -28,7 +28,7 @@ namespace Hound {
     class Camera
     {
     public:
-               // constructor with vectors
+        // constructor with vectors
         Camera(glm::vec3 position=glm::vec3(0.0f, 0.0f, 6.0f), glm::vec3 up=glm::vec3(0.0f, 1.0f, 0.0f), float yaw=YAW, float pitch=PITCH) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
         {
             Position = position;
@@ -37,6 +37,7 @@ namespace Hound {
             Pitch = pitch;
             updateCameraVectors();
         }
+
         // constructor with scalar values
         Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch) : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED), MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
         {
@@ -93,6 +94,7 @@ namespace Hound {
         void ProcessMouseScroll(float yoffset)
         {
             Zoom -= (float)yoffset;
+
             if (Zoom < 1.0f)
                 Zoom = 1.0f;
             if (Zoom > 45.0f)
