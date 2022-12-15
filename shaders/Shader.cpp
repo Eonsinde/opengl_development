@@ -29,7 +29,7 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     }
     catch (std::ifstream::failure& e)
     {
-        std::cout << "ERR::SHADER::FILE_NOT_SUCCESFULLY_READ: " << e.what() << '\n';
+        std::cout << "ERROR::SHADER::FILE NOT SUCCESFULLY READ: " << e.what() << '\n';
     }
     const char* vShaderCode = vertexCode.c_str();
     const char* fShaderCode = fragmentCode.c_str();
@@ -60,11 +60,35 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
 
 Shader::~Shader()
 {
+    glDeleteProgram(m_Program);
 }
 
-U_INT Shader::loadAndCompileShader(const char*, const char*)
+U_INT Shader::loadAndCompileShader(const char* vShaderCode, const char* fShaderCode)
 {
-	return U_INT();
+    // create vertex shader
+    U_INT m_Vertex = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(m_Vertex, 1, &vShaderCode, NULL);
+    glCompileShader(m_Vertex);
+    checkShaderCompilation(m_Vertex, Shader_Type::VERTEX);
+
+    // create fragment shader
+    U_INT m_Fragment = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(m_Fragment, 1, &fShaderCode, NULL);
+    glCompileShader(m_Fragment);
+    checkShaderCompilation(m_Fragment, Shader_Type::FRAGMENT);
+
+    // create program and link shaders
+    U_INT m_Program = glCreateProgram();
+    glAttachShader(m_Program, m_Vertex);
+    glAttachShader(m_Program, m_Fragment);
+    glLinkProgram(m_Program);
+    checkProgramCompilation(m_Program);
+
+    // cleanup: delete shaders
+    glDeleteShader(m_Vertex);
+    glDeleteShader(m_Fragment);
+
+	return m_Program;
 }
 
 void Shader::checkShaderCompilation(const U_INT& pShader, Shader_Type pShaderType)
@@ -78,7 +102,7 @@ void Shader::checkShaderCompilation(const U_INT& pShader, Shader_Type pShaderTyp
             if (!success)
             {
                 glGetShaderInfoLog(pShader, 1024, NULL, infoLog);
-                std::cout << "ERR::SHADER::VERTEX_SHADER_FAILED_TO_COMPILE" << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+                std::cout << "ERROR::SHADER::VERTEX SHADER FAILED TO COMPILE" << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
             }
             break;
         case Shader_Type::FRAGMENT:
@@ -86,7 +110,7 @@ void Shader::checkShaderCompilation(const U_INT& pShader, Shader_Type pShaderTyp
             if (!success)
             {
                 glGetShaderInfoLog(pShader, 1024, NULL, infoLog);
-                std::cout << "ERR::SHADER::FRAGMENT_SHADER_FAILED_TO_COMPILE" << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+                std::cout << "ERROR::SHADER::FRAGMENT SHADER FAILED TO COMPILE" << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
             }
             break;
     }
@@ -101,7 +125,7 @@ void Shader::checkProgramCompilation(const U_INT& pProgram)
     if (!success)
     {
         glGetProgramInfoLog(pProgram, 1024, NULL, infoLog);
-        std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << pProgram << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+        std::cout << "ERROR::PROGRAM LINKING ERROR of type: " << pProgram << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
     }
 }
 
@@ -109,7 +133,7 @@ int Shader::getUniformLocation(const U_INT& pProgram, const char* pName)
 {
 	int loc = glGetUniformLocation(pProgram, pName);
 	if (loc == -1)
-		std::cerr << "ERR::UNIFORM_" << pName << "_NOT_FOUND\n";
+		std::cerr << "ERROR::UNIFORM " << pName << " NOT FOUND\n";
 	return loc;
 }
 
