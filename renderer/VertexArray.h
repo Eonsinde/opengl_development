@@ -1,12 +1,21 @@
 #pragma once
 
-
 #include <vector>
 #include <glad/glad.h>
 
 
 class VertexBuffer;
 class IndexBuffer;
+
+//enum VERTEX_ATTRIB
+//{ 
+//	VA_POSITION, 
+//	VA_NORMAL,
+//	VA_TEXCOORD,
+//	VA_POS_NORM,
+//	VA_POS_TEXCOORD,
+//	VA_POS_NORM_TEXCOORD
+//};
 
 
 class VertexArray {
