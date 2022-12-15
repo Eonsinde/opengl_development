@@ -1,18 +1,11 @@
 #pragma once
 
-
-class MultipleLights
-{
-};
-
-
-#pragma once
-
 #include "../../core/Application.h"
 #include "../../Scene.h"
 #include "../../Camera.h"
 
 #include "../../shaders/Lights/PointLight.h"
+#include "../../shaders/Lights/DirectionalLight.h"
 #include "../../shaders/Lights/SpotLight.h"
 #include "../../shaders/Material.h"
 #include "../../textures/Texture.h"
@@ -81,6 +74,7 @@ protected:
 	}
 
 	void renderUI() override {
+#ifdef use_imgui
 		ImGui::ShowDemoWindow((bool*)1);
 
 		// create UI to clear color buffer
@@ -88,12 +82,12 @@ protected:
 		ImGui::ColorEdit3("Clear Color", (float*)&mClearColor); // Edit 3 floats representing a color
 		ImGui::End();
 
-		ImGui::Begin("ImGui Stats");
+		/*ImGui::Begin("ImGui Stats");
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::End();
+		ImGui::End();*/
 
-		glClear(GL_COLOR_BUFFER_BIT);
 		glClearColor(mClearColor.x, mClearColor.y, mClearColor.z, 1.0);
+#endif
 	}
 
 protected:
@@ -102,7 +96,9 @@ protected:
 	bool firstMouse = true;
 
 	// to adjust color buffer
+#ifdef use_imgui
 	ImVec4 mClearColor = ImVec4(0.0784f, 0.0784f, 0.0784f, 1.0);
+#endif
 };
 
 
@@ -130,10 +126,14 @@ public:
 
 protected:
 	unsigned int cubeVAO, lightVAO, VBO;
+
+	// shaders
 	Shader* lightShader;
 	Shader* cubeShader;
 
 	// Lights
+	Hound::DirectionalLight mDirLight;
+	std::vector<Hound::PointLight> pointLights;
 	Hound::SpotLight mSpotLight;
 	float lightRotationRad = 10.0f; // ligth rotation radius
 
