@@ -14,9 +14,12 @@ public:
 		FRAGMENT=1
 	};
 
-private:
+protected:
 	U_INT m_Vertex, m_Fragment;
 	U_INT m_Program;
+
+	// added this becos of inheritance issues 
+	Shader() = default;
 
 public:
 	Shader(const char*, const char*);
