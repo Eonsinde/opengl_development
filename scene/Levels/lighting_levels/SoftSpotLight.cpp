@@ -100,7 +100,7 @@ void SoftSpotLightLevel::Init()
     mSpotLight.quadratic = 0.0075f;
 
     // material for cube
-    mCubeMaterial.shininess = 32.0f;
+    mCubeMaterial.specExp = 32.0f;
 }
 
 void SoftSpotLightLevel::LoadScene()
@@ -144,7 +144,7 @@ void SoftSpotLightLevel::Draw()
     mSpecularMapTexture->activeTexture(1);
     lightShader->setInt("uMaterial.diffuse", 0);
     lightShader->setInt("uMaterial.specular", 1);
-    lightShader->setFloat("uMaterial.shininess", mCubeMaterial.shininess);
+    lightShader->setFloat("uMaterial.shininess", mCubeMaterial.specExp);
 
     // camera props 
     lightShader->setVec3fv("uCameraPos", glm::value_ptr(mainCamera.Position));
