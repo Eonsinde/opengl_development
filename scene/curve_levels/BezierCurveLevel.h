@@ -16,7 +16,7 @@ class PointShader;
 class LineShader;
 
 
-class BezierCurveApp : public Hound::Application
+class BezierCurveApp final : public Hound::Application
 {
 public:
 	BezierCurveApp() {
@@ -65,7 +65,7 @@ protected:
 };
 
 
-class BezierCurveLevel : public Hound::Scene
+class BezierCurveLevel final : public Hound::Scene
 {
 public:
 	BezierCurveLevel()
@@ -105,7 +105,7 @@ protected:
 };
 
 
-DECLARE_MAIN(BezierCurveApp, BezierCurveLevel)
+//DECLARE_MAIN(BezierCurveApp, BezierCurveLevel)
 
 
 
