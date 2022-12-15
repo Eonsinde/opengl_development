@@ -17,4 +17,3 @@ namespace Hound {
 		float quadratic;
 	};
 }
-#pragma once
