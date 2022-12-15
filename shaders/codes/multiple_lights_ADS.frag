@@ -76,20 +76,22 @@ out vec4 fragColor;
 vec3 calcDirLight(DirectionalLight, vec3, vec3);
 vec3 CalcPointLight(PointLight, vec3 , vec3 ,vec3);
 vec3 calcSpotLight(SpotLight, vec3, vec3, vec3);
+float calcLightAttenutation(float);
 
 
 void main(void){
 	// properties
 	vec3 norm = normalize(Normal);
 	vec3 viewDir = normalize(uCameraPos - FragPos);
+	vec3 result = vec3(0.0);
 
 	// phase 1: Directional lighting
-	vec3 result = calcDirLight(uDirLight, norm, viewDir);
+//	result = calcDirLight(uDirLight, norm, viewDir);
 	// phase 2: Point lights
 	for(int i = 0; i < NO_OF_POINT_LIGHTS; i++)
 		result += CalcPointLight(uPointLights[i], norm, FragPos, viewDir);
 	// phase 3: Spot light
-	result += calcSpotLight(uSpotLight, norm, FragPos, viewDir);
+//	result += calcSpotLight(uSpotLight, norm, FragPos, viewDir);
 	
 	fragColor = vec4(result, 1.0);
 } // end of main
@@ -132,12 +134,13 @@ vec3 CalcPointLight(PointLight pLight, vec3 pNormal, vec3 pFragPos, vec3 pViewDi
 
 	// attenuation
 	float distance = length(pLight.position - pFragPos);
+//	float attenuation = calcLightAttenutation(distance);
 	float attenuation = 1.0 / (pLight.constant + pLight.linear * distance + pLight.quadratic * (distance * distance));
 
 	// have computed attenuation value affect lighting results
-//	ambient *= attenuation;
-//	diffuse *= attenuation;
-//	specular *= attenuation;
+	ambient *= attenuation;
+	diffuse *= attenuation;
+	specular *= attenuation;
 
 	vec3 result = ambient + diffuse + specular;
 	return result;
@@ -182,4 +185,38 @@ vec3 calcSpotLight(SpotLight pLight, vec3 pNormal, vec3 pFragPos, vec3 pViewDir)
 
 	vec3 result = ambient + diffuse + specular;
 	return result;
+}
+
+
+// picking attenuation values to use based on distance
+float calcLightAttenutation(float pDistance) { 
+	float attenuation = 0.0;
+
+	if (pDistance >= 0 && pDistance <= 6) { // 7 (7, pDistance, 7]
+		attenuation = 1.0 / (1.0 + (0.7 * pDistance) + (1.8 * (pDistance * pDistance)));
+	} else if (pDistance >= 7 && pDistance <= 12) { // 13
+		attenuation = 1.0 / (1.0 + (0.35 * pDistance) + (0.44 * (pDistance * pDistance)));
+	} else if (pDistance >= 13 && pDistance <= 19) { // 20
+		attenuation = 1.0 / (1.0 + (0.22 * pDistance) + (0.20 * (pDistance * pDistance)));
+	} else if (pDistance >= 20 && pDistance <= 31) { // 32
+		attenuation = 1.0 / (1.0 + (0.14 * pDistance) + (0.07 * (pDistance * pDistance)));
+	} else if (pDistance >= 50) { // 50
+		attenuation = 1.0 / (1.0 + (0.09 * pDistance) + (0.032 * (pDistance * pDistance)));
+	} else if (pDistance >= 65) { // 65
+		attenuation = 1.0 / (1.0 + (0.07 * pDistance) + (0.017 * (pDistance * pDistance)));
+	} else if (pDistance >= 100) { // 100
+		attenuation = 1.0 / (1.0 + (0.045 * pDistance) + (0.0075 * (pDistance * pDistance)));
+	} else if (pDistance >= 160) { // 160
+		attenuation = 1.0 / (1.0 + (0.027 * pDistance) + (0.0028 * (pDistance * pDistance)));
+	} else if (pDistance >= 200) { // 200
+		attenuation = 1.0 / (1.0 + (0.022 * pDistance) + (0.0019 * (pDistance * pDistance)));
+	} else if (pDistance >= 325) { // 325
+		attenuation = 1.0 / (1.0 + (0.014 * pDistance) + (0.0007 * (pDistance * pDistance)));
+	} else if (pDistance >= 600) { // 600
+		attenuation = 1.0 / (1.0 + (0.007 * pDistance) + (0.0002 * (pDistance * pDistance)));
+	} else if (pDistance >= 3250) { // 3250
+		attenuation = 1.0 / (1.0 + (0.0014 * pDistance) + (0.000007 * (pDistance * pDistance)));
+	}
+
+	return attenuation;
 }
