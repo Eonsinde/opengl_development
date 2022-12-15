@@ -30,5 +30,5 @@ void main(void){
 	float specImpact = pow(max(dot(refNegLightDir, viewDir), 0.0), 32);
 	vec3 specular = uLightColor * specStrength * specImpact;
 
-	fragColor = vec4(uPixelColor, 1.0) * (ambient + diffuse + specular);
+	fragColor = vec4(uPixelColor, 1.0) * vec4(ambient + diffuse + specular, 1.0);
 }
