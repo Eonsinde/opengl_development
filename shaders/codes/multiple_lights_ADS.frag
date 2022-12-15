@@ -54,6 +54,7 @@ uniform Material uMaterial;
 // create light uniforms
 #define NO_OF_POINT_LIGHTS 4
 
+// create lights' instances
 uniform DirectionalLight uDirLight;
 uniform PointLight uPointLights[NO_OF_POINT_LIGHTS];
 uniform SpotLight uSpotLight;
@@ -73,41 +74,66 @@ out vec4 fragColor;
 // each function is allowed to take in an instance of a light becos
 // multiple uniform instance of a DirLight for example, might be present in a shader 
 vec3 calcDirLight(DirectionalLight, vec3, vec3);
-vec3 calcPointLight();
-vec3 calcSpotLight();
+vec3 CalcPointLight(PointLight, vec3 , vec3 ,vec3);
+vec3 calcSpotLight(SpotLight, vec3, vec3, vec3);
 
 
 void main(void){
+	// properties
+	vec3 norm = normalize(Normal);
+	vec3 viewDir = normalize(uCameraPos - FragPos);
+//
+//	// phase 1: Directional lighting
+//	vec3 result = calcDirLight(uDirLight, norm, viewDir);
+//	// phase 2: Point lights
+//	for(int i = 0; i < NO_OF_POINT_LIGHTS; i++)
+//		result += CalcPointLight(uPointLights[i], norm, FragPos, viewDir);
+	// phase 3: Spot light
+	//result += CalcSpotLight(spotLight, norm, FragPos, viewDir);
+
+	vec3 result = calcSpotLight(uSpotLight, norm, FragPos, viewDir);
+	fragColor = vec4(result, 1.0);
+} // end of main
+
+
+// used to compute directional light parameters
+vec3 calcDirLight(DirectionalLight pLight, vec3 pNormal, vec3 pViewDir) {
 	vec3 lightDir = normalize(uSpotLight.position - FragPos);
 
 	// ambient
-	vec3 ambient = uSpotLight.ambient * vec3(texture(uMaterial.diffuse, TexCoord));
+	vec3 ambient = pLight.ambient * vec3(texture(uMaterial.diffuse, TexCoord));
 
 	// diffuse
-	float diffuseImpact = max(dot(lightDir, Normal), 0.0); 
-	vec3 diffuse = uSpotLight.diffuse * diffuseImpact * vec3(texture(uMaterial.diffuse, TexCoord));
+	float diffuseImpact = max(dot(lightDir, pNormal), 0.0); 
+	vec3 diffuse = pLight.diffuse * diffuseImpact * vec3(texture(uMaterial.diffuse, TexCoord));
 
 	// specular
-	vec3 refNegLightDir = reflect(-lightDir, Normal); // reflected negated light direction
-	vec3 viewDir = normalize(uCameraPos - FragPos);
-	float specImpact = pow(max(dot(refNegLightDir, viewDir), 0.0), uMaterial.shininess);
-	vec3 specular = uSpotLight.specular * specImpact * vec3(texture(uMaterial.specular, TexCoord));
+	vec3 refNegLightDir = reflect(-lightDir, pNormal); // reflected negated light direction
+	float specImpact = pow(max(dot(refNegLightDir, pViewDir), 0.0), uMaterial.shininess);
+	vec3 specular = pLight.specular * specImpact * vec3(texture(uMaterial.specular, TexCoord));
 
-	// spotlight calcs
-	// intensity = theta - outerCutOff(gamma) / epsilon(innerCutOff - outerCutOff)
-	float theta = dot(lightDir, normalize(-uSpotLight.direction)); // spotlight theta
-	// we do innerCutOff - outerCutOff becos the cosine value for 19.5(0.94264) is lesser than the cosine value for 12.5(0.976296) and
-	// it is cosine values we're working with not angles
-	float epsilon = uSpotLight.cuterOff - uSpotLight.outerCutOff; 
-	float intensity = clamp((theta - uSpotLight.outerCutOff) / epsilon, 0.0, 1.0);
+	vec3 result = ambient + diffuse + specular;
+	return result;
+}
 
-	// use the spotlight intensity value to affect the diffuse and specular values
-	diffuse *= intensity;
-	specular *= intensity;
+vec3 CalcPointLight(PointLight pLight, vec3 pNormal, vec3 pFragPos, vec3 pViewDir) {
+	vec3 lightDir = normalize(pLight.position - FragPos);
+
+	// ambient
+	vec3 ambient = pLight.ambient * vec3(texture(uMaterial.diffuse, TexCoord));
+
+	// diffuse
+	float diffuseImpact = max(dot(lightDir, pNormal), 0.0); 
+	vec3 diffuse = pLight.diffuse * diffuseImpact * vec3(texture(uMaterial.diffuse, TexCoord));
+
+	// specular
+	vec3 refNegLightDir = reflect(-lightDir, pNormal); // reflected negated light direction
+	float specImpact = pow(max(dot(refNegLightDir, pViewDir), 0.0), uMaterial.shininess);
+	vec3 specular = pLight.specular * specImpact * vec3(texture(uMaterial.specular, TexCoord));
 
 	// attenuation
-	float distance = length(uSpotLight.position - FragPos);
-	float attenuation = 1.0 / (uSpotLight.constant + uSpotLight.linear * distance + uSpotLight.quadratic * (distance * distance));
+	float distance = length(pLight.position - pFragPos);
+	float attenuation = 1.0 / (pLight.constant + pLight.linear * distance + pLight.quadratic * (distance * distance));
 
 	// have computed attenuation value affect lighting results
 	ambient *= attenuation;
@@ -115,22 +141,46 @@ void main(void){
 	specular *= attenuation;
 
 	vec3 result = ambient + diffuse + specular;
-	fragColor = vec4(result, 1.0);
-	
-} // end of main
-
-
-vec3 calcDirLight(DirectionalLight pDirLight, vec3 pNormal, vec3 pViewDir){
-	
-	return vec3(0.0);
+	return result;
 }
 
-vec3 calcPointLight(){
+vec3 calcSpotLight(SpotLight pLight, vec3 pNormal, vec3 pFragPos, vec3 pViewDir){
+	vec3 lightDir = normalize(pLight.position - FragPos);
 
-	return vec3(0.0);
-}
+	// ambient
+	vec3 ambient = pLight.ambient * vec3(texture(uMaterial.diffuse, TexCoord));
 
-vec3 calcSpotLight(){
+	// diffuse
+	float diffuseImpact = max(dot(lightDir, pNormal), 0.0); 
+	vec3 diffuse = pLight.diffuse * diffuseImpact * vec3(texture(uMaterial.diffuse, TexCoord));
 
-	return vec3(0.0);
+	// specular
+	vec3 refNegLightDir = reflect(-lightDir, pNormal); // reflected negated light direction
+	float specImpact = pow(max(dot(refNegLightDir, pViewDir), 0.0), uMaterial.shininess);
+	vec3 specular = pLight.specular * specImpact * vec3(texture(uMaterial.specular, TexCoord));
+
+	// spotlight calcs
+	// intensity = theta - outerCutOff(gamma) / epsilon(innerCutOff - outerCutOff)
+	float theta = dot(lightDir, normalize(-pLight.direction)); // spotlight theta
+	// we do innerCutOff - outerCutOff becos the cosine value for 
+	// 19.5(0.94264) is lesser than the cosine value for 12.5(0.976296) 
+	// and it is cosine values we're working with not angles
+	float epsilon = pLight.cuterOff - pLight.outerCutOff; 
+	float intensity = clamp((theta - pLight.outerCutOff) / epsilon, 0.0, 1.0);
+
+	// use the spotlight intensity value to affect the diffuse and specular values
+	diffuse *= intensity;
+	specular *= intensity;
+
+	// attenuation
+	float distance = length(pLight.position - pFragPos);
+	float attenuation = 1.0 / (pLight.constant + pLight.linear * distance + pLight.quadratic * (distance * distance));
+
+	// have computed attenuation value affect lighting results
+	ambient *= attenuation;
+	diffuse *= attenuation;
+	specular *= attenuation;
+
+	vec3 result = ambient + diffuse + specular;
+	return result;
 }
