@@ -109,8 +109,8 @@ void MultipleLightsLevel::LoadScene()
     pointLight1.diffuse = glm::vec3(1.0f, 0.3f, 0.5f);
     pointLight1.specular = glm::vec3(0.5f);
     pointLight1.constant = 1.0f;
-    pointLight1.linear = 0.045f;
-    pointLight1.quadratic = 0.0075f;
+    pointLight1.linear = 0.09f;
+    pointLight1.quadratic = 0.032f;
     pointLights.push_back(pointLight1);
     // P2
     Hound::PointLight pointLight2;
@@ -119,8 +119,8 @@ void MultipleLightsLevel::LoadScene()
     pointLight2.diffuse = glm::vec3(0.6f, 1.0f, 0.2f);
     pointLight2.specular = glm::vec3(0.5f);
     pointLight2.constant = 1.0f;
-    pointLight2.linear = 0.045f;
-    pointLight2.quadratic = 0.0075f;
+    pointLight2.linear = 0.09f;
+    pointLight2.quadratic = 0.032f;
     pointLights.push_back(pointLight2);
     // P3
     Hound::PointLight pointLight3;
@@ -129,8 +129,8 @@ void MultipleLightsLevel::LoadScene()
     pointLight3.diffuse = glm::vec3(0.3f, 0.6f, 1.0f);
     pointLight3.specular = glm::vec3(0.5f);
     pointLight3.constant = 1.0f;
-    pointLight3.linear = 0.045f;
-    pointLight3.quadratic = 0.0075f;
+    pointLight3.linear = 0.09f;
+    pointLight3.quadratic = 0.032f;
     pointLights.push_back(pointLight3);
     // P4
     Hound::PointLight pointLight4;
@@ -139,8 +139,8 @@ void MultipleLightsLevel::LoadScene()
     pointLight4.diffuse = glm::vec3(1.0f);
     pointLight4.specular = glm::vec3(0.5f);
     pointLight4.constant = 1.0f;
-    pointLight4.linear = 0.045f;
-    pointLight4.quadratic = 0.0075f;
+    pointLight4.linear = 0.09f;
+    pointLight4.quadratic = 0.032f;
     pointLights.push_back(pointLight4);
 
     // spot light props
@@ -260,6 +260,9 @@ void MultipleLightsLevel::Draw()
         glBindVertexArray(cubeVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
+
+        // tell GL to use lightShader to ensure the data for the next cube is sent down the shader
+        lightShader->use();
     }
     
 
