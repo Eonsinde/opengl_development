@@ -89,6 +89,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ControlFlowGuard>false</ControlFlowGuard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,6 +107,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ControlFlowGuard>false</ControlFlowGuard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -123,6 +125,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ControlFlowGuard>false</ControlFlowGuard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,6 +143,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\glfw\include;$(SolutionDir)Dependencies\stb;$(SolutionDir)Dependencies\glm;$(SolutionDir)Dependencies\assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ControlFlowGuard>false</ControlFlowGuard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,6 +155,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="scene\post_processing\InversionPPScene.h" />
+    <ClInclude Include="scene\advanced_levels\FrameBuffersLevel.h" />
+    <ClInclude Include="scene\Levels\environments\DesertLevel.h" />
+    <ClInclude Include="scene\Levels\environments\BiochemicalLevel.h" />
+    <ClInclude Include="scene\Levels\environments\FactoryLevel.h" />
+    <ClInclude Include="scene\Levels\environments\HorrorLevel.h" />
+    <ClInclude Include="scene\advanced_levels\FaceCullingLevel.h" />
+    <ClInclude Include="math\Vec2.h" />
+    <ClInclude Include="math\Vec4.h" />
+    <ClInclude Include="scene\curve_levels\BezierCurveLevel.h" />
+    <ClInclude Include="math\curves\Bezier.h" />
+    <ClInclude Include="math\Interpolation.h" />
+    <ClInclude Include="shaders\classes\PointShader.h" />
+    <ClInclude Include="shaders\classes\LineShader.h" />
+    <ClInclude Include="renderer\buffers\IndexBuffer.h" />
+    <ClInclude Include="renderer\Draw.h" />
+    <ClInclude Include="scene\advanced_levels\BlendingLevel.h" />
     <ClInclude Include="dependencies\assimp\include\assimp\ai_assert.h" />
     <ClInclude Include="dependencies\assimp\include\assimp\anim.h" />
     <ClInclude Include="dependencies\assimp\include\assimp\camera.h" />
@@ -188,6 +209,18 @@
     <ClInclude Include="dependencies\assimp\include\assimp\vector2.h" />
     <ClInclude Include="dependencies\assimp\include\assimp\vector3.h" />
     <ClInclude Include="dependencies\assimp\include\assimp\version.h" />
+    <ClInclude Include="scene\advanced_levels\DepthTestingLevel.h" />
+    <ClInclude Include="modelLoader\modelLoaderSample.h" />
+    <ClInclude Include="scene\Levels\models_loading\FirstModelLevel.h" />
+    <ClInclude Include="ImGUI\imconfig.h" />
+    <ClInclude Include="ImGUI\imgui.h" />
+    <ClInclude Include="ImGUI\imgui_impl_glfw.h" />
+    <ClInclude Include="ImGUI\imgui_impl_opengl3.h" />
+    <ClInclude Include="ImGUI\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="ImGUI\imgui_internal.h" />
+    <ClInclude Include="ImGUI\imstb_rectpack.h" />
+    <ClInclude Include="ImGUI\imstb_textedit.h" />
+    <ClInclude Include="ImGUI\imstb_truetype.h" />
     <ClInclude Include="modelLoader\Model.h" />
     <ClInclude Include="scene\Levels\lighting_levels\MultipleLightsLevel.h" />
     <ClInclude Include="scene\scene_management\bounding_volumes\AABB.h" />
@@ -220,11 +253,44 @@
     <ClInclude Include="scene\Levels\LightRotationLevel.h" />
     <ClInclude Include="scene\Levels\lighting_levels\SpotLightLevel.h" />
     <ClInclude Include="scene\Levels\lighting_levels\SoftSpotLight.h" />
+    <ClInclude Include="scene\advanced_levels\StencilTestingLevel.h" />
     <ClInclude Include="textures\Texture.h" />
     <ClInclude Include="modelLoader\Mesh.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="scene\advanced_levels\ZFightingLevel.h" />
+    <ClInclude Include="renderer\buffers\VertexBuffer.h" />
+    <ClInclude Include="renderer\VertexArray.h" />
+    <ClInclude Include="math\Vec3.h" />
+    <ClInclude Include="renderer\Uniform.h" />
+    <ClInclude Include="scene\advanced_levels\TransparencyLevel.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="scene\post_processing\InversionPPScene.cpp" />
+    <ClCompile Include="scene\advanced_levels\FrameBuffersLevel.cpp" />
+    <ClCompile Include="scene\Levels\environments\DesertLevel.cpp" />
+    <ClCompile Include="modelLoader\utils.cpp" />
+    <ClCompile Include="scene\Levels\environments\BiochemicalLevel.cpp" />
+    <ClCompile Include="scene\Levels\environments\FactoryLevel.cpp" />
+    <ClCompile Include="scene\Levels\environments\HorrorLevel.cpp" />
+    <ClCompile Include="scene\advanced_levels\FaceCullingLevel.cpp" />
+    <ClCompile Include="scene\curve_levels\BezierCurveLevel.cpp" />
+    <ClCompile Include="shaders\classes\PointShader.cpp" />
+    <ClCompile Include="shaders\classes\LineShader.cpp" />
+    <ClCompile Include="renderer\buffers\IndexBuffer.cpp" />
+    <ClCompile Include="renderer\Draw.cpp" />
+    <ClCompile Include="scene\advanced_levels\BlendingLevel.cpp" />
+    <ClCompile Include="core\Application.cpp" />
+    <ClCompile Include="scene\advanced_levels\DepthTestingLevel.cpp" />
+    <ClCompile Include="scene\Levels\models_loading\FirstModelLevel.cpp" />
+    <ClCompile Include="ImGUI\imgui.cpp" />
+    <ClCompile Include="ImGUI\imgui_demo.cpp" />
+    <ClCompile Include="ImGUI\imgui_draw.cpp" />
+    <ClCompile Include="ImGUI\imgui_impl_glfw.cpp" />
+    <ClCompile Include="ImGUI\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="ImGUI\imgui_tables.cpp" />
+    <ClCompile Include="ImGUI\imgui_widgets.cpp" />
+    <ClCompile Include="ImGUI\main.cpp" />
+    <ClCompile Include="ImGUI\test_file.cpp" />
     <ClCompile Include="modelLoader\Model.cpp" />
     <ClCompile Include="scene\Levels\lighting_levels\MultipleLightsLevel.cpp" />
     <ClCompile Include="scene\Levels\MeshLoadingLevel.cpp" />
@@ -242,10 +308,28 @@
     <ClCompile Include="scene\Levels\TriangleLevel.cpp" />
     <ClCompile Include="scene\Levels\LightRotationLevel.cpp" />
     <ClCompile Include="scene\Levels\lighting_levels\SpotLightLevel.cpp" />
+    <ClCompile Include="scene\advanced_levels\StencilTestingLevel.cpp" />
     <ClCompile Include="textures\Texture.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="scene\advanced_levels\ZFightingLevel.cpp" />
+    <ClCompile Include="renderer\buffers\VertexBuffer.cpp" />
+    <ClCompile Include="renderer\VertexArray.cpp" />
+    <ClCompile Include="math\Vec3.cpp" />
+    <ClCompile Include="renderer\Uniform.cpp" />
+    <ClCompile Include="scene\advanced_levels\TransparencyLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\models\building2\building.png" />
+    <Image Include="assets\models\building2\building2.png" />
+    <Image Include="assets\models\building2\building3.png" />
+    <Image Include="assets\models\building2\building4.png" />
+    <Image Include="assets\models\building2\building5.png" />
+    <Image Include="assets\models\girl\tEXTURE\BOdy Skin Base Color.png" />
+    <Image Include="assets\models\girl\tEXTURE\bot color.jpg" />
+    <Image Include="assets\models\girl\tEXTURE\COLORS.jpg" />
+    <Image Include="assets\models\girl\tEXTURE\FACE Base Color apha.png" />
+    <Image Include="assets\models\girl\tEXTURE\top color.png" />
+    <Image Include="assets\models\girl\tEXTURE\top normal.png" />
     <Image Include="assets\textures\awesomeface.png" />
     <Image Include="assets\textures\background.jpg" />
     <Image Include="assets\textures\block.png" />
@@ -283,6 +367,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="assets\models\building2\building.3ds" />
+    <None Include="assets\models\building2\building.blend" />
+    <None Include="assets\models\building2\building.fbx" />
+    <None Include="assets\models\girl\girl OBJ.mtl" />
+    <None Include="assets\models\IronMan\IronMan.mtl" />
+    <None Include="assets\models\IronMan\v1_0_IronManRigged.max" />
+    <None Include="assets\models\room\room.mtl" />
     <None Include="dependencies\assimp\include\assimp\color4.inl" />
     <None Include="dependencies\assimp\include\assimp\material.inl" />
     <None Include="dependencies\assimp\include\assimp\matrix3x3.inl" />
@@ -294,18 +385,50 @@
     <None Include="dependencies\assimp\lib\assimp-vc140-mt.exp" />
     <None Include="dependencies\assimp\lib\assimp-vc140-mt.pdb" />
     <None Include="dependencies\glfw\src\glfw3.pdb" />
+    <None Include="imgui.ini" />
     <None Include="shaders\codes\ADS.frag" />
     <None Include="shaders\codes\ADS.vert" />
     <None Include="shaders\codes\basic.frag" />
     <None Include="shaders\codes\basic.vert" />
     <None Include="shaders\codes\dirlight_ADS.frag" />
+    <None Include="shaders\codes\framebuffer_quad.vert" />
+    <None Include="shaders\codes\just_texture.frag" />
+    <None Include="shaders\codes\linearizedDepthValues_.frag" />
+    <None Include="shaders\codes\model_frag.frag" />
     <None Include="shaders\codes\multiple_lights_ADS.frag" />
+    <None Include="shaders\codes\outliner_.frag" />
     <None Include="shaders\codes\pointlight_ADS.frag" />
     <None Include="shaders\codes\spotlight_ADS.frag" />
     <None Include="shaders\codes\spotlight_soft_ADS.frag" />
+    <None Include="shaders\codes\texture_.frag" />
+    <None Include="shaders\codes\texture_.vert" />
+    <None Include="shaders\codes\transparency_.frag" />
+    <None Include="shaders\codes\vegetation_.frag" />
+    <None Include="shaders\pp_codes\inversion_effect.frag" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="extras.txt" />
+    <Text Include="input_test_file.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\fonts\bitter_static\Bitter-Black.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-BlackItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-Bold.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-BoldItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-ExtraBold.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-ExtraBoldItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-ExtraLight.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-ExtraLightItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-Italic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-Light.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-LightItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-Medium.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-MediumItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-Regular.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-SemiBold.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-SemiBoldItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-Thin.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-ThinItalic.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

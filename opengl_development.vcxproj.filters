@@ -231,6 +231,114 @@
     <ClInclude Include="scene\Levels\lighting_levels\MultipleLightsLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ImGUI\imconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imgui_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imstb_rectpack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imstb_textedit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imstb_truetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imgui_impl_glfw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imgui_impl_opengl3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGUI\imgui_impl_opengl3_loader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Levels\models_loading\FirstModelLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modelLoader\modelLoaderSample.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\advanced_levels\DepthTestingLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\advanced_levels\ZFightingLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\advanced_levels\StencilTestingLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\advanced_levels\BlendingLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\Draw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\buffers\IndexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\classes\LineShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\classes\PointShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="math\curves\Bezier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Interpolation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\buffers\VertexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\curve_levels\BezierCurveLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\VertexArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vec3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vec2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="math\Vec4.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer\Uniform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\advanced_levels\TransparencyLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\advanced_levels\FaceCullingLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Levels\environments\HorrorLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Levels\environments\FactoryLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Levels\environments\BiochemicalLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Levels\environments\DesertLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\advanced_levels\FrameBuffersLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\post_processing\InversionPPScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dependencies\glad\src\glad.c">
@@ -288,6 +396,105 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scene\Levels\lighting_levels\MultipleLightsLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_tables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_impl_glfw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\imgui_impl_opengl3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="core\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGUI\test_file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Levels\models_loading\FirstModelLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\advanced_levels\DepthTestingLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\advanced_levels\ZFightingLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\advanced_levels\StencilTestingLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\advanced_levels\BlendingLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\Draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\buffers\IndexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shaders\classes\LineShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shaders\classes\PointShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\buffers\VertexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\curve_levels\BezierCurveLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\VertexArray.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="math\Vec3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer\Uniform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\advanced_levels\TransparencyLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\advanced_levels\FaceCullingLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Levels\environments\HorrorLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Levels\environments\FactoryLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Levels\environments\BiochemicalLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modelLoader\utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Levels\environments\DesertLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\advanced_levels\FrameBuffersLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\post_processing\InversionPPScene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -382,6 +589,39 @@
     <Image Include="assets\textures\wood.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="assets\models\girl\tEXTURE\BOdy Skin Base Color.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\girl\tEXTURE\bot color.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\girl\tEXTURE\COLORS.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\girl\tEXTURE\FACE Base Color apha.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\girl\tEXTURE\top color.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\girl\tEXTURE\top normal.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\building2\building.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\building2\building2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\building2\building3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\building2\building4.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\models\building2\building5.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\glfw\src\glfw3.lib" />
@@ -423,8 +663,47 @@
     <None Include="dependencies\assimp\lib\assimp-vc140-mt.pdb" />
     <None Include="shaders\codes\spotlight_soft_ADS.frag" />
     <None Include="shaders\codes\multiple_lights_ADS.frag" />
+    <None Include="imgui.ini" />
+    <None Include="assets\models\room\room.mtl" />
+    <None Include="assets\models\IronMan\IronMan.mtl" />
+    <None Include="assets\models\IronMan\v1_0_IronManRigged.max" />
+    <None Include="assets\models\girl\girl OBJ.mtl" />
+    <None Include="assets\models\building2\building.3ds" />
+    <None Include="assets\models\building2\building.blend" />
+    <None Include="assets\models\building2\building.fbx" />
+    <None Include="shaders\codes\model_frag.frag" />
+    <None Include="shaders\codes\texture_.vert" />
+    <None Include="shaders\codes\texture_.frag" />
+    <None Include="shaders\codes\outliner_.frag" />
+    <None Include="shaders\codes\vegetation_.frag" />
+    <None Include="shaders\codes\linearizedDepthValues_.frag" />
+    <None Include="shaders\codes\transparency_.frag" />
+    <None Include="shaders\codes\framebuffer_quad.vert" />
+    <None Include="shaders\codes\just_texture.frag" />
+    <None Include="shaders\pp_codes\inversion_effect.frag" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="extras.txt" />
+    <Text Include="input_test_file.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\fonts\bitter_static\Bitter-Black.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-BlackItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-Bold.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-BoldItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-ExtraBold.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-ExtraBoldItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-ExtraLight.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-ExtraLightItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-Italic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-Light.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-LightItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-Medium.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-MediumItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-Regular.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-SemiBold.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-SemiBoldItalic.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-Thin.ttf" />
+    <Font Include="assets\fonts\bitter_static\Bitter-ThinItalic.ttf" />
   </ItemGroup>
 </Project>
