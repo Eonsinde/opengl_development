@@ -100,6 +100,7 @@ void BiochemicalLevel::LoadScene()
     mDirLight.diffuse = glm::vec3(1.0f);
     mDirLight.specular = glm::vec3(0.5f);
 
+#pragma region LightInstancesCreation
     // point lights props
     pointLights.reserve(4);
     // creating the point lights: P1
@@ -155,7 +156,7 @@ void BiochemicalLevel::LoadScene()
     mSpotLight.constant = 1.0f;
     mSpotLight.linear = 0.045f;
     mSpotLight.quadratic = 0.0075f;
-
+#pragma endregion
 
     // material for cube
     mCubeMaterial.specExp = 32.0f;
@@ -193,7 +194,7 @@ void BiochemicalLevel::Draw()
 {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
 
     //glPointSize(15.0f);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // mode - GL_LINE, GL_FILL, GL_POINT 
@@ -205,7 +206,7 @@ void BiochemicalLevel::Draw()
     lightShader->setVec3fv("uCameraPos", glm::value_ptr(mainCamera.Position));
     // camera VP
     view = mainCamera.GetViewMatrix();
-    projection = glm::perspective(glm::radians(mainCamera.Zoom), (float)mSceneInfo.width / (float)mSceneInfo.height, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(mainCamera.Zoom), (float)mSceneInfo.mViewport.width / (float)mSceneInfo.mViewport.height, 0.1f, 100.0f);
     lightShader->setMat4fv("uView", glm::value_ptr(view));
     lightShader->setMat4fv("uProjection", glm::value_ptr(projection));
 
@@ -217,13 +218,11 @@ void BiochemicalLevel::Draw()
     lightShader->setInt("uMaterial.specular", 1);
     lightShader->setFloat("uMaterial.shininess", mCubeMaterial.specExp);
 
-
     // directional light
     /*lightShader->setVec3fv("uDirLight.direction", glm::value_ptr(mDirLight.direction));
     lightShader->setVec3fv("uDirLight.ambient", glm::value_ptr(mDirLight.ambient));
     lightShader->setVec3fv("uDirLight.diffuse", glm::value_ptr(mDirLight.diffuse));
     lightShader->setVec3fv("uDirLight.specular", glm::value_ptr(mDirLight.specular));*/
-
 
     // spotlight 
     lightShader->setVec3fv("uSpotLight.position", glm::value_ptr(mainCamera.Position));
@@ -262,7 +261,7 @@ void BiochemicalLevel::Draw()
         glDrawArrays(GL_TRIANGLES, 0, 36);
         glBindVertexArray(0);
 
-        // tell GL to use lightShader to ensure the data for the next cube is sent down the shader
+        // tell GL to use lightShader to ensure the data for the next point light is sent down the shader
         lightShader->use();
     }
 

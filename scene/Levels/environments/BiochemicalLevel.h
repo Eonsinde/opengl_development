@@ -1,5 +1,7 @@
 #pragma once
 
+#define use_imgui
+
 #include "../../core/Application.h"
 #include "../../Scene.h"
 #include "../../Camera.h"
@@ -9,6 +11,8 @@
 #include "../../shaders/Lights/SpotLight.h"
 #include "../../shaders/Material.h"
 #include "../../textures/Texture.h"
+
+#include "../../modelLoader/utils.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -24,7 +28,7 @@ public:
 	MyApp() {
 		// enable v-sync with app info component
 		mInfo.flags.vsync = 1;
-		mInfo.flags.cursor = 1;
+		mInfo.flags.cursor = 0;
 	}
 
 protected:
@@ -48,6 +52,10 @@ protected:
 
 	void onMouseMove(int x, int y) override
 	{
+		// update mouse collider
+		mMouseCollider.x0 = x; mMouseCollider.y0 = y;
+		mMouseCollider.x1 = x + 1; mMouseCollider.y1 = y + 1;
+
 		float xpos = static_cast<float>(x);
 		float ypos = static_cast<float>(y);
 
@@ -65,28 +73,29 @@ protected:
 		lastX = xpos;
 		lastY = ypos;
 
-		mainCamera.ProcessMouseMovement(xoffset, yoffset);
+
+		if (hasIntersection(mSceneCollider, mMouseCollider)) {
+			mainCamera.ProcessMouseMovement(xoffset, yoffset);
+		}
 	}
 
 	void onMouseWheel(int yOffset) override
 	{
-		mainCamera.ProcessMouseScroll(yOffset);
+		if (hasIntersection(mSceneCollider, mMouseCollider)) {
+			mainCamera.ProcessMouseScroll(yOffset);
+		}
 	}
 
 	void renderUI() override {
 #ifdef use_imgui
-		ImGui::ShowDemoWindow((bool*)1);
+		//ImGui::ShowDemoWindow((bool*)1);
 
-		// create UI to clear color buffer
-		ImGui::Begin("Edit Clear Color"); // Create a window called "Hello, world!" and append into it.
-		ImGui::ColorEdit3("Clear Color", (float*)&mClearColor); // Edit 3 floats representing a color
-		ImGui::End();
+		//// create UI to clear color buffer
+		//ImGui::Begin("Edit Clear Color"); // Create a window called "Hello, world!" and append into it.
+		//ImGui::ColorEdit3("Clear Color", (float*)&mClearColor); // Edit 3 floats representing a color
+		//ImGui::End();
 
-		/*ImGui::Begin("ImGui Stats");
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::End();*/
-
-		glClearColor(mClearColor.x, mClearColor.y, mClearColor.z, 1.0);
+		//glClearColor(mClearColor.x, mClearColor.y, mClearColor.z, 1.0);
 #endif
 	}
 
@@ -109,8 +118,8 @@ public:
 		: cubeVAO{}, lightVAO{}, VBO{}, lightShader{ nullptr }, cubeShader{ nullptr }, mCubeTexture{ nullptr } {
 		char title[]{ "Biochemical Scene" };
 		strcpy_s(mSceneInfo.title, sizeof(title), title);
-		mSceneInfo.width = 800;
-		mSceneInfo.height = 600;
+		mSceneInfo.mResolution.width = 1920;
+		mSceneInfo.mResolution.height = 1080;
 	}
 
 	virtual ~BiochemicalLevel() {
@@ -170,5 +179,5 @@ protected:
 };
 
 
-DECLARE_MAIN(MyApp, BiochemicalLevel)
+//DECLARE_MAIN(MyApp, BiochemicalLevel)
 
