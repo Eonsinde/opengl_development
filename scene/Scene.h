@@ -10,6 +10,13 @@ namespace Hound {
 	public:
 		struct Scene_Info {
 			char title[128];
+
+			struct {
+				int width;
+				int height;
+			} mResolution, mViewport;
+
+			// saving myself the trouble of refactoring
 			int width;
 			int height;
 		} mSceneInfo;
