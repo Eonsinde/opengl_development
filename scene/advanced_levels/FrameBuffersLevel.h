@@ -114,7 +114,7 @@ public:
 		//cubeVAO{}, planeVAO{}, glassVAO{}, cubeVBO{}, planeVBO{}, glassVBO{},
 		mPlaneTexture{ nullptr } 
 	{
-		char title[]{ "Face Culling Scene" };
+		char title[]{ "Frame Buffer Scene" };
 		strcpy_s(mSceneInfo.title, sizeof(title), title);
 		mSceneInfo.mResolution.width = 1920;
 		mSceneInfo.mResolution.height = 1080;
@@ -160,7 +160,7 @@ protected:
 };
 
 
-DECLARE_MAIN(MyApp, FrameBuffersLevel)
+//DECLARE_MAIN(MyApp, FrameBuffersLevel)
 
 
 
