@@ -1,6 +1,6 @@
 #pragma once
 
-//#define use_imgui
+#define use_imgui
 #include "../../core/Application.h"
 #include "../Scene.h"
 #include "../Camera.h"
@@ -12,6 +12,7 @@
 #include "../../renderer/buffers/VertexBuffer.h"
 
 #include "../../../modelLoader/Model.h"
+#include "../../modelLoader/utils.h"
 
 #include <map>
 #include <glm/glm.hpp>
@@ -22,17 +23,17 @@ class Shader;
 
 static Hound::Camera mainCamera;
 
-class FaceCullingApp : public Hound::Application
+class MyApp : public Hound::Application
 {
 public:
-	FaceCullingApp() {
+	MyApp() {
 		// enable v-sync with app info component
 		mInfo.flags.vsync = 1;
 		mInfo.flags.cursor = 0;
 	}
 
 protected:
-	void onKey(int key, int action) override
+	void onKey(int key, int action) override final
 	{
 		// camera controls with keyboard
 		if (key == GLFW_KEY_W)
@@ -50,8 +51,12 @@ protected:
 			mainCamera.MovementSpeed -= 0.2f;
 	}
 
-	void onMouseMove(int x, int y) override
+	void onMouseMove(int x, int y) override final
 	{
+		// update mouse collider
+		mMouseCollider.x0 = x; mMouseCollider.y0 = y;
+		mMouseCollider.x1 = x + 1; mMouseCollider.y1 = y + 1;
+
 		float xpos = static_cast<float>(x);
 		float ypos = static_cast<float>(y);
 
@@ -69,28 +74,23 @@ protected:
 		lastX = xpos;
 		lastY = ypos;
 
-		mainCamera.ProcessMouseMovement(xoffset, yoffset);
+
+		if (hasIntersection(mSceneCollider, mMouseCollider)) {
+			mainCamera.ProcessMouseMovement(xoffset, yoffset);
+		}
 	}
 
-	void onMouseWheel(int yOffset) override
+	void onMouseWheel(int yOffset) override final
 	{
-		mainCamera.ProcessMouseScroll(yOffset);
+		if (hasIntersection(mSceneCollider, mMouseCollider)) {
+			mainCamera.ProcessMouseScroll(yOffset);
+		}
 	}
 
-	void renderUI() override {
+	void renderUI() override final 
+	{
 #ifdef use_imgui
-		ImGui::ShowDemoWindow((bool*)1);
 
-		// create UI to clear color buffer
-		ImGui::Begin("Edit Clear Color"); // Create a window called "Hello, world!" and append into it.
-		ImGui::ColorEdit3("Clear Color", (float*)&mClearColor); // Edit 3 floats representing a color
-		ImGui::End();
-
-		/*ImGui::Begin("ImGui Stats");
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::End();*/
-
-		glClearColor(mClearColor.x, mClearColor.y, mClearColor.z, 1.0);
 #endif
 	}
 
@@ -116,8 +116,8 @@ public:
 	{
 		char title[]{ "Face Culling Scene" };
 		strcpy_s(mSceneInfo.title, sizeof(title), title);
-		mSceneInfo.width = 800;
-		mSceneInfo.height = 600;
+		mSceneInfo.mResolution.width = 1920;
+		mSceneInfo.mResolution.height = 1080;
 	}
 
 	virtual ~FaceCullingLevel() {
@@ -167,7 +167,7 @@ protected:
 };
 
 
-DECLARE_MAIN(FaceCullingApp, FaceCullingLevel)
+//DECLARE_MAIN(MyApp, FaceCullingLevel)
 
 
 
