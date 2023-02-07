@@ -19,6 +19,7 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <glm/glm.hpp>
 
 
 // ImGUI
@@ -43,6 +44,10 @@
 
 
 #include "../scene/Scene.h"
+#include "../modelLoader/utils.h"
+
+const int CONSOLE_WINDOW_HEIGHT = 210;
+const int PROPERTIES_WINDOW_WIDTH = 300;
 
 
 namespace Hound {
@@ -111,10 +116,11 @@ namespace Hound {
 #endif
 #pragma endregion
 
-            // initialize App Info(mInfo) with scene data, create window, set context and init glad
-            init(mCurrentScene->mSceneInfo.title, mCurrentScene->mSceneInfo.width, mCurrentScene->mSceneInfo.height);
 
-            mWindow = glfwCreateWindow(800, 600, mInfo.title, NULL, NULL);
+            // initialize App Info(mInfo) with scene data, create window, set context and init glad
+            init(mCurrentScene->mSceneInfo.title, mCurrentScene->mSceneInfo.mResolution.width, mCurrentScene->mSceneInfo.mResolution.height);
+
+            mWindow = glfwCreateWindow(mCurrentScene->mSceneInfo.mResolution.width, mCurrentScene->mSceneInfo.mResolution.height, mInfo.title, NULL, NULL);
             if (mWindow == NULL)
             {
                 std::cout << "ERR::Failed to create GLFW window" << std::endl;
@@ -162,7 +168,7 @@ namespace Hound {
             glfwSetCursorPosCallback(mWindow, glfw_onMouseMove);
             glfwSetScrollCallback(mWindow, glfw_onMouseWheel);
 
-            if (!mInfo.flags.cursor)
+            if (mInfo.flags.cursor)
             {
                 glfwSetInputMode(mWindow, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
                 std::cout << "Cursor disabled\n";
@@ -174,6 +180,17 @@ namespace Hound {
                 std::cout << "V-sync enabled\n";
                 std::cout << "============================\n\n";
             }
+
+            // DEFINE VIEWPORT
+            // compute scene's viewport coordinates based on resolution and UI panels
+            mCurrentScene->mSceneInfo.mViewport.height = mInfo.windowHeight - CONSOLE_WINDOW_HEIGHT;
+            mCurrentScene->mSceneInfo.mViewport.width = mInfo.windowWidth - PROPERTIES_WINDOW_WIDTH;
+            glViewport(0, CONSOLE_WINDOW_HEIGHT, mCurrentScene->mSceneInfo.mViewport.width, mCurrentScene->mSceneInfo.mViewport.height);
+
+            // configure initial coordinates for colliders
+            mMouseCollider.x0 = mMouseCollider.y0 = mMouseCollider.x1 = mMouseCollider.y1 = 0;
+            mSceneCollider.x0 = 0; mSceneCollider.y0 = CONSOLE_WINDOW_HEIGHT; 
+            mSceneCollider.x1 = mCurrentScene->mSceneInfo.mViewport.width; mSceneCollider.y1 = mCurrentScene->mSceneInfo.mViewport.height;
 
             // init and load scene's resources
             mCurrentScene->Init();
@@ -195,13 +212,6 @@ namespace Hound {
 #endif
 #pragma endregion
 
-#ifdef use_imgui
-                mApp->renderUI();
-                ImGui::Begin("ImGui Stats");
-                ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-                ImGui::End();
-#endif
-
                 // draw
                 mCurrentScene->Draw();
 
@@ -212,6 +222,12 @@ namespace Hound {
 
                 // update 
                 mCurrentScene->Update(mDeltaTime);
+
+#ifdef use_imgui
+                RenderConsoleWindow();
+                RenderPropertiesWindow();
+                mApp->renderUI();
+#endif
 
 #pragma region TriggerImGUIRenderer
 #ifdef use_imgui
@@ -289,6 +305,9 @@ namespace Hound {
 
         float       mDeltaTime;
 
+        RectCollider mMouseCollider;
+        RectCollider mSceneCollider;
+
 
     public:
         void setWindowTitle(const char* title)
@@ -299,12 +318,27 @@ namespace Hound {
         // this methods are called inside glfw_callback functions 
         virtual void onResize(int w, int h)
         {
+            // update  app's res info
             mInfo.windowWidth = w;
             mInfo.windowHeight = h;
+            // update scene's resolution info
+            mCurrentScene->mSceneInfo.mResolution.height = h;
+            mCurrentScene->mSceneInfo.mResolution.width = w;
+            // update scene's viewport info
+            mCurrentScene->mSceneInfo.mViewport.height = h - CONSOLE_WINDOW_HEIGHT;
+            mCurrentScene->mSceneInfo.mViewport.width = w - PROPERTIES_WINDOW_WIDTH;
+
+            // also adjust viewport
+            glViewport(0, CONSOLE_WINDOW_HEIGHT, mCurrentScene->mSceneInfo.mViewport.width, mCurrentScene->mSceneInfo.mViewport.height);
+
+            // update scene collider or bounding box
+            mSceneCollider.x0 = 0; mSceneCollider.y0 = CONSOLE_WINDOW_HEIGHT;
+            mSceneCollider.x1 = mCurrentScene->mSceneInfo.mViewport.width; mSceneCollider.y1 = mCurrentScene->mSceneInfo.mViewport.height;
         }
 
         virtual void onKey(int key, int action)
         {
+
         }
 
         virtual void onMouseButton(int button, int action)
@@ -313,6 +347,7 @@ namespace Hound {
 
         virtual void onMouseMove(int x, int y)
         {
+            
         }
 
         virtual void onMouseWheel(int yOffset)
@@ -324,11 +359,6 @@ namespace Hound {
         static void glfw_onResize(GLFWwindow* window, int w, int h)
         {
             mApp->onResize(w, h);
-            glViewport(0, 0, w, h);
-
-            // update the current scene's height and width data
-            mApp->mCurrentScene->mSceneInfo.height = h;
-            mApp->mCurrentScene->mSceneInfo.width = w;
         }
 
         static void glfw_onKey(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -355,6 +385,59 @@ namespace Hound {
         {
             mInfo.flags.vsync = enable ? 1 : 0;
             glfwSwapInterval((int)mInfo.flags.vsync);
+        }
+
+    private:
+        // methods to render ImGUI windows
+        void RenderConsoleWindow() {
+#ifdef use_imgui
+            ImGui::Begin("Output Console", nullptr,
+                ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
+                ImGuiWindowFlags_::ImGuiWindowFlags_NoMove |
+                ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse
+            );
+
+            auto windowPos = ImVec2(0, mInfo.windowHeight - CONSOLE_WINDOW_HEIGHT); // where to start from x, y
+            auto windowSize = ImVec2(mInfo.windowWidth - PROPERTIES_WINDOW_WIDTH, CONSOLE_WINDOW_HEIGHT); // where to end: x, y
+
+            ImGui::SetWindowPos("Output Console", windowPos);
+            ImGui::SetWindowSize("Output Console", windowSize);
+
+            ImGui::Text("=========================================");
+            ImGui::Text("Rendering API::OpenGL^4");
+            ImGui::Text("=========================================");
+
+            ImGui::End();
+#endif
+        }
+
+        void RenderPropertiesWindow() {
+#ifdef use_imgui
+            ImGui::Begin("Properties Panel", nullptr,
+                ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
+                ImGuiWindowFlags_::ImGuiWindowFlags_NoMove |
+                ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse
+            );
+
+            auto windowPos = ImVec2(mInfo.windowWidth - PROPERTIES_WINDOW_WIDTH, 0); // where to start from x, y
+            auto windowSize = ImVec2(PROPERTIES_WINDOW_WIDTH, mInfo.windowHeight); // where to end: x, y
+
+            ImGui::SetWindowPos("Properties Panel", windowPos);
+            ImGui::SetWindowSize("Properties Panel", windowSize);
+
+            auto position = glm::vec3(0.0f);
+            ImGui::SliderFloat3("Position", &position.x, -20.0f, 20.0f, "%.2f");
+
+            auto rotation = glm::vec3(0.0f);
+            ImGui::SliderFloat3("Rotation", &position.x, -20.0f, 20.0f, "%.2f");
+
+            auto scale = glm::vec3(0.0f);
+            ImGui::SliderFloat3("Scale", &position.x, -20.0f, 20.0f, "%.2f");
+
+            ImGui::Separator();
+
+            ImGui::End();
+#endif
         }
 	}; // end of Application
 } // end of Hound namespace
