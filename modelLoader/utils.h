@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __HOUND_UTILS_H__
+#define __HOUND_UTILS_H__
 
 #include <iostream>
 #include <vector>
@@ -8,96 +9,41 @@
 
 
 namespace Hound {
+	class IPrintable {
+		friend std::ostream& operator<<(std::ostream&, const IPrintable&);
+	public:
+		IPrintable() = default;
+		virtual ~IPrintable() = default;
+
+	protected:
+		virtual void print(std::ostream&) const = 0;
+	};
+
+	
+
+	struct RectCollider : public IPrintable {
+		int x0, y0, x1, y1;
+
+		void print(std::ostream& os) const override {
+			os << "x0: " << x0 << " y0: " << y0 << " x1: " << x1 << " y1: " << y1;
+		}
+	};
+
+	bool hasIntersection(RectCollider, RectCollider);
+
 	// Defined type to hold tokens
 	typedef std::vector<const char*> TokenVector;
 
 	// sentence and delimiter
-	TokenVector tokenize(std::string s, std::string del=" ") 
-	{ 
-		TokenVector tokens;
-		int start = 0;
-		int end = s.find(del); 
-		while (end != -1) {
-			std::cout << s.substr(start, end - start) << std::endl;
-			tokens.push_back(s.substr(start, end - start).c_str());
-			// update the start position since lower values have been served
-			start = end + del.size(); // move forward by delimiter size
-			end = s.find(del, start); // find delimiter again by setting start position
-		}
-		std::cout << s.substr(start, end - start);
-		tokens.push_back(s.substr(start, end - start).c_str());
-
-		return tokens;
-	}
+	TokenVector tokenize(std::string, std::string=" ");
 
 	// sentence,(reference)where to store tokens and delimiter
-	void tokenize(std::string s, TokenVector& pTokens, std::string del=" ") 
-	{
-		// this is a more optimized version 
-		int start = 0;
-		int end = s.find(del);
-		while (end != -1) {
-			pTokens.push_back(s.substr(start, end - start).c_str());
-			// update the start position since lower values have been served
-			start = end + del.size();
-			end = s.find(del, start); // find delimiter again by setting start position
-		}
-		pTokens.push_back(s.substr(start, end - start).c_str());
-	}
+	void tokenize(std::string, TokenVector&, std::string=" ");
+
 
 	// sentence, (ptr)where to store tokens and delimiter
-	void tokenize(std::string s, TokenVector* pTokens, std::string del=" ") 
-	{
-		// this is a more optimized version 
-		int start = 0;
-		int end = s.find(del);
-		while (end != -1) {
-			pTokens->push_back(s.substr(start, end - start).c_str());
-			// update the start position since lower values have been served
-			start = end + del.size();
-			end = s.find(del, start); // find delimiter again by setting start position
-		}
-		pTokens->push_back(s.substr(start, end - start).c_str());
-	}
-
-	// loading textures
-	unsigned int TextureFromFile(const char* pFileName, const std::string& directory, bool gamma)
-	{
-		std::string filename = std::string(pFileName);
-		filename = directory + '/' + filename;
-
-		unsigned int textureID;
-		glGenTextures(1, &textureID);
-
-		int width, height, nrComponents;
-		unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-		if (data)
-		{
-			GLenum format;
-			if (nrComponents == 1)
-				format = GL_RED;
-			else if (nrComponents == 3)
-				format = GL_RGB;
-			else if (nrComponents == 4)
-				format = GL_RGBA;
-
-			glBindTexture(GL_TEXTURE_2D, textureID);
-			glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-			glGenerateMipmap(GL_TEXTURE_2D);
-
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-			stbi_image_free(data);
-		}
-		else
-		{
-			std::cout << "Texture failed to load at path: " << pFileName << std::endl;
-			stbi_image_free(data);
-		}
-
-		return textureID;
-	}
+	void tokenize(std::string, TokenVector*, std::string=" ");
 }
+
+
+#endif
