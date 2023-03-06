@@ -31,6 +31,7 @@ namespace Hound {
 		TokenVector tokens;
 		int start = 0;
 		int end = s.find(del);
+
 		while (end != -1) {
 			std::cout << s.substr(start, end - start) << std::endl;
 			tokens.push_back(s.substr(start, end - start).c_str());
@@ -38,6 +39,7 @@ namespace Hound {
 			start = end + del.size(); // move forward by delimiter size
 			end = s.find(del, start); // find delimiter again by setting start position
 		}
+
 		std::cout << s.substr(start, end - start);
 		tokens.push_back(s.substr(start, end - start).c_str());
 

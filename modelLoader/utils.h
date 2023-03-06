@@ -19,7 +19,6 @@ namespace Hound {
 		virtual void print(std::ostream&) const = 0;
 	};
 
-	
 
 	struct RectCollider : public IPrintable {
 		int x0, y0, x1, y1;
@@ -30,6 +29,7 @@ namespace Hound {
 	};
 
 	bool hasIntersection(RectCollider, RectCollider);
+
 
 	// Defined type to hold tokens
 	typedef std::vector<const char*> TokenVector;
