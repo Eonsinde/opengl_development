@@ -7,23 +7,27 @@
 class VertexBuffer;
 class IndexBuffer;
 
-//enum VERTEX_ATTRIB
-//{ 
-//	VA_POSITION, 
-//	VA_NORMAL,
-//	VA_TEXCOORD,
-//	VA_POS_NORM,
-//	VA_POS_TEXCOORD,
-//	VA_POS_NORM_TEXCOORD
-//};
+
+enum class VERTEX_ATTRIB
+{ 
+	VA_POSITION, 
+	VA_NORMAL,
+	VA_TEXCOORD,
+	VA_POS_NORM,
+	VA_POS_TEXCOORD,
+	VA_POS_NORM_TEXCOORD,
+	VA_POS_NORM_TEXCOORD_COLOR,
+	VA_POS_TEXCOORD_NORMAL,
+	VA_POS_TEXCOORD_NORMAL_COLOR
+};
 
 
 class VertexArray {
 private:
 	unsigned int m_Handle;
 
-	VertexArray(const VertexArray& other);
-	VertexArray& operator=(const VertexArray& other);
+	VertexArray(const VertexArray&) = delete;
+	VertexArray& operator=(const VertexArray&) = delete;
 
 	void SetLayout(VertexBuffer&);
 
