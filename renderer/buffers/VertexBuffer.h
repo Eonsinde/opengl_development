@@ -3,8 +3,7 @@
 
 #include <vector>
 #include <glad/glad.h>
-
-
+#include "../VertexArray.h"
 
 
 enum class VertexBufferDataType {
@@ -25,29 +24,30 @@ class VertexBuffer {
 private:
 	unsigned int			m_Handle;
 	unsigned int			m_Count;
-	unsigned int			m_NumOfVertexAttribs;
+	VERTEX_ATTRIB			m_VertexAttribFormat;
+
 	bool					m_IsSet; // to tell if vertex data has been written to memory
 	VertexBufferDataType	m_BufferDataType;
 
-	VertexBuffer(const VertexBuffer& other);
-	VertexBuffer& operator=(const VertexBuffer& other);
+	VertexBuffer(const VertexBuffer&) = delete;
+	VertexBuffer& operator=(const VertexBuffer&) = delete;
 
 public:
 	VertexBuffer();
 	~VertexBuffer();
 
-	void					Set(float* pArray, unsigned int pNumOfVertexAttribs, unsigned int pLen);
-	void					Set(std::vector<float>& pVector, unsigned int pNumOfVertexAttribs);
+	void					Set(float* pArray, VERTEX_ATTRIB vertexAttribFormat, unsigned int pSize);
+	void					Set(std::vector<float>& pVector, VERTEX_ATTRIB vertexAttribFormat);
 	//void Set(std::vector<Vertex>& pVector);
 
 	void					Bind() const { glBindBuffer(GL_ARRAY_BUFFER, m_Handle); }
 	void					Unbind() const { glBindBuffer(GL_ARRAY_BUFFER, 0); }
 
-	unsigned int			Count()		const { return m_Count; };
-	bool					IsSet()		const { return m_IsSet; };
-	unsigned int			GetHandle()	const { return m_Handle; };
+	unsigned int			Count()		const { return m_Count; }
+	bool					IsSet()		const { return m_IsSet; }
+	unsigned int			GetHandle()	const { return m_Handle; }
 	VertexBufferDataType	GetBufferDataType() const { return m_BufferDataType; }
-	unsigned int			GetVertexAtrribsCount() const { return m_NumOfVertexAttribs; };
+	VERTEX_ATTRIB			GetVertexAttribFormat() const { return m_VertexAttribFormat; }
 };
 
 

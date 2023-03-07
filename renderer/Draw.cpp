@@ -99,7 +99,7 @@ void DrawLine(glm::vec3 p1, glm::vec3 p2, glm::vec3 color)
 	VertexArray VAO;
 
 	// create VBO that will store points used to render line
-	VBO.Set(points, 1);
+	VBO.Set(points, VERTEX_ATTRIB::VA_POSITION);
 
 	// register VBO's data with VAO 
 	VAO.RegisterBuffer(VBO);

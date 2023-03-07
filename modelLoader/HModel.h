@@ -29,7 +29,7 @@ namespace Hound {
 
 		int v = -1;
 		int t = -1;
-		int n = -1;      
+		int n = -1;
 	};
 
 	typedef std::vector<HVertexGroup> HFace;
