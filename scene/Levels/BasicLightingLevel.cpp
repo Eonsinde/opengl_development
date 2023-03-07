@@ -161,7 +161,7 @@ void BasicLightingLevel::Draw()
     cubeShader->setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(1.0f)));
 
     model = glm::scale(idMat, glm::vec3(0.5f));
-    // make the light rotate
+    // make the light rotate around the cube
     mPointLight.position.x = lightRotationRad * glm::sin(glfwGetTime());
     mPointLight.position.y = 0.0f;
     mPointLight.position.z = lightRotationRad * glm::cos(glfwGetTime());

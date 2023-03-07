@@ -4,6 +4,10 @@
 #include "../../core/Input.h"
 
 #include "../scene_management/Plane.h"
+#include "../../modelLoader/OBJLoader.h"
+#include "../../renderer/VertexArray.h"
+#include "../../renderer/buffers/VertexBuffer.h"
+
 
 void MeshLoadingLevel::Init()
 {
@@ -52,34 +56,16 @@ void MeshLoadingLevel::Init()
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
     };
 
-    // bind light VAO and bind buffer
-    glGenVertexArrays(1, &lightVAO);
-    glBindVertexArray(lightVAO);
+    //Hound::loadObjMesh("./input_test_file.txt");
+    testVAO = new VertexArray();
+    testVBO = new VertexBuffer();
 
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    testVBO->Set(vertices, VERTEX_ATTRIB::VA_POS_NORM_TEXCOORD, sizeof(vertices));
+    testVAO->RegisterBuffer(*testVBO);
+}
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
-
-    glBindVertexArray(0);
-
-    // bind cube VAO and register VBO data in it by binding the VBO 
-    glGenVertexArrays(1, &cubeVAO);
-    glBindVertexArray(cubeVAO);
-    // bind buffer
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    glBindVertexArray(0);
-
+void MeshLoadingLevel::LoadScene()
+{
     cubeShader = new Shader("./shaders/codes/basic.vert", "./shaders/codes/basic.frag");
     lightShader = new Shader("./shaders/codes/ADS.vert", "./shaders/codes/dirlight_ADS.frag");
 
@@ -91,58 +77,7 @@ void MeshLoadingLevel::Init()
     mDirectionalLight.diffuse = glm::vec3(1.0f);
     mDirectionalLight.specular = glm::vec3(0.5f);
 
-    mCubeMaterial.shininess = 32.0f;
-
-    // Defined type to hold tokens
-    typedef std::vector<const char*> TokenVector;
-
-    // sentence and delimiter
-    TokenVector(*tokenize)(std::string, std::string) = [](std::string s, std::string del=" ") -> TokenVector
-    {
-        TokenVector tokens;
-        int start = 0;
-        int end = s.find(del);
-        while (end != -1) {
-            std::cout << s.substr(start, end - start) << std::endl;
-            tokens.push_back(s.substr(start, end - start).c_str());
-            // update the start position since lower values have been served
-            start = end + del.size(); // move forward by delimiter size
-            end = s.find(del, start); // find delimiter again by setting start position
-        }
-        std::cout << s.substr(start, end - start);
-        std::cout << "Negative value as expected: " << end - start << '\n';
-        tokens.push_back(s.substr(start, end - start).c_str());
-
-        return tokens;
-    };
-
-    tokenize("Hello world", " ");
-
-    struct Tester {
-        Tester() : x{}, y{} { std::cout << "Tester constructor called" << '\n'; }
-        Tester(int _x, int _y) : x{_x}, y{_y} { std::cout << "Tester constructor with arguments called" << '\n'; }
-
-        int x, y;
-    };
-
-    Tester tester1{};
-    tester1 = { 12, 43 };
-
-    std::cout << "Tester one: " << tester1.x << " " << tester1.y << '\n';
-
-    // testing the SimplePlane class
-    SimplePlane spTest;
-    std::cout << spTest << '\n';
-
-    // testing the Plane struct
-    Plane testPlane;
-    std::cout << testPlane << '\n';
-    std::cout << "Signed distance to plane: " << testPlane.getSignedDistanceToPlane(glm::vec3{ 0.0f, 3.0f, 4.0f }) << std::endl;
-}
-
-void MeshLoadingLevel::LoadScene()
-{
-
+    mCubeMaterial.specExp = 32.0f;
 }
 
 void MeshLoadingLevel::UnloadScene()
@@ -154,9 +89,10 @@ void MeshLoadingLevel::UnloadScene()
     if (mCubeTexture)
         delete mCubeTexture;
 
-    glDeleteBuffers(1, &VBO);
-    glDeleteVertexArrays(1, &lightVAO);
-    glDeleteVertexArrays(1, &cubeVAO);
+    if (testVAO)
+        delete testVAO;
+    if (testVBO)
+        delete testVBO;
 }
 
 void MeshLoadingLevel::Update(float deltaTime)
@@ -181,7 +117,7 @@ void MeshLoadingLevel::Draw()
     mSpecularMapTexture->activeTexture(1);
     lightShader->setInt("uMaterial.diffuse", 0);
     lightShader->setInt("uMaterial.specular", 1);
-    lightShader->setFloat("uMaterial.shininess", mCubeMaterial.shininess);
+    lightShader->setFloat("uMaterial.shininess", mCubeMaterial.specExp);
 
     // camera props 
     lightShader->setVec3fv("uCameraPos", glm::value_ptr(mainCamera.Position));
@@ -192,7 +128,7 @@ void MeshLoadingLevel::Draw()
     lightShader->setVec3fv("uDirectionalLight.specular", glm::value_ptr(mDirectionalLight.specular));
 
     view = mainCamera.GetViewMatrix();
-    projection = glm::perspective(glm::radians(mainCamera.Zoom), (float)mSceneInfo.width / (float)mSceneInfo.height, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(mainCamera.Zoom), (float)mSceneInfo.mViewport.width / (float)mSceneInfo.mViewport.height, 0.1f, 100.0f);
 
     lightShader->setMat4fv("uView", glm::value_ptr(view));
     lightShader->setMat4fv("uProjection", glm::value_ptr(projection));
@@ -204,8 +140,8 @@ void MeshLoadingLevel::Draw()
 
         lightShader->setMat4fv("uModel", glm::value_ptr(model));
 
-        glBindVertexArray(lightVAO);
+        testVAO->Bind();
         glDrawArrays(GL_TRIANGLES, 0, 36);
-        glBindVertexArray(0);
+        testVAO->Unbind();
     }
 }

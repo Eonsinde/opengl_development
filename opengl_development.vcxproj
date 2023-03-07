@@ -155,7 +155,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="scene\post_processing\InversionPPScene.h" />
+    <ClInclude Include="modelLoader\HModel.h" />
+    <ClInclude Include="scene\advanced_levels\CubeMapLevel.h" />
+    <ClInclude Include="scene\post_processing\DoubleViewScene.h" />
+    <ClInclude Include="scene\post_processing\PPScene.h" />
     <ClInclude Include="scene\advanced_levels\FrameBuffersLevel.h" />
     <ClInclude Include="scene\Levels\environments\DesertLevel.h" />
     <ClInclude Include="scene\Levels\environments\BiochemicalLevel.h" />
@@ -265,7 +268,11 @@
     <ClInclude Include="scene\advanced_levels\TransparencyLevel.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="scene\post_processing\InversionPPScene.cpp" />
+    <ClCompile Include="modelLoader\HModel.cpp" />
+    <ClCompile Include="modelLoader\OBJLoader.cpp" />
+    <ClCompile Include="scene\advanced_levels\CubeMapLevel.cpp" />
+    <ClCompile Include="scene\post_processing\DoubleViewScene.cpp" />
+    <ClCompile Include="scene\post_processing\PPScene.cpp" />
     <ClCompile Include="scene\advanced_levels\FrameBuffersLevel.cpp" />
     <ClCompile Include="scene\Levels\environments\DesertLevel.cpp" />
     <ClCompile Include="modelLoader\utils.cpp" />
@@ -404,7 +411,9 @@
     <None Include="shaders\codes\texture_.vert" />
     <None Include="shaders\codes\transparency_.frag" />
     <None Include="shaders\codes\vegetation_.frag" />
+    <None Include="shaders\pp_codes\grayscale_effect.frag" />
     <None Include="shaders\pp_codes\inversion_effect.frag" />
+    <None Include="shaders\pp_codes\kernel.frag" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="extras.txt" />

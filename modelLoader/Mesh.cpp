@@ -74,4 +74,12 @@ namespace Hound {
 
 		glBindVertexArray(0);
 	}
+
+	std::ostream& operator<<(std::ostream& os, const Vertex obj) {
+		os << obj.position.x << " " << obj.position.y << " " << obj.position.z
+			<< obj.texCoord.x << " " << obj.texCoord.y << " "
+			<< obj.normal.x << " " << obj.normal.y << " " << obj.normal.z << "\n";
+
+		return os;
+	}
 }

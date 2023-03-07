@@ -75,6 +75,7 @@ void BezierCurveLevel::Draw()
     DrawPoint(bezierCurve1.C2);
     glBindVertexArray(0);
 
+    // render the lines connecting the points
     lineShader1->use();
 
     lineShader1->setVec3fv("uPixelColor", glm::value_ptr(yellow));
@@ -88,6 +89,7 @@ void BezierCurveLevel::Draw()
         std::cout << "t per time: " << i << "\n";
         auto point = interpolate(bezierCurve1, i/10.0f);
         std::cout << point.x << " " << point.y << " " << point.z << "\n";
+
         glBindVertexArray(VAO);
         DrawPoint(point);
         glBindVertexArray(0);

@@ -58,6 +58,7 @@ namespace Hound {
         void ProcessKeyboard(Camera_Movement direction, float deltaTime)
         {
             float velocity = MovementSpeed * deltaTime;
+
             if (direction == FORWARD)
                 Position += Front * velocity;
             if (direction == BACKWARD)

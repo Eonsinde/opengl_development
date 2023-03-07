@@ -1,8 +1,8 @@
 #include "HModel.h"
 
 #include <iostream>
-#include <sstream>
 #include <fstream>
+#include <unordered_map>
 #include "utils.h"
  
 
@@ -97,7 +97,7 @@ namespace Hound {
 					}
 
 					// faces vector stores faces
-					// stores data in format : { { { {21, 123, 123}, {12, 34, 65}, {75, 32, 123} }, { { {21, 123, 123}, {12, 34, 65}, {75, 32, 123} } }
+					// stores data in format : { { {21, 123, 123}, {12, 34, 65}, {75, 32, 123} }, { {21, 123, 123}, {12, 34, 65}, {75, 32, 123} } }
 					// i.e a vector that stores vector of Faces
 					faces_vector.push_back(faces);
 					
@@ -117,6 +117,8 @@ namespace Hound {
 				}
 
 				// group data
+				// NB: this logic is backlogged
+				// the data before a given group at subStrings[0] is processed at this point
 				if (subStrings[0] == "g" || subStrings[0] == "o") {
 					if (!faces_vector.empty()) {
 						HMesh mesh;
@@ -124,6 +126,7 @@ namespace Hound {
 						mesh.materialName = lastMaterialName;
 
 						// sort vertex data
+						SortVertexData(mesh, rawMesh, faces_vector);
 
 						m_meshes.push_back(mesh);
 					}
@@ -133,6 +136,21 @@ namespace Hound {
 					continue;
 				}
 			}
+		}
+
+		file.close();
+
+		// since reading the data is backlogged
+		// ensure any existing final is processed
+		if (!faces_vector.empty()) {
+			HMesh mesh;
+			mesh.name = lastName;
+			mesh.materialName = lastMaterialName;
+
+			// sort vertex data
+			SortVertexData(mesh, rawMesh, faces_vector);
+
+			m_meshes.push_back(mesh);
 		}
 
 		return true;
@@ -147,4 +165,48 @@ namespace Hound {
 	{
 
 	}
-}
+
+	/// <summary>
+	///	SortVertexData: builds a mesh using the parsed faces data
+	/// </summary>
+	/// <param name="newMesh">: this is the mesh that holds the final results after sorting</param>
+	/// <param name="oldMesh">: the positions textCoords normals of this mesh is used</param>
+	/// <param name="faces_vector">: contains indices that helps define how a single position, textCoord and normal are related and can be read to define a mesh</param>
+	void HModel::SortVertexData(HMesh& newMesh, const HMesh& oldMesh, const std::vector<HFace>& faces_vector)
+	{
+		unsigned int count;
+		std::unordered_map<HVertexGroup, unsigned int, HashFunction> map;
+
+		for (const HFace& faces : faces_vector) { // faces_vector: { 0:{ {21, 123, 123}, {12, 34, 65}, {75, 32, 123} }, 1:{ {21, 123, 123}, {12, 34, 65}, {75, 32, 123} } }
+			for (int i{}; i < 3; i++) { // faces: { 0:{21, 123, 123}, 1:{12, 34, 65}, 2:{75, 32, 123} }
+				auto it = map.find(faces[i]); // does face: {21, 123, 123} exist in map
+
+				if (it == map.end()) { // if face exists
+					newMesh.vertices.push_back(oldMesh.vertices[faces[i].v]);
+					newMesh.textCoords.push_back(oldMesh.textCoords[faces[i].t]);
+					newMesh.normals.push_back(oldMesh.normals[faces[i].n]);
+					newMesh.hvertices.push_back({
+						oldMesh.vertices[faces[i].v], // position
+						oldMesh.textCoords[faces[i].t], // textCoord
+						oldMesh.normals[faces[i].n], // normal
+						{ 1.0f, 1.0f, 1.0f, 1.0f } // color
+					});
+
+					newMesh.indices.push_back(count);
+
+					map[faces[i]] = count;
+					count++;
+				}
+				else {
+					newMesh.indices.push_back(it->second);
+				}
+			}
+		}
+	}
+
+	bool operator==(const HVertexGroup& lhsObj, const HVertexGroup& rhsObj)
+	{
+		return (lhsObj.v == rhsObj.v && lhsObj.t == rhsObj.t && lhsObj.n == rhsObj.n);
+	}
+};
+

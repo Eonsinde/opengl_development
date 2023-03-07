@@ -4,11 +4,12 @@
 #include "../../Scene.h"
 #include "../../Camera.h"
 
-#include "../../shaders/Lights/PointLight.h"
-#include "../../shaders/Lights/DirectionalLight.h"
-#include "../../shaders/Lights/SpotLight.h"
-#include "../../shaders/Material.h"
 #include "../../textures/Texture.h"
+#include "../../shaders/Material.h"
+#include "../../shaders/Lights/PointLight.h"
+#include "../../shaders/Lights/SpotLight.h"
+
+#include "../../../modelLoader/Model.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -18,10 +19,10 @@ class Shader;
 
 static Hound::Camera mainCamera;
 
-class MultipleLightsApp : public Hound::Application
+class FirstModelLoadingApp : public Hound::Application
 {
 public:
-	MultipleLightsApp() {
+	FirstModelLoadingApp() {
 		// enable v-sync with app info component
 		mInfo.flags.vsync = 1;
 		mInfo.flags.cursor = 1;
@@ -74,20 +75,20 @@ protected:
 	}
 
 	void renderUI() override {
-#ifdef use_imgui
-		ImGui::ShowDemoWindow((bool*)1);
+		//ImGui::ShowDemoWindow((bool*)1);
 
 		// create UI to clear color buffer
-		ImGui::Begin("Edit Clear Color"); // Create a window called "Hello, world!" and append into it.
-		ImGui::ColorEdit3("Clear Color", (float*)&mClearColor); // Edit 3 floats representing a color
-		ImGui::End();
+		//ImGui::Begin("Edit Clear Color"); // Create a window called "Hello, world!" and append into it.
+		//ImGui::ColorEdit3("Clear Color", (float*)&mClearColor); // Edit 3 floats representing a color
+		//ImGui::End();
 
 		/*ImGui::Begin("ImGui Stats");
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::End();*/
 
-		glClearColor(mClearColor.x, mClearColor.y, mClearColor.z, 1.0);
-#endif
+		glClear(GL_COLOR_BUFFER_BIT);
+		glClearColor(0.0784f, 0.0784f, 0.0784f, 1.0);
+		//glClearColor(mClearColor.x, mClearColor.y, mClearColor.z, 1.0);
 	}
 
 protected:
@@ -96,24 +97,22 @@ protected:
 	bool firstMouse = true;
 
 	// to adjust color buffer
-#ifdef use_imgui
-	ImVec4 mClearColor = ImVec4(0.0784f, 0.0784f, 0.0784f, 1.0);
-#endif
+	//ImVec4 mClearColor = ImVec4(0.0784f, 0.0784f, 0.0784f, 1.0);
 };
 
 
-class MultipleLightsLevel : public Hound::Scene
+class FirstModelLevel : public Hound::Scene
 {
 public:
-	MultipleLightsLevel()
-		: cubeVAO{}, lightVAO{}, VBO{}, lightShader{ nullptr }, cubeShader{ nullptr }, mCubeTexture{ nullptr } {
+	FirstModelLevel()
+		: cubeVAO{}, lightVAO{}, VBO{}, lightShader{ nullptr }, cubeShader{ nullptr }, mCubeTexture{ nullptr }, mBagPackModel{ "./assets/models/backpack/backpack.obj" } {
 		char title[]{ "Multiple Lights Scene" };
 		strcpy_s(mSceneInfo.title, sizeof(title), title);
 		mSceneInfo.width = 800;
 		mSceneInfo.height = 600;
 	}
 
-	virtual ~MultipleLightsLevel() {
+	virtual ~FirstModelLevel() {
 
 	}
 
@@ -126,14 +125,13 @@ public:
 
 protected:
 	unsigned int cubeVAO, lightVAO, VBO;
-
-	// shaders
 	Shader* lightShader;
 	Shader* cubeShader;
 
+	// models
+	Hound::Model mBagPackModel;
+
 	// Lights
-	Hound::DirectionalLight mDirLight;
-	std::vector<Hound::PointLight> pointLights;
 	Hound::SpotLight mSpotLight;
 	float lightRotationRad = 10.0f; // ligth rotation radius
 
@@ -159,16 +157,9 @@ protected:
 		glm::vec3(1.5f,  0.2f, -1.5f),
 		glm::vec3(-1.3f,  1.0f, -1.5f)
 	};
-
-	// positions of the point lights
-	glm::vec3 pointLightPositions[4] = {
-		glm::vec3(0.7f,  0.2f,  2.0f),
-		glm::vec3(2.3f, -3.3f, -4.0f),
-		glm::vec3(-4.0f,  2.0f, -12.0f),
-		glm::vec3(0.0f,  0.0f, -3.0f)
-	};
 };
 
 
-//DECLARE_MAIN(MultipleLightsApp, MultipleLightsLevel)
+//DECLARE_MAIN(FirstModelLoadingApp, FirstModelLevel)
+
 

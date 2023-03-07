@@ -10,20 +10,7 @@
 #include "../Camera.h"
 
 
-class IPrintable {
-	friend std::ostream& operator<<(std::ostream&, const IPrintable&);
-public:
-	IPrintable() = default;
-	virtual ~IPrintable() = default;
-
-protected:
-	virtual void print(std::ostream&) const = 0;
-};
-
-std::ostream& operator<<(std::ostream& os, const IPrintable& rhsObj) {
-	rhsObj.print(os);
-	return os;
-}
+#include "../../modelLoader/utils.h"
 
 
 // to explain how the SimplePlane class works:
@@ -32,7 +19,7 @@ std::ostream& operator<<(std::ostream& os, const IPrintable& rhsObj) {
 // and defines its' distance from the origin(0,0,) 
 // the IsInFront method is then used to see if a certain point 
 // is on the plane or behind it and uses the already computed distance to achieve this
-class SimplePlane : public IPrintable {
+class SimplePlane : public Hound::IPrintable {
 public:
 	SimplePlane()
 		: m_normal{ 0.f, 1.f, 0.f }, m_distance{0.0f} {

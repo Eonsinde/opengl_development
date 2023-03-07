@@ -20,16 +20,16 @@ static GLenum DrawModeToGLEnum(DrawMode input) {
 		return  GL_LINE_LOOP;
 	}
 	else if (input == DrawMode::Lines) {
-		return  GL_LINES;
+		return GL_LINES;
 	}
 	else if (input == DrawMode::Triangles) {
-		return  GL_TRIANGLES;
+		return GL_TRIANGLES;
 	}
 	else if (input == DrawMode::TriangleStrip) {
-		return  GL_TRIANGLE_STRIP;
+		return GL_TRIANGLE_STRIP;
 	}
 	else if (input == DrawMode::TriangleFan) {
-		return   GL_TRIANGLE_FAN;
+		return GL_TRIANGLE_FAN;
 	}
 
 	std::cout << "DrawModeToGLEnum unreachable code hit\n";
@@ -94,11 +94,11 @@ void DrawLine(glm::vec3 p1, glm::vec3 p2, glm::vec3 color)
 	points = { p1.x, p1.y, p1.z, p2.x, p2.y, p2.z };
 	//std::vector<float> points { 0.5f, -0.5f, 0.0f, p2.x, p2.y, p2.z };
 
+	VertexBuffer VBO;
 	// create VAO that will be used
 	VertexArray VAO;
 
 	// create VBO that will store points used to render line
-	VertexBuffer VBO;
 	VBO.Set(points, 1);
 
 	// register VBO's data with VAO 

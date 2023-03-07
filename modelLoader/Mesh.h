@@ -1,17 +1,21 @@
 #pragma once
+
 #include <string>
 #include <vector>
 #include <glm/glm.hpp>
+#include "utils.h"
 
 
 class Shader;
 
 namespace Hound {
-	struct Vertex
+	struct Vertex 
 	{
+		friend std::ostream& operator<<(std::ostream& os, const Vertex obj);
+
 		glm::vec3 position;
-		glm::vec3 normal;
 		glm::vec2 texCoord;
+		glm::vec3 normal;
 		/*glm::vec3 tangent;
 		glm::vec3 bitangent;*/
 	};

@@ -1,5 +1,6 @@
 #pragma once
 
+#define use_imgui
 #include "../../core/Application.h"
 #include "../Scene.h"
 #include "../Camera.h"
@@ -9,11 +10,15 @@
 #include "../../shaders/Material.h"
 #include "../../textures/Texture.h"
 
+#include "../../modelLoader/utils.h"
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
 class Shader;
+class VertexArray;
+class VertexBuffer;
 
 static Hound::Camera mainCamera;
 
@@ -31,13 +36,18 @@ class MeshLoadingApp : public Hound::Application
 			mainCamera.ProcessKeyboard(RIGHT, Application::GetDeltaTime());
 
 		if (key == GLFW_KEY_KP_ADD)
-			mainCamera.MovementSpeed += 0.2f;
+			mainCamera.MovementSpeed += 0.8f;
 		if (key == GLFW_KEY_KP_SUBTRACT)
 			mainCamera.MovementSpeed -= 0.2f;
 	}
 
-	virtual void onMouseMove(int x, int y)
+
+	void onMouseMove(int x, int y) override final
 	{
+		// update mouse collider
+		mMouseCollider.x0 = x; mMouseCollider.y0 = y;
+		mMouseCollider.x1 = x + 1; mMouseCollider.y1 = y + 1;
+
 		float xpos = static_cast<float>(x);
 		float ypos = static_cast<float>(y);
 
@@ -55,7 +65,17 @@ class MeshLoadingApp : public Hound::Application
 		lastX = xpos;
 		lastY = ypos;
 
-		mainCamera.ProcessMouseMovement(xoffset, yoffset);
+
+		if (hasIntersection(mSceneCollider, mMouseCollider)) {
+			mainCamera.ProcessMouseMovement(xoffset, yoffset);
+		}
+	}
+
+	void onMouseWheel(int yOffset) override final
+	{
+		if (hasIntersection(mSceneCollider, mMouseCollider)) {
+			mainCamera.ProcessMouseScroll(yOffset);
+		}
 	}
 
 protected:
@@ -69,11 +89,11 @@ class MeshLoadingLevel : public Hound::Scene
 {
 public:
 	MeshLoadingLevel()
-		: cubeVAO{}, lightVAO{}, VBO{}, lightShader{ nullptr }, cubeShader{ nullptr }, mCubeTexture{ nullptr } {
+		: cubeVAO{}, lightVAO{}, VBO{}, testVAO{ nullptr }, lightShader{ nullptr }, cubeShader{ nullptr }, mCubeTexture{ nullptr } {
 		char title[]{ "Mesh Loading Level" };
 		strcpy_s(mSceneInfo.title, sizeof(title), "Mesh Loading Level");
-		mSceneInfo.width = 800;
-		mSceneInfo.height = 600;
+		mSceneInfo.mResolution.width = 1920;
+		mSceneInfo.mResolution.height = 1080;
 	}
 
 	virtual ~MeshLoadingLevel() {
@@ -89,6 +109,9 @@ public:
 
 protected:
 	unsigned int cubeVAO, lightVAO, VBO;
+	VertexArray* testVAO;
+	VertexBuffer* testVBO;
+
 	Shader* lightShader;
 	Shader* cubeShader;
 
@@ -121,4 +144,4 @@ protected:
 };
 
 
-//DECLARE_MAIN(MeshLoadingApp, MeshLoadingLevel)
+DECLARE_MAIN(MeshLoadingApp, MeshLoadingLevel)

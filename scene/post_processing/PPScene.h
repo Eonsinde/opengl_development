@@ -160,4 +160,4 @@ protected:
 };
 
 
-DECLARE_MAIN(MyApp, PPScene)
+//DECLARE_MAIN(MyApp, PPScene)

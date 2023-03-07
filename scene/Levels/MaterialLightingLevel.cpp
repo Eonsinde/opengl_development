@@ -90,7 +90,7 @@ void MaterialLightingLevel::Init()
     mPointLight.diffuse = glm::vec3(1.0f);
     mPointLight.specular = glm::vec3(0.5f);
 
-    mCubeMaterial.shininess = 32.0f;
+    mCubeMaterial.specExp = 32.0f;
 }
 
 void MaterialLightingLevel::LoadScene()
@@ -134,7 +134,7 @@ void MaterialLightingLevel::Draw()
     mSpecularMapTexture->activeTexture(1);
     lightShader->setInt("uMaterial.diffuse", 0);
     lightShader->setInt("uMaterial.specular", 1);
-    lightShader->setFloat("uMaterial.shininess", mCubeMaterial.shininess);
+    lightShader->setFloat("uMaterial.shininess", mCubeMaterial.specExp);
 
     // camera props 
     lightShader->setVec3fv("uCameraPos", glm::value_ptr(mainCamera.Position));

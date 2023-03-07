@@ -336,7 +336,16 @@
     <ClInclude Include="scene\advanced_levels\FrameBuffersLevel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scene\post_processing\InversionPPScene.h">
+    <ClInclude Include="scene\post_processing\PPScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\post_processing\DoubleViewScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\advanced_levels\CubeMapLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="modelLoader\HModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -494,7 +503,19 @@
     <ClCompile Include="scene\advanced_levels\FrameBuffersLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="scene\post_processing\InversionPPScene.cpp">
+    <ClCompile Include="scene\post_processing\PPScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\post_processing\DoubleViewScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\advanced_levels\CubeMapLevel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modelLoader\HModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="modelLoader\OBJLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -681,6 +702,8 @@
     <None Include="shaders\codes\framebuffer_quad.vert" />
     <None Include="shaders\codes\just_texture.frag" />
     <None Include="shaders\pp_codes\inversion_effect.frag" />
+    <None Include="shaders\pp_codes\grayscale_effect.frag" />
+    <None Include="shaders\pp_codes\kernel.frag" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="extras.txt" />

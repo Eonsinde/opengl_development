@@ -106,21 +106,21 @@ protected:
 };
 
 
-class InversionPPScene : public Hound::Scene
+class CubeMapLevel : public Hound::Scene
 {
 public:
-	InversionPPScene()
+	CubeMapLevel()
 		: mainShader{ nullptr }, fbQuadShader{ nullptr }, mCubeTexture{ nullptr },
 		//cubeVAO{}, planeVAO{}, glassVAO{}, cubeVBO{}, planeVBO{}, glassVBO{},
 		mPlaneTexture{ nullptr }
 	{
-		char title[]{ "Post Processing: Inversion Scene" };
+		char title[]{ "Cube Map Scene" };
 		strcpy_s(mSceneInfo.title, sizeof(title), title);
 		mSceneInfo.mResolution.width = 1920;
 		mSceneInfo.mResolution.height = 1080;
 	}
 
-	virtual ~InversionPPScene() {
+	virtual ~CubeMapLevel() {
 
 	}
 
@@ -134,9 +134,9 @@ public:
 protected:
 	unsigned int cubeVAO, planeVAO, quadVAO;
 	unsigned int cubeVBO, planeVBO, quadVBO;
-	unsigned int frameBuffer;
+	unsigned int frameBuffer[2];
 	unsigned int textureColorBuffer; // framebuffer attachment 
-	unsigned int rbo; // render buffer object
+	unsigned int RBO; // render buffer object
 
 	Shader* mainShader;
 	Shader* fbQuadShader; // frame buffer quad shader
@@ -160,7 +160,4 @@ protected:
 };
 
 
-DECLARE_MAIN(MyApp, InversionPPScene)
-
-
-
+//DECLARE_MAIN(MyApp, CubeMapLevel)

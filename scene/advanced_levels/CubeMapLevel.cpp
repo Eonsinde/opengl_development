@@ -1,4 +1,4 @@
-#include "InversionPPScene.h"
+#include "CubeMapLevel.h"
 
 #include "../../core/Input.h"
 
@@ -9,7 +9,7 @@
 //VertexBuffer cubeVBO, planeVBO, glassVBO;
 
 
-void InversionPPScene::Init()
+void CubeMapLevel::Init()
 {
     float vertices[] = {
         // back face
@@ -67,14 +67,16 @@ void InversionPPScene::Init()
          5.0f, -0.5f, -5.0f,  2.0f, 2.0f
     };
 
+    // vertex attributes for a quad that fills the entire screen in Normalized Device Coordinates. NOTE that this plane is now much smaller and at the top of the screen
     float quadVertices[] = {
-        // positions // texCoords
-        -1.0f, 1.0f, 0.0f, 1.0f,
-        -1.0f, -1.0f, 0.0f, 0.0f,
-        1.0f, -1.0f, 1.0f, 0.0f,
-        -1.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, -1.0f, 1.0f, 0.0f,
-        1.0f, 1.0f, 1.0f, 1.0f
+        // positions   // texCoords
+        -0.3f,  1.0f,  0.0f, 1.0f,
+        -0.3f,  0.2f,  0.0f, 0.0f,
+         0.3f,  0.2f,  1.0f, 0.0f,
+
+        -0.3f,  1.0f,  0.0f, 1.0f,
+         0.3f,  0.2f,  1.0f, 0.0f,
+         0.3f,  1.0f,  1.0f, 1.0f
     };
 
 
@@ -123,9 +125,9 @@ void InversionPPScene::Init()
 
     glBindVertexArray(0);
 
-    // create framebuffer
-    glGenFramebuffers(1, &frameBuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
+    // create front framebuffer
+    glGenFramebuffers(1, &frameBuffer[0]);
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer[0]);
 
     /*std::cout << "Res width: " << mSceneInfo.mViewport.width << "\n";
     std::cout << "Res Height: " << mSceneInfo.mViewport.height << "\n";*/
@@ -133,16 +135,16 @@ void InversionPPScene::Init()
     // create texture that stores colors and attach it to framebuffer
     glGenTextures(1, &textureColorBuffer);
     glBindTexture(GL_TEXTURE_2D, textureColorBuffer);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, mSceneInfo.mViewport.width, mSceneInfo.mViewport.height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorBuffer, 0); // attach texture to the buffer
 
     // create render buffer that stores depth(24) & stencil(8) 
-    glGenRenderbuffers(1, &rbo);
-    glBindRenderbuffer(GL_RENDERBUFFER, rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, mSceneInfo.mViewport.width, mSceneInfo.mViewport.height); // use a single renderbuffer object for both a depth AND stencil buffer.
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo); // now actually attach it
+    glGenRenderbuffers(1, &RBO);
+    glBindRenderbuffer(GL_RENDERBUFFER, RBO);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 600); // use a single renderbuffer object for both a depth AND stencil buffer.
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO); // now actually attach it
 
     // now that we actually created the framebuffer and added all attachments we want to check if it is actually complete now
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -159,18 +161,21 @@ void InversionPPScene::Init()
     glassVAO.RegisterBuffer(glassVBO);*/
 
     mainShader = new Shader("./shaders/codes/texture_.vert", "./shaders/codes/texture_.frag");
+    //fbQuadShader = new Shader("./shaders/codes/framebuffer_quad.vert", "./shaders/pp_codes/inversion_effect.frag");
+    //fbQuadShader = new Shader("./shaders/codes/framebuffer_quad.vert", "./shaders/pp_codes/grayscale_effect.frag");
+    //fbQuadShader = new Shader("./shaders/codes/framebuffer_quad.vert", "./shaders/pp_codes/kernel.frag");
     fbQuadShader = new Shader("./shaders/codes/framebuffer_quad.vert", "./shaders/codes/just_texture.frag");
 
     mCubeTexture = new Hound::Texture("./assets/textures/brickwall.jpg");
     mPlaneTexture = new Hound::Texture("./assets/textures/metal.png");
 }
 
-void InversionPPScene::LoadScene()
+void CubeMapLevel::LoadScene()
 {
 
 }
 
-void InversionPPScene::UnloadScene()
+void CubeMapLevel::UnloadScene()
 {
     if (mainShader)
         delete mainShader;
@@ -181,11 +186,11 @@ void InversionPPScene::UnloadScene()
         delete mPlaneTexture;
 
     glDeleteTextures(1, &textureColorBuffer);
-    glDeleteRenderbuffers(1, &rbo);
-    glDeleteFramebuffers(1, &frameBuffer);
+    glDeleteRenderbuffers(1, &RBO);
+    glDeleteFramebuffers(1, &frameBuffer[0]);
 }
 
-void InversionPPScene::Update(float deltaTime)
+void CubeMapLevel::Update(float deltaTime)
 {
     if (Hound::Input::IsKeyPressed(Hound::Key::KPAdd))
         std::cout << "Adding to movement speed\n";
@@ -193,21 +198,28 @@ void InversionPPScene::Update(float deltaTime)
         std::cout << "Removing from movement speed\n";
 }
 
-void InversionPPScene::Draw()
+void CubeMapLevel::Draw()
 {
-    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-    glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
-
-    // make sure we clear the framebuffer's content
-    glClearColor(0.0784f, 0.0784f, 0.0784f, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    //glPointSize(15.0f);
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // mode - GL_LINE, GL_FILL, GL_POINT
 
-    view = mainCamera.GetViewMatrix();
-    projection = glm::perspective(glm::radians(mainCamera.Zoom), (float)mSceneInfo.mViewport.width / (float)mSceneInfo.mViewport.height, 0.1f, 100.0f);
+    /// <summary>
+    /// First render pass
+    /// offscreen rendering to frame buffer occurs here
+    /// </summary>
+    glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer[0]);
+    glEnable(GL_DEPTH_TEST);
 
+    // make sure we clear the framebuffer's content
+    glClearColor(0.04f, 0.04f, 0.04f, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    mainCamera.Yaw += 180.0f;
+    mainCamera.ProcessMouseMovement(0, 0, false);
+    view = mainCamera.GetViewMatrix();
+    // reset the rotation given to the camera
+    mainCamera.Yaw -= 180.0f;
+    mainCamera.ProcessMouseMovement(0, 0, true);
+    projection = glm::perspective(glm::radians(mainCamera.Zoom), (float)800 / (float)600, 0.1f, 100.0f);
 
     mainShader->use();
     mCubeTexture->activeTexture(0);
@@ -226,6 +238,50 @@ void InversionPPScene::Draw()
         glBindVertexArray(0);
     }
 
+    // draw the plane
+    mPlaneTexture->activeTexture(1);
+    mainShader->setInt("texture_diffuse", 1);
+    //model = glm::translate(idMat, glm::vec3{ 0.0f, -15.0f, 0.0f });
+    mainShader->setMat4fv("uModel", glm::value_ptr(idMat));
+
+    glBindVertexArray(planeVAO);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glBindVertexArray(0);
+
+
+    /// <summary>
+    /// Second render pass
+    /// onscreen rendering to default frame buffer occurs here
+    /// </summary>
+    // switch back to default frame buffer
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glEnable(GL_DEPTH_TEST);
+
+    glClearColor(0.0784f, 0.0784f, 0.0784f, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // the camera is now facing it's default position(i.e no rotations by 180)
+    // update the uView attribute in your shader 
+    view = mainCamera.GetViewMatrix();
+    projection = glm::perspective(glm::radians(mainCamera.Zoom), (float)mSceneInfo.mViewport.width / (float)mSceneInfo.mViewport.height, 0.1f, 100.0f);
+
+    mainShader->setMat4fv("uView", glm::value_ptr(view));
+    mainShader->setMat4fv("uProjection", glm::value_ptr(projection));
+
+
+    mCubeTexture->activeTexture(0);
+    mainShader->setInt("texture_diffuse", 0);
+
+    // render cubes
+    for (int16_t i{}; i < 2; i++)
+    {
+        model = glm::translate(idMat, mCubePositions[i]);
+        mainShader->setMat4fv("uModel", glm::value_ptr(model));
+
+        glBindVertexArray(cubeVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+        glBindVertexArray(0);
+    }
 
     // draw the plane
     mPlaneTexture->activeTexture(1);
@@ -238,16 +294,9 @@ void InversionPPScene::Draw()
     glBindVertexArray(0);
 
 
-    // draw framebuffer quad
+    // draw framebuffer quad using the default framebuffer
     // the quad is draw over the entire scene and depth testing is disabled to ensure this
-    // now bind back to default framebuffer and draw a quad plane with the attached framebuffer color texture
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
-    // clear all relevant buffers
-    glClearColor(0.0784f, 0.0784f, 0.0784f, 1.0); // set clear color to white (not really necessary actually, since we won't be able to see behind the quad anyways)
-    //glClearColor(1.0f, 1.0f, 1.0f, 1.0); // set clear color to white (not really necessary actually, since we won't be able to see behind the quad anyways)
-    glClear(GL_COLOR_BUFFER_BIT);
-
     // put texture in unit 2
     glActiveTexture(GL_TEXTURE0 + 2);
     glBindTexture(GL_TEXTURE_2D, textureColorBuffer); // use the color attachment texture as the texture of the quad plane

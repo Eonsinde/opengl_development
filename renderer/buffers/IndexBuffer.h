@@ -18,8 +18,8 @@ private:
 	bool					m_IsSet;
 	IndexBufferDataType		m_BufferDataType;
 
-	IndexBuffer(const IndexBuffer& other);
-	IndexBuffer& operator=(const IndexBuffer& other);
+	IndexBuffer(const IndexBuffer& other) = delete;
+	IndexBuffer& operator=(const IndexBuffer& other) = delete;
 
 public:
 	IndexBuffer();
