@@ -5,8 +5,15 @@
 #include <glm/glm.hpp>
 
 
+class VertexArray;
+class VertexBuffer;
+class IndexBuffer;
+class Shader;
+
 namespace Hound {
 	struct HVertex {
+		friend std::ostream& operator<<(std::ostream&, const HVertex);
+
 		glm::vec3 position;
 		glm::vec2 textCoord;
 		glm::vec3 normal;
@@ -14,6 +21,7 @@ namespace Hound {
 	};
 
 	struct HMesh {
+		friend class HModel;
 		std::string name;
 		std::string materialName;
 		std::vector<unsigned int> indices;
@@ -22,6 +30,18 @@ namespace Hound {
 		std::vector<glm::vec2> textCoords;
 		std::vector<glm::vec4> colors;
 		std::vector<glm::vec3> normals;
+		// used to determine what draw call to trigger
+		int drawMode = 0; // triangles by default
+	
+		void Draw(Shader&);
+
+	private:
+		// render data
+		VertexArray* m_VAO;
+		VertexBuffer* m_VBO;
+		IndexBuffer* m_EBO;
+
+		void SetupMesh();
 	};
 
 	struct HVertexGroup {
@@ -48,7 +68,8 @@ namespace Hound {
 
 		bool Load(const std::string& filename);
 		void Update();
-		void Render();
+		void Render(Shader& shader);
+		void Print();
 
 	private:
 		void SortVertexData(HMesh& newMesh, const HMesh& oldMesh, const std::vector<HFace>& faces);

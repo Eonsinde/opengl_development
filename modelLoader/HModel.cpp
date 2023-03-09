@@ -3,8 +3,13 @@
 #include <iostream>
 #include <fstream>
 #include <unordered_map>
+#include <glm/gtc/type_ptr.hpp>
 #include "utils.h"
- 
+#include "../renderer/VertexArray.h"
+#include "../renderer/buffers/VertexBuffer.h"
+#include "../renderer/buffers/IndexBuffer.h"
+#include "../shaders/Shader.h"
+
 
 namespace Hound {
 	HModel::HModel()
@@ -27,6 +32,8 @@ namespace Hound {
 		std::string line;
 		std::string lastName;
 		std::vector<HFace> faces_vector;
+		// (TODO): drawMode
+		int drawMode = 0; // 0 for triangles, 1 for quads
 
 		TokenVector subStrings;
 		subStrings.reserve(10);
@@ -40,7 +47,6 @@ namespace Hound {
 
 				// comments
 				if (subStrings[0] == "#") {
-					std::cout << "Some Comment: " << line << "\n";
 					continue;
 				}
 
@@ -65,7 +71,7 @@ namespace Hound {
 				}
 
 				// texture coord data
-				if (subStrings[0] == "vn") {
+				if (subStrings[0] == "vt") {
 					rawMesh.textCoords.push_back(glm::vec2(
 						std::stof(subStrings[1]),
 						std::stof(subStrings[2])
@@ -77,29 +83,48 @@ namespace Hound {
 				if (subStrings[0] == "f") {
 					// subStrings format here: [f, 21/123/123, 12/34/65, 75/32/123]
 
-					HFace faces; // stores data in format: { {21, 123, 123}, {12, 34, 65}, {75, 32, 123} }
+					HFace face; // stores data in format: { {21, 123, 123}, {12, 34, 65}, {75, 32, 123} }
 					TokenVector numbers;
 					numbers.reserve(10);
+				
+					if (subStrings.size() > 4) { // set draw mode to Quad
+						for (int i = 1; i <= 4; i++) {
+							numbers.clear();
+							HVertexGroup vertexGroup;
 
-					for (int i = 1; i <= 3; i++) {
-						numbers.clear();
-						HVertexGroup face;
-						
-						// tokenize subString content: 21/123/123
-						tokenize(subStrings[i], numbers, "/");
-						
-						// store derived tokens in face
-						face.v = std::stoi(numbers[0]) - 1;
-						face.t = std::stoi(numbers[1]) - 1;
-						face.n = std::stoi(numbers[2]) - 1;
+							// tokenize subString content: 21/123/123
+							tokenize(subStrings[i], numbers, "/");
 
-						faces.push_back(face);
+							// store derived tokens in face
+							vertexGroup.v = std::stoi(numbers[0]) - 1;
+							vertexGroup.t = std::stoi(numbers[1]) - 1;
+							vertexGroup.n = std::stoi(numbers[2]) - 1;
+
+							face.push_back(vertexGroup);
+						}
 					}
+					else { // set draw mode to triangle
+						for (int i = 1; i <= 3; i++) {
+							numbers.clear();
+							HVertexGroup vertexGroup;
 
-					// faces vector stores faces
+							// tokenize subString content: 21/123/123
+							tokenize(subStrings[i], numbers, "/");
+
+							// store derived tokens in face
+							vertexGroup.v = std::stoi(numbers[0]) - 1;
+							vertexGroup.t = std::stoi(numbers[1]) - 1;
+							vertexGroup.n = std::stoi(numbers[2]) - 1;
+
+							face.push_back(vertexGroup);
+						}
+					}
+					
+
+					// face vector stores face
 					// stores data in format : { { {21, 123, 123}, {12, 34, 65}, {75, 32, 123} }, { {21, 123, 123}, {12, 34, 65}, {75, 32, 123} } }
-					// i.e a vector that stores vector of Faces
-					faces_vector.push_back(faces);
+					// i.e a vector that stores vector of face
+					faces_vector.push_back(face);
 					
 					continue;
 				}
@@ -116,6 +141,17 @@ namespace Hound {
 					continue;
 				}
 
+				/*if (subStrings[0] == "s") {
+					if (subStrings[1] == "off") {
+						std::cout << "Not using triangles\n";
+						groupNumber = subStrings[1];
+					}
+					else {
+						std::cout << "Using triangles\n";
+						groupNumber = subStrings[1];
+					}
+				}*/
+
 				// group data
 				// NB: this logic is backlogged
 				// the data before a given group at subStrings[0] is processed at this point
@@ -127,7 +163,8 @@ namespace Hound {
 
 						// sort vertex data
 						SortVertexData(mesh, rawMesh, faces_vector);
-
+						// set up the mesh's data in the GPU
+						mesh.SetupMesh();
 						m_meshes.push_back(mesh);
 					}
 
@@ -149,7 +186,8 @@ namespace Hound {
 
 			// sort vertex data
 			SortVertexData(mesh, rawMesh, faces_vector);
-
+			// set up the mesh's data in the GPU
+			mesh.SetupMesh();
 			m_meshes.push_back(mesh);
 		}
 
@@ -161,9 +199,19 @@ namespace Hound {
 
 	}
 
-	void HModel::Render()
+	void HModel::Render(Shader& shader)
 	{
+		shader.setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(1.0f, 1.0f, 0.6f)));
 
+		// call the draw method for each mesh that makes up the model
+		for (int i{}; i < m_meshes.size(); i++) {
+			m_meshes[i].Draw(shader);
+		}
+	}
+
+	void HModel::Print()
+	{
+		
 	}
 
 	/// <summary>
@@ -174,34 +222,100 @@ namespace Hound {
 	/// <param name="faces_vector">: contains indices that helps define how a single position, textCoord and normal are related and can be read to define a mesh</param>
 	void HModel::SortVertexData(HMesh& newMesh, const HMesh& oldMesh, const std::vector<HFace>& faces_vector)
 	{
-		unsigned int count;
+		unsigned int count{};
 		std::unordered_map<HVertexGroup, unsigned int, HashFunction> map;
 
-		for (const HFace& faces : faces_vector) { // faces_vector: { 0:{ {21, 123, 123}, {12, 34, 65}, {75, 32, 123} }, 1:{ {21, 123, 123}, {12, 34, 65}, {75, 32, 123} } }
-			for (int i{}; i < 3; i++) { // faces: { 0:{21, 123, 123}, 1:{12, 34, 65}, 2:{75, 32, 123} }
-				auto it = map.find(faces[i]); // does face: {21, 123, 123} exist in map
+		for (const HFace& face : faces_vector) { // faces_vector: { 0:{ {21, 123, 123}, {12, 34, 65}, {75, 32, 123} }, 1:{ {21, 123, 123}, {12, 34, 65}, {75, 32, 123} } }
+			for (int i{}; i < face.size(); i++) { // face: { 0:{21, 123, 123}, 1:{12, 34, 65}, 2:{75, 32, 123} }
+				auto it = map.find(face[i]); // does face: {21, 123, 123} exist in map
 
 				if (it == map.end()) { // if face exists
-					newMesh.vertices.push_back(oldMesh.vertices[faces[i].v]);
-					newMesh.textCoords.push_back(oldMesh.textCoords[faces[i].t]);
-					newMesh.normals.push_back(oldMesh.normals[faces[i].n]);
+					//std::cout << count+1 << " - Not in map, adding to map\n";
+					newMesh.vertices.push_back(oldMesh.vertices[face[i].v]);
+					newMesh.textCoords.push_back(oldMesh.textCoords[face[i].t]);
+					newMesh.normals.push_back(oldMesh.normals[face[i].n]);
+					//HVertex temp = {
+					//	oldMesh.vertices[face[i].v], // position
+					//	oldMesh.textCoords[face[i].t], // textCoord
+					//	oldMesh.normals[face[i].n], // normal
+					//	{ 1.0f, 1.0f, 1.0f, 1.0f } // color
+					//};
+					//std::cout << temp << "\n";
 					newMesh.hvertices.push_back({
-						oldMesh.vertices[faces[i].v], // position
-						oldMesh.textCoords[faces[i].t], // textCoord
-						oldMesh.normals[faces[i].n], // normal
+						oldMesh.vertices[face[i].v], // position
+						oldMesh.textCoords[face[i].t], // textCoord
+						oldMesh.normals[face[i].n], // normal
 						{ 1.0f, 1.0f, 1.0f, 1.0f } // color
 					});
 
 					newMesh.indices.push_back(count);
 
-					map[faces[i]] = count;
+					map[face[i]] = count;
 					count++;
 				}
 				else {
+					//std::cout << "Present in map, adding to map\n";
 					newMesh.indices.push_back(it->second);
 				}
 			}
+
+			// set the draw mode for the mesh
+			if (face.size() > 3) {
+				newMesh.drawMode = 1; // QUAD
+			}
+			else {
+				newMesh.drawMode = 0; // TRIANGLE
+			}
 		}
+	}
+
+	// create VAO and VBO for a given mesh
+	void HMesh::SetupMesh()
+	{
+		m_VAO = new VertexArray();
+		m_VBO = new VertexBuffer();
+
+		if (drawMode == 0) {
+			m_EBO = new IndexBuffer();
+
+			m_VBO->Set(hvertices, VERTEX_ATTRIB::VA_POS_TEXCOORD_NORMAL_COLOR);
+			m_EBO->Set(indices);
+
+			m_VAO->RegisterBuffer(*m_VBO);
+			m_VAO->RegisterBuffer(*m_EBO);
+		}
+		else if (drawMode == 1) {
+			m_VBO->Set(hvertices, VERTEX_ATTRIB::VA_POS_TEXCOORD_NORMAL_COLOR);
+
+			m_VAO->RegisterBuffer(*m_VBO);
+		}
+	}
+
+	void HMesh::Draw(Shader& shader)
+	{
+		switch (drawMode) {
+		case 1:
+			m_VAO->Bind();
+			glDrawArrays(GL_QUADS, 0, hvertices.size());
+			m_VAO->Unbind();
+		default:
+		case 0:
+			m_VAO->Bind();
+			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, indices.data());
+			m_VAO->Unbind();
+			return;
+		}
+	}
+
+	// function used to logged an HVertex instance props
+	std::ostream& operator<<(std::ostream& os, const HVertex obj)
+	{
+		os << "position: { " << obj.position.x << " " << obj.position.y << " " << obj.position.z << " }, "
+			<< "texCoord: { " << obj.textCoord.x << " " << obj.textCoord.y << " }, "
+			<< "normal: { " << obj.normal.x << " " << obj.normal.y << " " << obj.normal.z << " }, "
+			<< "color: { " << obj.colors.x << " " << obj.colors.y << " " << obj.colors.z << " }" << "\n";
+
+		return os;
 	}
 
 	bool operator==(const HVertexGroup& lhsObj, const HVertexGroup& rhsObj)
