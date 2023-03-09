@@ -11,10 +11,13 @@
 #include "../../textures/Texture.h"
 
 #include "../../modelLoader/utils.h"
+#include "../../modelLoader/HModel.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include <future>
 
 class Shader;
 class VertexArray;
@@ -89,7 +92,7 @@ class MeshLoadingLevel : public Hound::Scene
 {
 public:
 	MeshLoadingLevel()
-		: cubeVAO{}, lightVAO{}, VBO{}, testVAO{ nullptr }, lightShader{ nullptr }, cubeShader{ nullptr }, mCubeTexture{ nullptr } {
+		: cubeVAO{}, lightShader{ nullptr }, basicShader{ nullptr }, mCubeTexture{ nullptr } {
 		char title[]{ "Mesh Loading Level" };
 		strcpy_s(mSceneInfo.title, sizeof(title), "Mesh Loading Level");
 		mSceneInfo.mResolution.width = 1920;
@@ -108,12 +111,17 @@ public:
 	virtual void Draw() override;
 
 protected:
-	unsigned int cubeVAO, lightVAO, VBO;
-	VertexArray* testVAO;
-	VertexBuffer* testVBO;
+	VertexArray* cubeVAO;
+	VertexBuffer* cubeVBO;
+	VertexArray* quadVAO;
+	VertexBuffer* quadVBO;
 
 	Shader* lightShader;
-	Shader* cubeShader;
+	Shader* basicShader;
+
+	// models
+	Hound::HModel cubeModel;
+	std::future<bool> success;
 
 	// Lights
 	Hound::DirectionalLight mDirectionalLight;

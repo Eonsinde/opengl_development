@@ -4,7 +4,7 @@
 #include "../../core/Input.h"
 
 #include "../scene_management/Plane.h"
-#include "../../modelLoader/OBJLoader.h"
+#include "../../modelLoader/HModel.h"
 #include "../../renderer/VertexArray.h"
 #include "../../renderer/buffers/VertexBuffer.h"
 
@@ -56,17 +56,30 @@ void MeshLoadingLevel::Init()
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f
     };
 
-    //Hound::loadObjMesh("./input_test_file.txt");
-    testVAO = new VertexArray();
-    testVBO = new VertexBuffer();
+    float quadVertices[]{
+        -0.5f, 0.5f, 0.0f,
+        0.5f, 0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        -0.5f, -0.5f, 0.0f,
+    };
 
-    testVBO->Set(vertices, VERTEX_ATTRIB::VA_POS_NORM_TEXCOORD, sizeof(vertices));
-    testVAO->RegisterBuffer(*testVBO);
+    //Hound::loadObjMesh("./input_test_file.txt");
+    cubeVAO = new VertexArray();
+    cubeVBO = new VertexBuffer();
+
+    cubeVBO->Set(vertices, VERTEX_ATTRIB::VA_POS_NORM_TEXCOORD, sizeof(vertices));
+    cubeVAO->RegisterBuffer(*cubeVBO);
+
+    quadVAO = new VertexArray();
+    quadVBO = new VertexBuffer();
+
+    quadVBO->Set(quadVertices, VERTEX_ATTRIB::VA_POS_NORM_TEXCOORD, sizeof(quadVertices));
+    quadVAO->RegisterBuffer(*quadVBO);
 }
 
 void MeshLoadingLevel::LoadScene()
 {
-    cubeShader = new Shader("./shaders/codes/basic.vert", "./shaders/codes/basic.frag");
+    basicShader = new Shader("./shaders/codes/basic.vert", "./shaders/codes/basic.frag");
     lightShader = new Shader("./shaders/codes/ADS.vert", "./shaders/codes/dirlight_ADS.frag");
 
     mCubeTexture = new Hound::Texture("./assets/textures/wooden_metallic_container.png");
@@ -78,21 +91,38 @@ void MeshLoadingLevel::LoadScene()
     mDirectionalLight.specular = glm::vec3(0.5f);
 
     mCubeMaterial.specExp = 32.0f;
+
+    // create and load model here
+    cubeModel = Hound::HModel();
+    // trigger load model func on another thread
+    //success = std::async(&Hound::HModel::Load, &cubeModel, "./assets/models/backpack/backpack.obj");
+
+    if (cubeModel.Load("./assets/models/cube/cube.obj")) {
+        std::cout << "Sucessfully loaded model\n";
+    }
+    else {
+        std::cout << "Failed to load model\n";
+    }
 }
 
 void MeshLoadingLevel::UnloadScene()
 {
     if (lightShader)
         delete lightShader;
-    if (cubeShader)
-        delete cubeShader;
+    if (basicShader)
+        delete basicShader;
     if (mCubeTexture)
         delete mCubeTexture;
 
-    if (testVAO)
-        delete testVAO;
-    if (testVBO)
-        delete testVBO;
+    if (cubeVAO)
+        delete cubeVAO;
+    if (cubeVBO)
+        delete cubeVBO;
+
+    if (quadVAO)
+        delete quadVAO;
+    if (quadVBO)
+        delete quadVBO;
 }
 
 void MeshLoadingLevel::Update(float deltaTime)
@@ -135,13 +165,27 @@ void MeshLoadingLevel::Draw()
 
     // draw cubes
     for (int16_t i{}; i < 10; i++) {
-        model = glm::translate(idMat, mCubePositions[i]);
+        model = glm::translate(glm::mat4(1.0f), mCubePositions[i]);
         model = glm::rotate(model, static_cast<float>(i * 10), glm::vec3(1.0f, 0.3f, 0.25f));
 
         lightShader->setMat4fv("uModel", glm::value_ptr(model));
 
-        testVAO->Bind();
+        cubeVAO->Bind();
         glDrawArrays(GL_TRIANGLES, 0, 36);
-        testVAO->Unbind();
+        cubeVAO->Unbind();
     }
+
+    basicShader->use();
+    model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 4.0f));
+
+    basicShader->setMat4fv("uModel", glm::value_ptr(model));
+    basicShader->setMat4fv("uView", glm::value_ptr(view));
+    basicShader->setMat4fv("uProjection", glm::value_ptr(projection));
+    basicShader->setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(1.0f, 0.4f, 0.6f)));
+
+    quadVAO->Bind();
+    glDrawArrays(GL_QUADS, 0, 4);
+    quadVAO->Unbind();
+
+    //cubeModel.Render(*basicShader);
 }
