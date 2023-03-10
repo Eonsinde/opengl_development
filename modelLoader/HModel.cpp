@@ -14,7 +14,7 @@
 namespace Hound {
 	HModel::HModel()
 	{
-		m_meshes.reserve(10);
+
 	}
 
 	bool HModel::Load(const std::string& filename)
@@ -191,6 +191,7 @@ namespace Hound {
 			m_meshes.push_back(mesh);
 		}
 
+		std::cout << "HModel::Sucessfully loaded model\n";
 		return true;
 	}
 
@@ -203,9 +204,11 @@ namespace Hound {
 	{
 		shader.setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(1.0f, 1.0f, 0.6f)));
 
-		// call the draw method for each mesh that makes up the model
-		for (int i{}; i < m_meshes.size(); i++) {
-			m_meshes[i].Draw(shader);
+		if (m_meshes.size()) {
+			// call the draw method for each mesh that makes up the model
+			for (int i{}; i < m_meshes.size(); i++) {
+				m_meshes[i].Draw(shader);
+			}
 		}
 	}
 
@@ -224,23 +227,20 @@ namespace Hound {
 	{
 		unsigned int count{};
 		std::unordered_map<HVertexGroup, unsigned int, HashFunction> map;
+		std::unordered_map<int, unsigned int> test_map;
 
 		for (const HFace& face : faces_vector) { // faces_vector: { 0:{ {21, 123, 123}, {12, 34, 65}, {75, 32, 123} }, 1:{ {21, 123, 123}, {12, 34, 65}, {75, 32, 123} } }
 			for (int i{}; i < face.size(); i++) { // face: { 0:{21, 123, 123}, 1:{12, 34, 65}, 2:{75, 32, 123} }
-				auto it = map.find(face[i]); // does face: {21, 123, 123} exist in map
+				auto it = map.find(face[i]); // does point: {21, 123, 123} exist in map
+				auto test_it = test_map.find(face[i].v); // does point.v: 21 exist in map
 
-				if (it == map.end()) { // if face exists
-					//std::cout << count+1 << " - Not in map, adding to map\n";
+				if (test_it == test_map.end()) {
+					std::cout << "Not in map: " << face[i].v << " :: " << count << ", adding to map\n";
+
 					newMesh.vertices.push_back(oldMesh.vertices[face[i].v]);
 					newMesh.textCoords.push_back(oldMesh.textCoords[face[i].t]);
 					newMesh.normals.push_back(oldMesh.normals[face[i].n]);
-					//HVertex temp = {
-					//	oldMesh.vertices[face[i].v], // position
-					//	oldMesh.textCoords[face[i].t], // textCoord
-					//	oldMesh.normals[face[i].n], // normal
-					//	{ 1.0f, 1.0f, 1.0f, 1.0f } // color
-					//};
-					//std::cout << temp << "\n";
+
 					newMesh.hvertices.push_back({
 						oldMesh.vertices[face[i].v], // position
 						oldMesh.textCoords[face[i].t], // textCoord
@@ -249,19 +249,45 @@ namespace Hound {
 					});
 
 					newMesh.indices.push_back(count);
-
-					map[face[i]] = count;
+					test_map[face[i].v] = count;
 					count++;
 				}
 				else {
-					//std::cout << "Present in map, adding to map\n";
-					newMesh.indices.push_back(it->second);
+					std::cout << "Present in map: " << face[i].v << " :: " << test_it->second << ", adding to map\n";
+					newMesh.indices.push_back(test_it->second);
 				}
+
+				//if (it == map.end()) { // if face exists
+				//	std::cout << count << " - Not in map, adding to map\n";
+				//	newMesh.vertices.push_back(oldMesh.vertices[face[i].v]);
+				//	newMesh.textCoords.push_back(oldMesh.textCoords[face[i].t]);
+				//	newMesh.normals.push_back(oldMesh.normals[face[i].n]);
+				//	//HVertex temp = {
+				//	//	oldMesh.vertices[face[i].v], // position
+				//	//	oldMesh.textCoords[face[i].t], // textCoord
+				//	//	oldMesh.normals[face[i].n], // normal
+				//	//	{ 1.0f, 1.0f, 1.0f, 1.0f } // color
+				//	//};
+				//	//std::cout << temp << "\n";
+				//	newMesh.hvertices.push_back({
+				//		oldMesh.vertices[face[i].v], // position
+				//		oldMesh.textCoords[face[i].t], // textCoord
+				//		oldMesh.normals[face[i].n], // normal
+				//		{ 1.0f, 1.0f, 1.0f, 1.0f } // color
+				//	});
+				//	newMesh.indices.push_back(count);
+				//	map[face[i]] = count;
+				//	count++;
+				//}
+				//else {
+				//	std::cout << "Present in map, adding to map\n";
+				//	newMesh.indices.push_back(it->second);
+				//}
 			}
 
 			// set the draw mode for the mesh
 			if (face.size() > 3) {
-				newMesh.drawMode = 1; // QUAD
+				newMesh.drawMode = 1; // QUAD                                                                                                                                                                                                                                                                                                                                                                                                                           
 			}
 			else {
 				newMesh.drawMode = 0; // TRIANGLE
@@ -275,10 +301,10 @@ namespace Hound {
 		m_VAO = new VertexArray();
 		m_VBO = new VertexBuffer();
 
-		if (drawMode == 0) {
+		if (drawMode == 0) { // triangle
 			m_EBO = new IndexBuffer();
 
-			m_VBO->Set(hvertices, VERTEX_ATTRIB::VA_POS_TEXCOORD_NORMAL_COLOR);
+			m_VBO->Set(vertices, VERTEX_ATTRIB::VA_POSITION);
 			m_EBO->Set(indices);
 
 			m_VAO->RegisterBuffer(*m_VBO);
@@ -296,10 +322,12 @@ namespace Hound {
 		switch (drawMode) {
 		case 1:
 			m_VAO->Bind();
-			glDrawArrays(GL_QUADS, 0, hvertices.size());
+			glDrawArrays(GL_LINE_LOOP, 0, hvertices.size());
 			m_VAO->Unbind();
-		default:
+			return;
+
 		case 0:
+		default:
 			m_VAO->Bind();
 			glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, indices.data());
 			m_VAO->Unbind();

@@ -12,13 +12,13 @@ class Shader;
 
 namespace Hound {
 	struct HVertex {
-		friend std::ostream& operator<<(std::ostream&, const HVertex);
-
 		glm::vec3 position;
 		glm::vec2 textCoord;
 		glm::vec3 normal;
 		glm::vec4 colors;
 	};
+
+	std::ostream& operator<<(std::ostream&, const HVertex);
 
 	struct HMesh {
 		friend class HModel;
