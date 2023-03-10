@@ -4,6 +4,7 @@
 #include <vector>
 #include <glad/glad.h>
 #include "../VertexArray.h"
+#include "../../modelLoader/HModel.h"
 
 
 enum class VertexBufferDataType {
@@ -38,6 +39,8 @@ public:
 
 	void					Set(float* pArray, VERTEX_ATTRIB vertexAttribFormat, unsigned int pSize);
 	void					Set(std::vector<float>& pVector, VERTEX_ATTRIB vertexAttribFormat);
+	void					Set(std::vector<glm::vec3>& pVector, VERTEX_ATTRIB vertexAttribFormat);
+	void					Set(std::vector<Hound::HVertex>& pVector, VERTEX_ATTRIB vertexAttribFormat);
 	//void Set(std::vector<Vertex>& pVector);
 
 	void					Bind() const { glBindBuffer(GL_ARRAY_BUFFER, m_Handle); }
