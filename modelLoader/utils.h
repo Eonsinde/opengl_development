@@ -32,7 +32,7 @@ namespace Hound {
 
 
 	// Defined type to hold tokens
-	typedef std::vector<const char*> TokenVector;
+	typedef std::vector<std::string> TokenVector;
 
 	// sentence and delimiter
 	TokenVector tokenize(std::string, std::string=" ");

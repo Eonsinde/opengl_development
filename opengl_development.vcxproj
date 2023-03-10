@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="modelLoader\HModel.h" />
+    <ClInclude Include="entity\Entity.h" />
     <ClInclude Include="scene\advanced_levels\CubeMapLevel.h" />
     <ClInclude Include="scene\post_processing\DoubleViewScene.h" />
     <ClInclude Include="scene\post_processing\PPScene.h" />
@@ -259,7 +260,7 @@
     <ClInclude Include="scene\advanced_levels\StencilTestingLevel.h" />
     <ClInclude Include="textures\Texture.h" />
     <ClInclude Include="modelLoader\Mesh.h" />
-    <ClInclude Include="Transform.h" />
+    <ClInclude Include="entity\Transform.h" />
     <ClInclude Include="scene\advanced_levels\ZFightingLevel.h" />
     <ClInclude Include="renderer\buffers\VertexBuffer.h" />
     <ClInclude Include="renderer\VertexArray.h" />
@@ -317,7 +318,7 @@
     <ClCompile Include="scene\Levels\lighting_levels\SpotLightLevel.cpp" />
     <ClCompile Include="scene\advanced_levels\StencilTestingLevel.cpp" />
     <ClCompile Include="textures\Texture.cpp" />
-    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="entity\Transform.cpp" />
     <ClCompile Include="scene\advanced_levels\ZFightingLevel.cpp" />
     <ClCompile Include="renderer\buffers\VertexBuffer.cpp" />
     <ClCompile Include="renderer\VertexArray.cpp" />

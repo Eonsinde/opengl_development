@@ -219,7 +219,7 @@
     <ClInclude Include="scene\scene_management\bounding_volumes\AABB.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Transform.h">
+    <ClInclude Include="entity\Transform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scene\Levels\lighting_levels\SpotLightLevel.h">
@@ -348,6 +348,9 @@
     <ClInclude Include="modelLoader\HModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="entity\Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dependencies\glad\src\glad.c">
@@ -395,7 +398,7 @@
     <ClCompile Include="modelLoader\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
+    <ClCompile Include="entity\Transform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scene\Levels\lighting_levels\SpotLightLevel.cpp">

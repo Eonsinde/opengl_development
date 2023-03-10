@@ -84,9 +84,9 @@ namespace Hound {
 					tokenize(temp_string, actual_tokens, "/"); // tokenizes 123/32/34 :- 123, 32, 34
 					// we subtract one from each index here becos the indices start count from 1 and arrays use 0 not 1
 					// atoi is a function that converts a char to an integer
-					vertex_position_indices.push_back(atoi(actual_tokens[0]) - 1);
-					vertex_texcoord_indices.push_back(atoi(actual_tokens[1]) - 1);
-					vertex_normal_indices.push_back(atoi(actual_tokens[2]) - 1);
+					vertex_position_indices.push_back(atoi(actual_tokens[0].c_str()) - 1);
+					vertex_texcoord_indices.push_back(atoi(actual_tokens[1].c_str()) - 1);
+					vertex_normal_indices.push_back(atoi(actual_tokens[2].c_str()) - 1);
 				}
 			}
 		}
