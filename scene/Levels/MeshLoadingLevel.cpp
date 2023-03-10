@@ -99,6 +99,8 @@ void MeshLoadingLevel::LoadScene()
     //success = std::async(&Hound::HModel::Load, &cubeModel, "./assets/models/cube2/cube2.obj");
 
     cubeModel.Load("./assets/models/backpack/backpack.obj");
+    cubeModel.GetTransform().SetScale(1.0f);
+    cubeModel.GetTransform().SetTranslation(5.f, 0.0f, 4.0f);
 }
 
 void MeshLoadingLevel::UnloadScene()
@@ -127,6 +129,22 @@ void MeshLoadingLevel::Update(float deltaTime)
         std::cout << "Adding to movement speed\n";
     if (Hound::Input::IsKeyPressed(Hound::Key::KPSubtract))
         std::cout << "Removing from movement speed\n";
+    
+    // moving the model around using its' transform component
+    if (Hound::Input::IsKeyPressed(Hound::Key::KP4))
+        cubeModel.GetTransform().TranslateBy(-0.05f, 0.0f, 0.0f);
+    if (Hound::Input::IsKeyPressed(Hound::Key::KP6))
+        cubeModel.GetTransform().TranslateBy(0.05f, 0.0f, 0.0f);
+
+    // scale model on KP 0 pressed
+    if (Hound::Input::IsKeyPressed(Hound::Key::KP0))
+        cubeModel.GetTransform().ScaleBy(-0.002f, -0.002f, -0.002f);
+
+    // rotate it on KP 7 - 9 press
+    if (Hound::Input::IsKeyPressed(Hound::Key::KP7))
+        cubeModel.GetTransform().RotateBy(0.0f, 10.0f, 0.0f);
+    if (Hound::Input::IsKeyPressed(Hound::Key::KP9))
+        cubeModel.GetTransform().RotateBy(0.0f, -10.0f, 0.0f);
 }
 
 void MeshLoadingLevel::Draw()
@@ -174,9 +192,6 @@ void MeshLoadingLevel::Draw()
     }
 
     basicShader->use();
-    model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 4.0f));
-
-    basicShader->setMat4fv("uModel", glm::value_ptr(model));
     basicShader->setMat4fv("uView", glm::value_ptr(view));
     basicShader->setMat4fv("uProjection", glm::value_ptr(projection));
     
