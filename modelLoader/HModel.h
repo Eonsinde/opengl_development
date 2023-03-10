@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <glm/glm.hpp>
-
+#include "../entity/Entity.h"
 
 class VertexArray;
 class VertexBuffer;
@@ -61,14 +61,16 @@ namespace Hound {
 		}
 	};
 
-	class HModel
+	class HModel : public Entity
 	{
 	public:
 		HModel();
+		virtual ~HModel() = default;
+
+		void Update() override;
+		void Render(Shader&) override;
 
 		bool Load(const std::string& filename);
-		void Update();
-		void Render(Shader& shader);
 		void Print();
 
 	private:

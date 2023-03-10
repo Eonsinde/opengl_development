@@ -202,6 +202,7 @@ namespace Hound {
 
 	void HModel::Render(Shader& shader)
 	{
+		shader.setMat4fv("uModel", glm::value_ptr(Entity::GetTransform().GetMatrix()));
 		shader.setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(1.0f, 1.0f, 0.6f)));
 
 		if (m_meshes.size()) {
