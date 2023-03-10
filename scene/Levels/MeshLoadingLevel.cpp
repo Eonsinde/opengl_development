@@ -73,7 +73,7 @@ void MeshLoadingLevel::Init()
     quadVAO = new VertexArray();
     quadVBO = new VertexBuffer();
 
-    quadVBO->Set(quadVertices, VERTEX_ATTRIB::VA_POS_NORM_TEXCOORD, sizeof(quadVertices));
+    quadVBO->Set(quadVertices, VERTEX_ATTRIB::VA_POSITION, sizeof(quadVertices));
     quadVAO->RegisterBuffer(*quadVBO);
 }
 
@@ -96,13 +96,9 @@ void MeshLoadingLevel::LoadScene()
     cubeModel = Hound::HModel();
     // trigger load model func on another thread
     //success = std::async(&Hound::HModel::Load, &cubeModel, "./assets/models/backpack/backpack.obj");
+    //success = std::async(&Hound::HModel::Load, &cubeModel, "./assets/models/cube2/cube2.obj");
 
-    if (cubeModel.Load("./assets/models/cube/cube.obj")) {
-        std::cout << "Sucessfully loaded model\n";
-    }
-    else {
-        std::cout << "Failed to load model\n";
-    }
+    cubeModel.Load("./assets/models/backpack/backpack.obj");
 }
 
 void MeshLoadingLevel::UnloadScene()
@@ -138,6 +134,8 @@ void MeshLoadingLevel::Draw()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glClearColor(0.047058f, 0.047058f, 0.047058f, 1.0);
     glEnable(GL_DEPTH_TEST);
+
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     // use light shader to render cubes and set uniforms where needed
     lightShader->use();
@@ -181,11 +179,15 @@ void MeshLoadingLevel::Draw()
     basicShader->setMat4fv("uModel", glm::value_ptr(model));
     basicShader->setMat4fv("uView", glm::value_ptr(view));
     basicShader->setMat4fv("uProjection", glm::value_ptr(projection));
-    basicShader->setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(1.0f, 0.4f, 0.6f)));
+    
+    cubeModel.Render(*basicShader);
 
+    // adjust position and render the quad
+    model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 2.0f));
+    basicShader->setMat4fv("uModel", glm::value_ptr(model));
+    basicShader->setVec3fv("uPixelColor", glm::value_ptr(glm::vec3(0.5f, 0.8f, 0.9f)));
+    
     quadVAO->Bind();
-    glDrawArrays(GL_QUADS, 0, 4);
+    glDrawArrays(GL_LINE_LOOP, 0, 4);
     quadVAO->Unbind();
-
-    //cubeModel.Render(*basicShader);
 }

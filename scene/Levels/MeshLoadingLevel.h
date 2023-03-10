@@ -93,8 +93,8 @@ class MeshLoadingLevel : public Hound::Scene
 public:
 	MeshLoadingLevel()
 		: cubeVAO{}, lightShader{ nullptr }, basicShader{ nullptr }, mCubeTexture{ nullptr } {
-		char title[]{ "Mesh Loading Level" };
-		strcpy_s(mSceneInfo.title, sizeof(title), "Mesh Loading Level");
+		char title[]{ "Mesh Loading Scene" };
+		strcpy_s(mSceneInfo.title, sizeof(title), "Mesh Loading Scene");
 		mSceneInfo.mResolution.width = 1920;
 		mSceneInfo.mResolution.height = 1080;
 	}
