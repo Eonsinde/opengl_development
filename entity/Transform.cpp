@@ -4,7 +4,7 @@
 
 
 Transform::Transform()
-	: m_translation{ 0.0f }, m_scale{ 1.0f }, m_rotation{ 0.0f } {
+	: m_translation{ 0.0f }, m_scale{ 1.0f }, m_rotation{ 0.0f }, m_finalMatrix{ 1.0f } {
 
 }
 
@@ -107,7 +107,7 @@ const glm::vec3& Transform::GetScale() const
 	return m_scale;
 }
 
-void Transform::UpdateFinalMatrix()
+void Transform::BuildFinalMatrix()
 {
 	// build TRS matrix
 	m_finalMatrix = glm::translate(glm::mat4(1.0f), m_translation);
@@ -119,7 +119,7 @@ void Transform::UpdateFinalMatrix()
 
 const glm::mat4& Transform::GetMatrix() 
 {
-	UpdateFinalMatrix();
+	BuildFinalMatrix();
 	return m_finalMatrix;
 }
 
