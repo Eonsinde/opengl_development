@@ -64,12 +64,14 @@ void MeshLoadingLevel::Init()
     };
 
     //Hound::loadObjMesh("./input_test_file.txt");
+    // for cube
     cubeVAO = new VertexArray();
     cubeVBO = new VertexBuffer();
 
     cubeVBO->Set(vertices, VERTEX_ATTRIB::VA_POS_NORM_TEXCOORD, sizeof(vertices));
     cubeVAO->RegisterBuffer(*cubeVBO);
 
+    // for quad
     quadVAO = new VertexArray();
     quadVBO = new VertexBuffer();
 
