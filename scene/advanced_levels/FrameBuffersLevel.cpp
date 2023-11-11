@@ -196,7 +196,7 @@ void FrameBuffersLevel::Update(float deltaTime)
 void FrameBuffersLevel::Draw()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-    glEnable(GL_DEPTH_TEST); // enable depth testing (is disabled for rendering screen-space quad)
+    glEnable(GL_DEPTH_TEST); // enable depth testing (NB: disable for rendering screen-space quad)
 
     // make sure we clear the framebuffer's content
     glClearColor(0.0784f, 0.0784f, 0.0784f, 1.0);
@@ -239,10 +239,10 @@ void FrameBuffersLevel::Draw()
 
     
     // draw framebuffer quad
-    // the quad is draw over the entire scene and depth testing is disabled to ensure this
+    // the quad is drawn over the entire scene and depth testing is disabled to ensure this
     // now bind back to default framebuffer and draw a quad plane with the attached framebuffer color texture
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glDisable(GL_DEPTH_TEST); 
+    glDisable(GL_DEPTH_TEST);
     // clear all relevant buffers
     glClearColor(0.0784f, 0.0784f, 0.0784f, 1.0); // set clear color to white (not really necessary actually, since we won't be able to see behind the quad anyways)
     //glClearColor(1.0f, 1.0f, 1.0f, 1.0); // set clear color to white (not really necessary actually, since we won't be able to see behind the quad anyways)

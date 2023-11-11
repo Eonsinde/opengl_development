@@ -126,7 +126,7 @@ void VertexArray::RegisterBuffer(VertexBuffer& pVBO)
 		
 		// bind buffer firstly to register it with VAO
 		glBindBuffer(GL_ARRAY_BUFFER, pVBO.GetHandle());
-		// tell VAO how to send the buffer's data down the GP
+		// tell VAO how to send the buffer's data down to our shaders/programmable pipeline
 		SetLayout(pVBO);
 		
 		glBindVertexArray(0);

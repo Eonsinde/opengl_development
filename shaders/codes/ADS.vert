@@ -12,7 +12,6 @@ out vec3 FragPos;
 out vec2 TexCoord;
 out vec3 Normal;
 
-
 void main(void){
 	// move normal and vertexpos to world space
 	FragPos = vec3(uModel * vec4(aPosition, 1.0));

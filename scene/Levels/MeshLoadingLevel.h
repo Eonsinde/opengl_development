@@ -152,4 +152,4 @@ protected:
 };
 
 
-DECLARE_MAIN(MeshLoadingApp, MeshLoadingLevel)
+//DECLARE_MAIN(MeshLoadingApp, MeshLoadingLevel)

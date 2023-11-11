@@ -7,12 +7,11 @@ uniform vec3 uLightPos;
 uniform vec3 uLightColor;
 uniform vec3 uCameraPos;
 
-in vec3 FragPos ;
+in vec3 FragPos;
 in vec3 TexCoord;
 in vec3 Normal;
 
 out vec4 fragColor;
-
 
 void main(void){
 	// ambient
