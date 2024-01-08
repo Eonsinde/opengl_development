@@ -15,13 +15,13 @@ Although the dependent libraries for this project reside in the repo, it is advi
 
 ## Include & Linking options
 
-This step is not compulsory as the *.vcxproj file should help with these configurations automatically. For convenience sake, it would be included
+This step is not compulsory as the *.vcxproj file should help with these configurations automatically. For customization sake, it would be included
 - The include options can be configured under: project properties > c/c++ > Additional include directories
 - The linkng options can be configured under: project properties > linking > Additional libraries directories
 
 ## Project structure
 
-| directory | Description |
+| Directories | Description |
 |---|---|
 | **`assets`** | Contains assets such as `images`, `fonts`, and `models` |
 | **`core`** | This directories contains the libraries used for core functionalities such as `creating window instance`, `handling keyboard and mouse inputs` |
