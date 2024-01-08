@@ -715,6 +715,7 @@
     <None Include="shaders\pp_codes\kernel.frag" />
     <None Include="scene\practice\basic.vert" />
     <None Include="scene\practice\basic.frag" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="extras.txt" />

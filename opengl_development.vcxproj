@@ -398,6 +398,7 @@
     <None Include="imgui.ini" />
     <None Include="scene\practice\basic.frag" />
     <None Include="scene\practice\basic.vert" />
+    <None Include="README.md" />
     <None Include="shaders\codes\ADS.frag" />
     <None Include="shaders\codes\ADS.vert" />
     <None Include="shaders\codes\basic.frag" />
