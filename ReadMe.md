@@ -24,18 +24,18 @@ This step is not compulsory as the *.vcxproj file should help with these configu
 | directory | Description |
 |---|---|
 | **`assets`** | Contains assets such as `images`, `fonts`, and `models` |
-| **`core`** | This directories contains the libraries used to core functionalities such as `creating window instance`, `handling keyboard and mouse inputs` |
-| **`dependencies`** | As the name implies, it holds libraries required for the successful execution of the project |
+| **`core`** | This directories contains the libraries used for core functionalities such as `creating window instance`, `handling keyboard and mouse inputs` |
+| **`dependencies`** | As the name implies, it holds libraries required for the successful execution of an app instance |
 | **`ImGUI`** | External library used for UI rendering in scenes |
 | **`modelLoader`** | Custom codes for loading OBJ model files |
-| **`renderer`** | Contains code files that helps with passing data fown the graphics pipeline |
+| **`renderer`** | Contains code files that helps with passing data down the graphics pipeline |
 | **`scene`** | Contains different simulations |
 | **`shaders`** | Shader class for loading shaders and shader codes |
 | **`textures`** | Texture class for loading textures |
 
 ## Creating a scene
 
-Instantiating a scene is a very simple process and can be achieved rapidly by exploring one of the scene classes in the scenes directory. Let's explore the scene > practice > TexturedSquareScene
+Instantiating a scene is a very simple process and can be achieved rapidly by exploring one of the scene classes in the scene directory. Let's explore scene > practice > TexturedSquareScene
 
 ## Usage
 
@@ -86,7 +86,7 @@ protected:
 DECLARE_MAIN(TexturedSquareApp, TexturedSquareLevel)
 ```
 
-All that needs to be done is create an application instance inheritance from the core Application(`This class is responsible for handling window generating and other window related functionalities`) interface.
+All that needs to be done is create an application instance which inherits from the core Application(`This class is responsible for handling window generating and other window related functionalities`) interface.
 Next, create a scene instance inheriting from our Scene interface. Finally, used the DECLARE_MAIN(`Declared in the Application.h file, this function is used to invoke the main function`) to instantiate our application and bind the scene to it
 
 
