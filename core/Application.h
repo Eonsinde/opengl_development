@@ -42,13 +42,11 @@
 
 #endif
 
-
 #include "../scene/Scene.h"
 #include "../modelLoader/utils.h"
 
 const int CONSOLE_WINDOW_HEIGHT = 210;
 const int PROPERTIES_WINDOW_WIDTH = 300;
-
 
 namespace Hound {
 	class Application {
@@ -181,16 +179,26 @@ namespace Hound {
                 std::cout << "============================\n\n";
             }
 
+#ifdef use_imgui
             // DEFINE VIEWPORT
             // compute scene's viewport coordinates based on resolution and UI panels
             mCurrentScene->mSceneInfo.mViewport.height = mInfo.windowHeight - CONSOLE_WINDOW_HEIGHT;
             mCurrentScene->mSceneInfo.mViewport.width = mInfo.windowWidth - PROPERTIES_WINDOW_WIDTH;
             glViewport(0, CONSOLE_WINDOW_HEIGHT, mCurrentScene->mSceneInfo.mViewport.width, mCurrentScene->mSceneInfo.mViewport.height);
+#else
+            mCurrentScene->mSceneInfo.mViewport.height = mInfo.windowHeight;
+            mCurrentScene->mSceneInfo.mViewport.width = mInfo.windowWidth;
+            glViewport(0, 0, mCurrentScene->mSceneInfo.mViewport.width, mCurrentScene->mSceneInfo.mViewport.height);
+#endif
 
             // configure initial coordinates for colliders
             mMouseCollider.x0 = mMouseCollider.y0 = mMouseCollider.x1 = mMouseCollider.y1 = 0;
-            mSceneCollider.x0 = 0; mSceneCollider.y0 = CONSOLE_WINDOW_HEIGHT; 
-            mSceneCollider.x1 = mCurrentScene->mSceneInfo.mViewport.width; mSceneCollider.y1 = mCurrentScene->mSceneInfo.mViewport.height;
+            mSceneCollider.x0 = mSceneCollider.y0 = 0;
+#ifdef use_imgui
+            mSceneCollider.y0 = CONSOLE_WINDOW_HEIGHT;
+#endif
+            mSceneCollider.x1 = mCurrentScene->mSceneInfo.mViewport.width;
+            mSceneCollider.y1 = mCurrentScene->mSceneInfo.mViewport.height;
 
             // init and load scene's resources
             mCurrentScene->Init();
@@ -321,19 +329,30 @@ namespace Hound {
             // update  app's res info
             mInfo.windowWidth = w;
             mInfo.windowHeight = h;
+
             // update scene's resolution info
             mCurrentScene->mSceneInfo.mResolution.height = h;
             mCurrentScene->mSceneInfo.mResolution.width = w;
+
             // update scene's viewport info
+#ifdef use_imgui
             mCurrentScene->mSceneInfo.mViewport.height = h - CONSOLE_WINDOW_HEIGHT;
             mCurrentScene->mSceneInfo.mViewport.width = w - PROPERTIES_WINDOW_WIDTH;
-
-            // also adjust viewport
-            glViewport(0, CONSOLE_WINDOW_HEIGHT, mCurrentScene->mSceneInfo.mViewport.width, mCurrentScene->mSceneInfo.mViewport.height);
+#else
+            mCurrentScene->mSceneInfo.mViewport.height = h;
+            mCurrentScene->mSceneInfo.mViewport.width = w;
+#endif
 
             // update scene collider or bounding box
-            mSceneCollider.x0 = 0; mSceneCollider.y0 = CONSOLE_WINDOW_HEIGHT;
-            mSceneCollider.x1 = mCurrentScene->mSceneInfo.mViewport.width; mSceneCollider.y1 = mCurrentScene->mSceneInfo.mViewport.height;
+            mSceneCollider.x0 = mSceneCollider.y0 = 0;
+#ifdef use_imgui
+            mSceneCollider.y0 = CONSOLE_WINDOW_HEIGHT;
+#endif
+            mSceneCollider.x1 = mCurrentScene->mSceneInfo.mViewport.width;
+            mSceneCollider.y1 = mCurrentScene->mSceneInfo.mViewport.height;
+
+            // also adjust viewport
+            glViewport(mSceneCollider.x0, mSceneCollider.y0, mCurrentScene->mSceneInfo.mViewport.width, mCurrentScene->mSceneInfo.mViewport.height);
         }
 
         virtual void onKey(int key, int action)

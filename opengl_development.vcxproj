@@ -258,6 +258,7 @@
     <ClInclude Include="scene\Levels\lighting_levels\SpotLightLevel.h" />
     <ClInclude Include="scene\Levels\lighting_levels\SoftSpotLight.h" />
     <ClInclude Include="scene\advanced_levels\StencilTestingLevel.h" />
+    <ClInclude Include="scene\practice\TexturedSquareScene.h" />
     <ClInclude Include="textures\Texture.h" />
     <ClInclude Include="modelLoader\Mesh.h" />
     <ClInclude Include="entity\Transform.h" />
@@ -317,6 +318,7 @@
     <ClCompile Include="scene\Levels\LightRotationLevel.cpp" />
     <ClCompile Include="scene\Levels\lighting_levels\SpotLightLevel.cpp" />
     <ClCompile Include="scene\advanced_levels\StencilTestingLevel.cpp" />
+    <ClCompile Include="scene\practice\TexturedSquareScene.cpp" />
     <ClCompile Include="textures\Texture.cpp" />
     <ClCompile Include="entity\Transform.cpp" />
     <ClCompile Include="scene\advanced_levels\ZFightingLevel.cpp" />
@@ -394,6 +396,8 @@
     <None Include="dependencies\assimp\lib\assimp-vc140-mt.pdb" />
     <None Include="dependencies\glfw\src\glfw3.pdb" />
     <None Include="imgui.ini" />
+    <None Include="scene\practice\basic.frag" />
+    <None Include="scene\practice\basic.vert" />
     <None Include="shaders\codes\ADS.frag" />
     <None Include="shaders\codes\ADS.vert" />
     <None Include="shaders\codes\basic.frag" />

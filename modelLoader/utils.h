@@ -37,7 +37,7 @@ namespace Hound {
 	// sentence and delimiter
 	TokenVector tokenize(std::string, std::string=" ");
 
-	// sentence,(reference)where to store tokens and delimiter
+	// sentence, (reference)where to store tokens and delimiter
 	void tokenize(std::string, TokenVector&, std::string=" ");
 
 
