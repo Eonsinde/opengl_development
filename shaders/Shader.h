@@ -4,7 +4,6 @@
 #include <fstream>
 #include <sstream>
 
-
 class Shader
 {
 	#define U_INT unsigned int
